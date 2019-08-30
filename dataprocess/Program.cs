@@ -6,8 +6,17 @@ namespace dataprocess
     {
         static void Main(string[] args)
         {
-            DataCenter.Load(10_0000);
-            DataCenter.EDA();
+            var IsDidi = false;
+            if (IsDidi)
+            {
+                DataCenterForDidi.Load(10_0000);
+                DataCenterForDidi.EDA();
+            }
+            else
+            {
+                DataCenterFor360.Load(-1);
+                DataCenterFor360.EDA();
+            }
         }
     }
 }
