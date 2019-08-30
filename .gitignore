@@ -1,0 +1,7 @@
+RawData
+AfterProcess
+dataprocess/obj
+dataprocess/bin
+WebApi/obj
+WebApi/bin
+.vscode
