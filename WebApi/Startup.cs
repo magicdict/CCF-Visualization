@@ -36,7 +36,7 @@ namespace WebApi
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            app.UseCors(builder => builder.WithOrigins("*").AllowAnyHeader().AllowAnyMethod());
 
             app.UseRouting();
 
