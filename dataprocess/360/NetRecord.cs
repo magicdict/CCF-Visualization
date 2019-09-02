@@ -1,9 +1,11 @@
 
 using System;
+using System.Globalization;
 
 public class NetRecord
 {
-    public string record_time { get; set; }
+    public DateTime record_time { get; set; }
+
     public string source_ip { get; set; }
     public string destination_ip { get; set; }
     public string protocol { get; set; }
@@ -16,7 +18,7 @@ public class NetRecord
         //{"record_time": "2019-04-13 17:41:34.246", "source_ip": "10.59.223.71", "destination_ip": "10.59.223.31", "protocol": "http", "destination_port": "80", "uplink_length": 278, "downlink_length": 353}	
         Rawdata = Rawdata.TrimStart('{').TrimEnd('\t').TrimEnd('}');
         var Info = Rawdata.Split(",");
-        record_time = Info[0].Split(": ")[1].Replace("\"", string.Empty).Trim();
+        record_time = DateTime.ParseExact(Info[0].Split(": ")[1].Replace("\"", string.Empty).Trim(),"yyyy-MM-dd HH:mm:ss.fff",CultureInfo.CurrentCulture, DateTimeStyles.None);
         source_ip = Info[1].Split(": ")[1].Replace("\"", string.Empty).Trim();
         destination_ip = Info[2].Split(": ")[1].Replace("\"", string.Empty).Trim();
         protocol = Info[3].Split(": ")[1].Replace("\"", string.Empty).Trim();

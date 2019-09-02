@@ -45,7 +45,7 @@ public static class DataCenterFor360
     {
         var TotalCnt = records.Count();
 
-        //协议统计
+        //1.协议统计
         var protocols = records.GroupBy(x => x.protocol).Select(x => (protocol: x.Key, count: x.Count())).ToList();
         protocols.Sort((x, y) => { return y.count.CompareTo(x.count); });
         var sw = new StreamWriter(EDAFile);
@@ -60,9 +60,9 @@ public static class DataCenterFor360
         sw_csv.Close();
         sw.WriteLine();
 
-        //日期统计
+        //2.1日期统计
         sw.WriteLine("#日期统计");
-        var dates = records.GroupBy(x => x.record_time.Substring(0, 10)).Select(x => (date: x.Key, count: x.Count())).ToList();
+        var dates = records.GroupBy(x => x.record_time.Date.ToString("yyyy/MM/dd")).Select(x => (date: x.Key, count: x.Count())).ToList();
         dates.Sort((x, y) => { return x.date.CompareTo(y.date); });
         foreach (var item in dates)
         {
@@ -70,7 +70,17 @@ public static class DataCenterFor360
         }
         sw.WriteLine();
 
-        //源头和目标统计
+        //2.2按照时间统计
+        var hours = records.GroupBy(x => x.record_time.Hour.ToString("D2") + "|" + x.record_time.Minute / 15).Select(x => (hour: x.Key, count: x.Count())).ToList();
+        hours.Sort((x, y) => { return x.hour.CompareTo(y.hour); });
+        foreach (var item in hours)
+        {
+            sw.WriteLine(item.hour + ":" + item.count + "(" + Math.Round((float)item.count * 100 / TotalCnt, 2) + "%)");
+        }
+        sw.WriteLine();
+
+
+        //3.源头和目标统计
         sw.WriteLine("#源头和目标统计");
         var source_dist = records.GroupBy(x => x.source_ip + "->" + x.destination_ip).Select(x => (name: x.Key, count: x.Count())).ToList();
         source_dist.Sort((x, y) => { return y.count.CompareTo(x.count); });
@@ -84,7 +94,7 @@ public static class DataCenterFor360
         sw_csv.Close();
         sw.WriteLine();
 
-        //源头统计
+        //4.源头统计
         sw.WriteLine("#源头统计");
         var source = records.GroupBy(x => x.source_ip).Select(x => (name: x.Key, count: x.Count())).ToList();
         source.Sort((x, y) => { return y.count.CompareTo(x.count); });
@@ -98,7 +108,7 @@ public static class DataCenterFor360
         sw_csv.Close();
         sw.WriteLine();
 
-        //目标统计
+        //5.目标统计
         sw.WriteLine("#目标统计");
         var dist = records.GroupBy(x => x.destination_ip).Select(x => (name: x.Key, count: x.Count())).ToList();
         dist.Sort((x, y) => { return y.count.CompareTo(x.count); });
@@ -111,11 +121,6 @@ public static class DataCenterFor360
         }
         sw_csv.Close();
         sw.WriteLine();
-
-
         sw.Close();
-
     }
-
-
 }
