@@ -1,1 +1,10 @@
-<chart [options]="_protocols" [title]="'通信协议'"></chart>
+<div class="container">
+    <div class="row"  style="width:1240px">
+        <div class="col-lg-8">
+            <chart [options]="_protocols" [title]="'通信协议'" [boxstyle]="boxstyle_Col2" [chartstyle]="chartstyle"></chart>
+        </div>
+        <div class="col-lg-4">
+            <chart [options]="_protocols" [title]="'通信协议'" [boxstyle]="boxstyle_Col" [chartstyle]="chartstyle"></chart>
+        </div>
+    </div>
+</div>

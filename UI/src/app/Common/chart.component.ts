@@ -7,10 +7,12 @@ import { EventEmitter } from 'events';
 })
 export class ChartComponent {
     @Input() title = '图表名称';
+    @Input() boxstyle = { 'width': '400px', 'height': '400px' };
+    @Input() chartstyle = { 'width': '400px', 'height': '400px' };
     @Input() footer = "";
     @Input() options = null;
     @Output() ChartInit = new EventEmitter();
-    public ChartInited(e:any){
-        this.ChartInit.emit(e); 
+    public ChartInited(e: any) {
+        this.ChartInit.emit(e);
     }
 } 

@@ -11,6 +11,10 @@ import { CommonFunction } from 'src/app/Common/common';
 })
 export class DashboardComponent implements OnInit {
 
+  boxstyle_Col = { 'width' : '400px' , 'height' : '400px' };
+  boxstyle_Col2 = { 'width' : '800px' , 'height' : '400px' };
+  chartstyle = { 'width' : '350px' , 'height' : '350px' };
+
   constructor(private route: ActivatedRoute) { }
   _dashboard: IDashBoard;
   _protocols = CommonFunction.clone(IStardardPie);
