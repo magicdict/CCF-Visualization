@@ -7,7 +7,7 @@ namespace WebApi
     {
         public static void Main(string[] args)
         {
-            DataSet.LoadSecurityData();
+            SecurityDataSet.LoadData();
             CreateHostBuilder(args).Build().Run();
         }
 

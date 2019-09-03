@@ -6,7 +6,7 @@
         </div>
     </div>
     <div class="box-body">
-        <echarts [options]="this.options" (chartInit)="ChartInited($event)"></echarts>
+        <echarts [options]="this.options" (chartInit)="ChartInited($event)"  style="width:1600px;height:800px;"></echarts>
     </div>
     <div *ngIf="footer" class="box-footer">
         {{this.footer}}

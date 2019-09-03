@@ -1,11 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { SecurityMainComponent } from './security/SecurityMain.component';
 
 const routes: Routes = [
-  { path: 'security', component: SecurityMainComponent },
-  { path: 'traffic', component: SecurityMainComponent },
-  { path: '', redirectTo: 'security', pathMatch: 'full' },
+  { path: '', redirectTo: 'security/dashboard', pathMatch: 'full' },
 ];
 
 @NgModule({
