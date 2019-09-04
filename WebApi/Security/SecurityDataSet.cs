@@ -4,7 +4,8 @@ using System.IO;
 public static class SecurityDataSet
 {
     public static List<NameValueSet<int>> Protocols = new List<NameValueSet<int>>();
-    public static  List<NameValueSet<int>> Hours = new List<NameValueSet<int>>();
+    public static List<NameValueSet<int>> Hours = new List<NameValueSet<int>>();
+    public static List<NameValueSet<int>> Protocols_Hours = new List<NameValueSet<int>>();
 
     public static void LoadData()
     {
@@ -25,6 +26,14 @@ public static class SecurityDataSet
         {
             var info = sr.ReadLine().Split(",");
             Hours.Add(new NameValueSet<int>() { Name = info[0], Value = int.Parse(info[1]) });
+        }
+        sr.Close();
+
+        sr = new StreamReader(Folder + "protocols_hours.csv");
+        while (!sr.EndOfStream)
+        {
+            var info = sr.ReadLine().Split(",");
+            Protocols_Hours.Add(new NameValueSet<int>() { Name = info[0] + "|" + info[1], Value = int.Parse(info[2]) });
         }
         sr.Close();
     }

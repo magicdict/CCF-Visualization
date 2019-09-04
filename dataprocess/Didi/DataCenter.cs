@@ -7,7 +7,7 @@ public static class DataCenterForDidi
 {
 
     public const string DataFolder = @"F:\CCF-Visualization\RawData\海口市-交通流量时空演变特征可视分析";
-    public const string EDAFile = @"F:\CCF-Visualization\AfterProcess\海口市-交通流量时空演变特征可视分析\EDA.log";
+    public const string EDAFile = @"F:\CCF-Visualization\dataprocess\AfterProcess\海口市-交通流量时空演变特征可视分析\EDA.log";
 
 
     public static List<OrderDetails> orders = new List<OrderDetails>();
