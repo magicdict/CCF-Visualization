@@ -44,7 +44,10 @@ public static class DataCenterFor360
     public static void EDA()
     {
         var sw = new StreamWriter(EDAFile);
+        //基本信息CSV
+        var basic_sw_csv = new StreamWriter(AfterProcessFolder + "basic_info.csv");
         var TotalCnt = records.Count();
+        basic_sw_csv.WriteLine("RecordCnt," + TotalCnt);
 
         //0.IP地址信息
         var ip6Cnt = records.Count(x => x.source_ip.IsIpV6 || x.destination_ip.IsIpV6);
@@ -56,6 +59,7 @@ public static class DataCenterFor360
         var SourcekindCCnt = records.Count(x => x.source_ip.IsKindCIp);
         var SourceDHCPBlockCnt = records.Count(x => x.source_ip.IsDHCPBlockIp);
         var SourceTotalLanCnt = SourcekindACnt + SourcekindBCnt + SourcekindCCnt + SourceDHCPBlockCnt;
+
         var DestkindACnt = records.Count(x => x.destination_ip.IsKindAIp);
         var DestkindBCnt = records.Count(x => x.destination_ip.IsKindBIp);
         var DestkindCCnt = records.Count(x => x.destination_ip.IsKindCIp);
@@ -71,16 +75,24 @@ public static class DataCenterFor360
         sw.WriteLine("\tB类IP地址：" + SourcekindBCnt);
         sw.WriteLine("\tC类IP地址：" + SourcekindCCnt);
         sw.WriteLine("\t网段数：" + SourceSegmentCnt);
+        sw.WriteLine("\tLAN数：" + SourceTotalLanCnt);
 
         sw.WriteLine("目标IP：");
         sw.WriteLine("\tA类IP地址：" + DestkindACnt);
         sw.WriteLine("\tB类IP地址：" + DestkindBCnt);
         sw.WriteLine("\tC类IP地址：" + DestkindCCnt);
         sw.WriteLine("\t网段数：" + DestSegmentCnt);
+        sw.WriteLine("\tLAN数：" + DestTotalLanCnt);
         sw.WriteLine();
+
+        basic_sw_csv.WriteLine("SourceSegmentCnt," + SourceSegmentCnt);
+        basic_sw_csv.WriteLine("SourceTotalLanCnt," + SourceTotalLanCnt);
+        basic_sw_csv.WriteLine("DestSegmentCnt," + DestSegmentCnt);
+        basic_sw_csv.WriteLine("DestTotalLanCnt," + DestTotalLanCnt);
 
         //1.协议统计
         var protocols = records.GroupBy(x => x.protocol).Select(x => (protocol: x.Key, count: x.Count())).ToList();
+        basic_sw_csv.WriteLine("ProtocolCnt," + protocols.Count);
         protocols.Sort((x, y) => { return y.count.CompareTo(x.count); });
 
 
@@ -135,6 +147,8 @@ public static class DataCenterFor360
         //3.源头和目标统计
         sw.WriteLine("#源头和目标统计");
         var source_dist = records.GroupBy(x => x.source_ip.RawIp + "->" + x.destination_ip.RawIp).Select(x => (name: x.Key, count: x.Count())).ToList();
+        basic_sw_csv.WriteLine("SourceDistIpCnt," + source_dist.Count);  //抢先记录，下面被Take掉了
+
         source_dist.Sort((x, y) => { return y.count.CompareTo(x.count); });
         source_dist = source_dist.Take(100).ToList();
 
@@ -150,6 +164,7 @@ public static class DataCenterFor360
         //4.源头统计
         sw.WriteLine("#源头统计");
         var source = records.GroupBy(x => x.source_ip.RawIp).Select(x => (name: x.Key, count: x.Count())).ToList();
+        basic_sw_csv.WriteLine("SourceIpCnt," + source.Count);  //抢先记录，下面被Take掉了
         source.Sort((x, y) => { return y.count.CompareTo(x.count); });
         source = source.Take(100).ToList();
 
@@ -165,6 +180,7 @@ public static class DataCenterFor360
         //5.目标统计
         sw.WriteLine("#目标统计");
         var dist = records.GroupBy(x => x.destination_ip.RawIp).Select(x => (name: x.Key, count: x.Count())).ToList();
+        basic_sw_csv.WriteLine("DistIpCnt," + dist.Count);  //抢先记录，下面被Take掉了
         dist.Sort((x, y) => { return y.count.CompareTo(x.count); });
         dist = dist.Take(100).ToList();
 
@@ -180,6 +196,7 @@ public static class DataCenterFor360
         //6.各个协议的总流量统计
         sw.WriteLine("#下行总流量统计(单位：MB)");
         var downlink_length = records.GroupBy(x => x.protocol).Select(x => (protocol: x.Key, count: (double)x.Sum(y => y.downlink_length) / (1024 * 1024))).ToList();
+        basic_sw_csv.WriteLine("downlink_length," + Math.Round(downlink_length.Sum(x => x.count), 2));
         downlink_length.Sort((x, y) => { return y.count.CompareTo(x.count); });
         sw_csv = new StreamWriter(AfterProcessFolder + "downlink_length.csv");
         foreach (var item in downlink_length)
@@ -192,6 +209,7 @@ public static class DataCenterFor360
 
         sw.WriteLine("#上行总流量统计(单位：MB)");
         var uplink_length = records.GroupBy(x => x.protocol).Select(x => (protocol: x.Key, count: (double)x.Sum(y => y.uplink_length) / (1024 * 1024))).ToList();
+        basic_sw_csv.WriteLine("uplink_length," + Math.Round(uplink_length.Sum(x => x.count), 2));
         uplink_length.Sort((x, y) => { return y.count.CompareTo(x.count); });
         sw_csv = new StreamWriter(AfterProcessFolder + "uplink_length.csv");
         foreach (var item in uplink_length)
@@ -212,9 +230,9 @@ public static class DataCenterFor360
             sw.WriteLine(item.protocol + ":" + Math.Round((double)item.count, 4));
             sw_csv.WriteLine(item.protocol + "," + Math.Round((double)item.count, 4));
         }
-        sw_csv.Close();
-        sw.WriteLine();
 
+        basic_sw_csv.Close();
+        sw_csv.Close();
         sw.Close();
     }
 }
