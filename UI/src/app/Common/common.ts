@@ -9,6 +9,17 @@ export class CommonFunction {
         private http: HttpClient
     ) { }
 
+
+    public static boxstyle_Col4 = { 'width': '500px', 'height': '400px' };
+    public static chartstyle_Col4 = { 'width': '450px', 'height': '350px' };
+    public static boxstyle_Col6 = { 'width': '800px', 'height': '400px' };
+    public static chartstyle_Col6 = { 'width': '750px', 'height': '350px' };   
+    public static boxstyle_Col8 = { 'width': '1000px', 'height': '400px' };
+    public static chartstyle_Col8 = { 'width': '950px', 'height': '350px' };    
+
+    public static boxstyle_Col8_Row2 = { 'width': '1000px', 'height': '820px' };
+    public static chartstyle_Col8_Row2 = { 'width': '950px', 'height': '770px' };   
+
     public static GetWeatherImageByText(text: string): string {
         if (CommonFunction.IsNullOrEmpty(text)) { return "assets/image/weathy/weathy_01.png" }
         if (text === "阴") {

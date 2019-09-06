@@ -14,4 +14,16 @@ public class SecurityController : ControllerBase
         }
         return _dashboard;
     }
+
+
+    public static TimeAnalysis _timeanalysis = null;
+    [HttpGet("GetTimeAnalysis")]
+    public ActionResult<TimeAnalysis> GetTimeAnalysis()
+    {
+        if (_timeanalysis == null)
+        {
+            _timeanalysis = new TimeAnalysis();
+        }
+        return _timeanalysis;
+    }
 }
