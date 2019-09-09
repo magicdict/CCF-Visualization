@@ -124,11 +124,51 @@ public static class DataCenterForDidi
 
         sw.WriteLine("Start Loc Count:" + startlocs.Count);
         sw.WriteLine("Dest  Loc Count:" + destlocs.Count);
+
+
+        //9 各种区分统计
+        //9-0 产品线ID
+        var product_ids = orders.GroupBy(x => x.product_id).Select(x => (name: x.Key, count: x.Count())).ToList();
+        sw.WriteLine("产品线ID[product_ids]:");
+        foreach (var item in product_ids)
+        {
+            sw.WriteLine(item.name + ":" + item.count);
+        }
+
+        //9-1 订单时效
+        var order_types = orders.GroupBy(x => x.order_type).Select(x => (name: x.Key, count: x.Count())).ToList();
+        sw.WriteLine("订单时效[order_type]:");
+        foreach (var item in order_types)
+        {
+            sw.WriteLine(item.name + ":" + item.count);
+        }
+
+        //9-2 订单类型
+        var combo_types = orders.GroupBy(x => x.combo_type).Select(x => (name: x.Key, count: x.Count())).ToList();
+        sw.WriteLine("订单类型[combo_type]:");
+        foreach (var item in combo_types)
+        {
+            sw.WriteLine(item.name + ":" + item.count);
+        }
+
+        //9-3 交通类型
+        var traffic_types = orders.GroupBy(x => x.traffic_type).Select(x => (name: x.Key, count: x.Count())).ToList();
+        sw.WriteLine("交通类型[traffic_types]:");
+        foreach (var item in traffic_types)
+        {
+            sw.WriteLine(item.name + ":" + item.count);
+        }
+
+        //9-4 一级业务线
+        var product_1levels = orders.GroupBy(x => x.product_1level).Select(x => (name: x.Key, count: x.Count())).ToList();
+        sw.WriteLine("一级业务线[product_1levels]:");
+        foreach (var item in product_1levels)
+        {
+            sw.WriteLine(item.name + ":" + item.count);
+        }
+
+
         sw.Close();
-
-
-
-
         orders.Clear();
         GC.Collect();
     }

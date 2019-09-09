@@ -28,7 +28,8 @@
               "./node_modules/admin-lte/bower_components/font-awesome/css/font-awesome.min.css",
               "./node_modules/admin-lte/bower_components/Ionicons/css/ionicons.min.css",
               "./node_modules/admin-lte/dist/css/AdminLTE.min.css",
-              "./node_modules/admin-lte/dist/css/skins/skin-blue.min.css"
+              "./node_modules/admin-lte/dist/css/skins/skin-blue.min.css",
+              "src/styles.css"
             ],
             "scripts": [
               "./node_modules/admin-lte/bower_components/jquery/dist/jquery.min.js",
