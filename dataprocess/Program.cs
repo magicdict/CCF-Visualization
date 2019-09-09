@@ -6,10 +6,10 @@ namespace dataprocess
     {
         static void Main(string[] args)
         {
-            var IsDidi = false;
+            var IsDidi = true;
             if (IsDidi)
             {
-                DataCenterForDidi.Load(10_0000);
+                DataCenterForDidi.Load(2_000_000);
                 DataCenterForDidi.EDA();
             }
             else

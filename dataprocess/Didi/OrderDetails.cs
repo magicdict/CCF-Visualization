@@ -1,5 +1,5 @@
 using System;
-
+using System.Globalization;
 public class OrderDetails
 {
     /// <summary>
@@ -62,14 +62,14 @@ public class OrderDetails
     /// 司机点击‘到达’的时间	司机点击‘到达目的地’的时间
     /// </summary>
     /// <value></value>
-    public string arrive_time { get; set; }
+    public DateTime arrive_time { get; set; }
     /// <summary>
     /// 出发时间	
     /// 如果是实时单，出发时间(departure_time) 与司机点击‘开始计费’的时间(begin_charge_time)含义相同；
     /// 如果是预约单，是指乘客填写的出发时间
     /// </summary>
     /// <value></value>
-    public string departure_time { get; set; }
+    public DateTime departure_time { get; set; }
     /// <summary>
     /// 预估价格	根据用户输入的起始点和目的地预估价格
     /// </summary>
@@ -230,8 +230,8 @@ public class OrderDetails
         passenger_count = int.Parse(Cols[8]);
         driver_product_id = Cols[9];
         start_dest_distance = Cols[10];
-        arrive_time = Cols[11];
-        departure_time = Cols[12];
+        if (Cols[11] != "0000-00-00 00:00:00") arrive_time = DateTime.ParseExact(Cols[11], "yyyy-MM-dd HH:mm:ss", CultureInfo.CurrentCulture, DateTimeStyles.None);
+        if (Cols[12] != "0000-00-00 00:00:00") departure_time = DateTime.ParseExact(Cols[12], "yyyy-MM-dd HH:mm:ss", CultureInfo.CurrentCulture, DateTimeStyles.None);
         pre_total_fee = Single.Parse(Cols[13]);
         normal_time = Cols[14];
         bubble_trace_id = Cols[15];

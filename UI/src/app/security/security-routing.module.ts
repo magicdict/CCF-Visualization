@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { SecurityMainComponent } from './SecurityMain.component';
-import { DashboardResolver, TimeAnaysisResolver } from './resolver.service';
+import { TimeAnaysisResolver, DashboardResolver } from './resolver.service';
 import { DashboardComponent } from './Dashboard/Dashboard.component';
 import { TimeAnalysisComponent } from './TimeAnalysis/TimeAnalysis.component';
+
 
 const routes: Routes = [
   {

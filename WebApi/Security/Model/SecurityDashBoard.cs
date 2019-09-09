@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 
-public class DashBoard
+public class SecurityDashBoard
 {
 
     public long RecordCnt = 0;
@@ -31,7 +31,7 @@ public class DashBoard
     public List<NameValueSet<int>> traffic_hours_last3days = new List<NameValueSet<int>>();
 
 
-    public DashBoard()
+    public SecurityDashBoard()
     {
         //基本信息
         RecordCnt = SecurityDataSet.BasicInfo.Where(x => x.Name == nameof(RecordCnt)).First().Value;

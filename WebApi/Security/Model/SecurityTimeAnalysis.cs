@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 
-public class TimeAnalysis
+public class SecurityTimeAnalysis
 {
     public List<NameValueSet<int>> hours_rec_cnt = new List<NameValueSet<int>>();
     public Dictionary<string, List<NameValueSet<int>>> Protocols_Hours = new Dictionary<string, List<NameValueSet<int>>>();
@@ -11,7 +11,7 @@ public class TimeAnalysis
 
     public List<NameValueSet<int>> traffic_hours_everyday = new List<NameValueSet<int>>();
 
-    public TimeAnalysis()
+    public SecurityTimeAnalysis()
     {
         hours_rec_cnt = SecurityDataSet.hours_rec_cnt;
         var p = SecurityDataSet.Protocols_Hours.GroupBy(x => x.Name.Split("|")[0]);

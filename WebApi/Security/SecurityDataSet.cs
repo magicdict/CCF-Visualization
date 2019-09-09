@@ -70,7 +70,7 @@ public static class SecurityDataSet
         while (!sr.EndOfStream)
         {
             var info = sr.ReadLine().Split(",");
-            if (info[0] == nameof(DashBoard.downlink_length) || info[0] == nameof(DashBoard.uplink_length))
+            if (info[0] == nameof(SecurityDashBoard.downlink_length) || info[0] == nameof(SecurityDashBoard.uplink_length))
             {
                 BasicInfo.Add(new NameValueSet<long>() { Name = info[0], Value = (long)double.Parse(info[1]) });
             }

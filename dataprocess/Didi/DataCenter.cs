@@ -9,6 +9,8 @@ public static class DataCenterForDidi
     public const string DataFolder = @"F:\CCF-Visualization\RawData\海口市-交通流量时空演变特征可视分析";
     public const string EDAFile = @"F:\CCF-Visualization\dataprocess\AfterProcess\海口市-交通流量时空演变特征可视分析\EDA.log";
 
+    public const string AfterProcessFolder = @"F:\CCF-Visualization\dataprocess\AfterProcess\海口市-交通流量时空演变特征可视分析\";
+
 
     public static List<OrderDetails> orders = new List<OrderDetails>();
 
@@ -48,6 +50,23 @@ public static class DataCenterForDidi
         var diary_orderCnt = orders.GroupBy(x => x.year.ToString("D4") + x.month.ToString("D2") + x.day.ToString("D2"))
                           .Select(x => (name: x.Key, count: x.Count())).ToList();
         diary_orderCnt.Sort((x, y) => { return x.name.CompareTo(y.name); });
+        var sw_csv = new StreamWriter(AfterProcessFolder + "diary_orderCnt.csv");
+        foreach (var item in diary_orderCnt)
+        {
+            sw_csv.WriteLine(item.name + "," + item.count);
+        }
+        sw_csv.Close();
+
+        var weekday_hour_orderCnt = orders.GroupBy(x => x.departure_time.DayOfWeek.GetHashCode() + "|" + x.departure_time.Hour.ToString("D2") + ":" + ((x.departure_time.Minute / 15) * 15).ToString("D2"))
+                                          .Select(x => (name: x.Key, count: x.Count())).ToList();
+        weekday_hour_orderCnt.Sort((x, y) => { return x.name.CompareTo(y.name); });
+        sw_csv = new StreamWriter(AfterProcessFolder + "weekday_hour_orderCnt.csv");
+        foreach (var item in weekday_hour_orderCnt)
+        {
+            sw_csv.WriteLine(item.name + "," + item.count);
+        }
+        sw_csv.Close();
+
 
         //1-2.总费用 按照日期统计
         var diary_Fee = orders.GroupBy(x => x.year.ToString("D4") + x.month.ToString("D2") + x.day.ToString("D2"))
@@ -68,7 +87,7 @@ public static class DataCenterForDidi
 
 
         //2-1:对于时间段进行统计
-        var diary_HourCnt = orders.GroupBy(x => x.departure_time.Substring(11, 2))
+        var diary_HourCnt = orders.GroupBy(x => x.departure_time.Date)
                                   .Select(x => (name: x.Key, count: x.Count())).ToList();
         diary_HourCnt.Sort((x, y) => { return x.name.CompareTo(y.name); });
 
@@ -119,9 +138,9 @@ public static class DataCenterForDidi
     {
 
         var circle = "<circle cx=\"{{x}}\" cy=\"{{y}}\" r=\"{{r}}\" stroke=\"black\" stroke-width=\"2\" fill=\"red\"/>";
-        var sw = new StreamWriter(@"F:\CCF-Visualization\AfterProcess\海口市-交通流量时空演变特征可视分析\map.svg");
-        var json = new StreamWriter(@"F:\CCF-Visualization\AfterProcess\海口市-交通流量时空演变特征可视分析\PointSize.json");
-        var json2 = new StreamWriter(@"F:\CCF-Visualization\AfterProcess\海口市-交通流量时空演变特征可视分析\PointLoc.json");
+        var sw = new StreamWriter(AfterProcessFolder + "map.svg");
+        var json = new StreamWriter(AfterProcessFolder + "PointSize.json");
+        var json2 = new StreamWriter(AfterProcessFolder + "PointLoc.json");
 
         //Header
         sw.WriteLine("<?xml version=\"1.0\" standalone=\"no\"?>");

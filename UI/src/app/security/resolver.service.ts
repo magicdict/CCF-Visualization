@@ -10,7 +10,7 @@ export class DashboardResolver implements Resolve<IDashBoard> {
 
     }
     resolve(_: ActivatedRouteSnapshot, _state: RouterStateSnapshot): IDashBoard | Observable<IDashBoard> | Promise<IDashBoard> {
-        return this.commonFunction.httpRequestGet<any>("GetDashBoard");
+        return this.commonFunction.httpRequestGet<IDashBoard>("Security/GetDashBoard");
     }
 }
 
@@ -20,6 +20,6 @@ export class TimeAnaysisResolver implements Resolve<ITimeAnaysis> {
 
     }
     resolve(_: ActivatedRouteSnapshot, _state: RouterStateSnapshot): ITimeAnaysis | Observable<ITimeAnaysis> | Promise<ITimeAnaysis> {
-        return this.commonFunction.httpRequestGet<any>("GetTimeAnalysis");
+        return this.commonFunction.httpRequestGet<ITimeAnaysis>("Security/GetTimeAnalysis");
     }
 }

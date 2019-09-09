@@ -1,16 +1,18 @@
 import { NgModule } from '@angular/core';
 import { TrafficMainComponent } from './TrafficMain.component';
 import { TrafficRoutingModule } from './traffic-routing.module';
-import { DashboardResolver } from './resolver.service';
+import { TimeAnaysisResolver } from './resolver.service';
 import { CommonFunction } from '../Common/common';
 import { HttpClientModule } from '@angular/common/http';
-import { DashboardComponent } from './Dashboard/Dashboard.component';
+
 import { MyCommonModule } from '../Common/MyCommon.module';
+import { TimeAnalysisComponent } from './TimeAnalysis/TimeAnalysis.component';
 
 @NgModule({
   declarations: [
     TrafficMainComponent,
-    DashboardComponent
+
+    TimeAnalysisComponent
   ],
   imports: [
     TrafficRoutingModule,
@@ -19,7 +21,7 @@ import { MyCommonModule } from '../Common/MyCommon.module';
   ],
   providers: [
     CommonFunction,
-    DashboardResolver
+    TimeAnaysisResolver
   ],
   bootstrap: [TrafficMainComponent]
 })

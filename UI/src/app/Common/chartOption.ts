@@ -167,8 +167,8 @@ export const I3DarStardard = {
       boxWidth: 200,
       boxDepth: 80,
       viewControl: {
-        projection: 'orthographic'
-      },
+        projection: 'orthographic',
+    },
       light: {
         main: {
           intensity: 1.2

@@ -1,28 +1,28 @@
 using Microsoft.AspNetCore.Mvc;
 
+[Route("[controller]")]
 public class SecurityController : ControllerBase
 {
-
-    public static DashBoard _dashboard = null;
+    public static SecurityDashBoard _dashboard = null;
 
     [HttpGet("GetDashBoard")]
-    public ActionResult<DashBoard> GetDashBoard()
+    public ActionResult<SecurityDashBoard> GetDashBoard()
     {
         if (_dashboard == null)
         {
-            _dashboard = new DashBoard();
+            _dashboard = new SecurityDashBoard();
         }
         return _dashboard;
     }
 
 
-    public static TimeAnalysis _timeanalysis = null;
+    public static SecurityTimeAnalysis _timeanalysis = null;
     [HttpGet("GetTimeAnalysis")]
-    public ActionResult<TimeAnalysis> GetTimeAnalysis()
+    public ActionResult<SecurityTimeAnalysis> GetTimeAnalysis()
     {
         if (_timeanalysis == null)
         {
-            _timeanalysis = new TimeAnalysis();
+            _timeanalysis = new SecurityTimeAnalysis();
         }
         return _timeanalysis;
     }
