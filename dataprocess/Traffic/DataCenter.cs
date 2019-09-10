@@ -2,8 +2,10 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Net;
 
-public static class DataCenterForDidi
+public static class DataCenterForTraffic
 {
 
     public const string DataFolder = @"F:\CCF-Visualization\RawData\海口市-交通流量时空演变特征可视分析";
@@ -15,6 +17,7 @@ public static class DataCenterForDidi
     public static List<OrderDetails> orders = new List<OrderDetails>();
 
     public static List<DiaryProperty> diarys = new List<DiaryProperty>();
+
 
     /// <summary>
     /// 加载数据
@@ -190,7 +193,7 @@ public static class DataCenterForDidi
             {
                 if (Cnt != 0) json.WriteLine(",");
                 Cnt++;
-                json.Write(" {\"name\": \"海口" + Cnt + "\", \"value\": " );
+                json.Write(" {\"name\": \"海口" + Cnt + "\", \"value\": ");
                 json.Write("[" + Math.Round(item.point.lng + baiduOffsetlng, 4)
                                                 + "," + Math.Round(item.point.lat + baiduOffsetlat, 4) + "," + radus + "]}");
             }

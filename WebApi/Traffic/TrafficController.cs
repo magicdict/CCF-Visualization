@@ -3,6 +3,19 @@ using Microsoft.AspNetCore.Mvc;
 [Route("[controller]")]
 public class TrafficController : ControllerBase
 {
+
+    public static TrafficDashBoard _dashboard = null;
+
+    [HttpGet("GetDashBoard")]
+    public ActionResult<TrafficDashBoard> GetDashBoard()
+    {
+        if (_dashboard == null)
+        {
+            _dashboard = new TrafficDashBoard();
+        }
+        return _dashboard;
+    }
+
     public static TrafficTimeAnalysis _timeanalysis = null;
     [HttpGet("GetTimeAnalysis")]
     public ActionResult<TrafficTimeAnalysis> TrafficTimeAnalysis()
