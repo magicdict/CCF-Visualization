@@ -95,7 +95,8 @@ public static class DataCenterForDidi
         var startlocs = orders.GroupBy(x => x.starting).Select(x => (point: x.Key, count: x.Count())).ToList();
         var destlocs = orders.GroupBy(x => x.dest).Select(x => (point: x.Key, count: x.Count())).ToList();
 
-        CreateMap(startlocs);
+        CreateGeoJson("startlocs", startlocs);
+        CreateGeoJson("destlocs", destlocs);
 
         startlocs.Sort((x, y) =>
         {
@@ -173,67 +174,31 @@ public static class DataCenterForDidi
         GC.Collect();
     }
 
+    const double baiduOffsetlng = 0.0063;
+    const double baiduOffsetlat = 0.0058;
 
-    private static void CreateMap(List<(OrderDetails.Geo point, System.Int32 count)> points)
+
+    private static void CreateGeoJson(string filename, List<(OrderDetails.Geo point, System.Int32 count)> points)
     {
-
-        var circle = "<circle cx=\"{{x}}\" cy=\"{{y}}\" r=\"{{r}}\" stroke=\"black\" stroke-width=\"2\" fill=\"red\"/>";
-        var sw = new StreamWriter(AfterProcessFolder + "map.svg");
-        var json = new StreamWriter(AfterProcessFolder + "PointSize.json");
-        var json2 = new StreamWriter(AfterProcessFolder + "PointLoc.json");
-
-        //Header
-        sw.WriteLine("<?xml version=\"1.0\" standalone=\"no\"?>");
-        sw.WriteLine("<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\"");
-        sw.WriteLine("\"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">");
-
-
-        //经纬度最大差距的计算
-        var Maxlng = points.Max(x => x.point.lng);      //经度：东西向
-        var Minlng = points.Min(x => x.point.lng);
-        var Maxlat = points.Max(x => x.point.lat);      //纬度：南北向
-        var Minlat = points.Min(x => x.point.lat);
-        var lngDiff = Maxlng - Minlng;                  //最大经度差
-        var latDiff = Maxlat - Minlat;                  //最大纬度差
-        //SVG实际宽度
-        var svgwidth = 10000;
-        var svgheight = 10000;
-        var ScaleRatelng = svgwidth / lngDiff;
-        var ScaleRatelat = svgheight / latDiff;
-        var baiduOffsetlng = 0.0063;
-        var baiduOffsetlat = 0.0058;
-
-        sw.WriteLine("<svg width=\"10040\" height=\"10040\" version=\"1.1\"");
-        sw.WriteLine("xmlns=\"http://www.w3.org/2000/svg\">");
+        var json = new StreamWriter(AfterProcessFolder + filename + "_PointSize.json");
         int Cnt = 0;
+        json.WriteLine("[");
         foreach (var item in points)
         {
-            var x = (item.point.lng - Minlng) * ScaleRatelng + 20;
-            var y = (item.point.lat - Minlat) * ScaleRatelng + 20;
-            //Y坐标反转
-            y = 10000 - y;
-
             var radus = Math.Min(100, item.count / 100);
-            sw.WriteLine(
-                circle.Replace("{{x}}", x.ToString()).Replace("{{y}}", y.ToString()).Replace("{{r}}", radus.ToString())
-            );
-
             if (radus > 5)
             {
+                if (Cnt != 0) json.WriteLine(",");
                 Cnt++;
-                json.WriteLine(" {name: '海口" + Cnt + "', value: " + radus + "},");
-                json2.WriteLine("'海口" + Cnt + "':[" + Math.Round(item.point.lng + baiduOffsetlng, 4)
-                                                + "," + Math.Round(item.point.lat + baiduOffsetlat, 4) + "],");
+                json.Write(" {\"name\": \"海口" + Cnt + "\", \"value\": " );
+                json.Write("[" + Math.Round(item.point.lng + baiduOffsetlng, 4)
+                                                + "," + Math.Round(item.point.lat + baiduOffsetlat, 4) + "," + radus + "]}");
             }
-
         }
-        sw.WriteLine("</svg>");
-
+        json.WriteLine();
+        json.WriteLine("]");
         json.Close();
-        json2.Close();
-        sw.Close();
     }
-
 }
 
 /// <summary>

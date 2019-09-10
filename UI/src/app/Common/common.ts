@@ -214,6 +214,18 @@ export class CommonFunction {
             .catch(this.handleError);
     }
 
+
+    public httpRequestGetFromAsset<T>(serviceUrl: string): Promise<T> {
+        return this.http.get(
+            "/assets/" + serviceUrl
+        )
+            .toPromise()
+            .then(response => {
+                return response as T;
+            })
+            .catch(this.handleError);
+    }
+
     public httpRequestPost<T>(serviceUrl: string, params: any = {}): Promise<T> {
         return this.http.post(
             this.webapiurl + serviceUrl,

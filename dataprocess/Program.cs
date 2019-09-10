@@ -9,7 +9,7 @@ namespace dataprocess
             var IsDidi = true;
             if (IsDidi)
             {
-                DataCenterForDidi.Load(2_000_000);
+                DataCenterForDidi.Load(5_000_000);
                 DataCenterForDidi.EDA();
             }
             else

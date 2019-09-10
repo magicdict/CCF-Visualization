@@ -1,18 +1,21 @@
 import { NgModule } from '@angular/core';
 import { TrafficRoutingModule } from './traffic-routing.module';
-import { TimeAnaysisResolver } from './resolver.service';
+import { TimeAnaysisResolver, SourceMapResolver, DestMapResolver } from './resolver.service';
 import { CommonFunction } from '../Common/common';
 import { HttpClientModule } from '@angular/common/http';
 import { MyCommonModule } from '../Common/MyCommon.module';
 
 import { TrafficMainComponent } from './TrafficMain.component';
 import { TimeAnalysisComponent } from './TimeAnalysis/TimeAnalysis.component';
-import { SourceDestMapComponent } from './SourceDestMap/SourceDestMap.component';
 import { NgxEchartsModule } from 'ngx-echarts';
+import { DestMapComponent } from './SourceDestMap/DestMap.component';
+import { SourceMapComponent } from './SourceDestMap/SourceMap.component';
+
 @NgModule({
   declarations: [
     TrafficMainComponent,
-    SourceDestMapComponent,
+    SourceMapComponent,
+    DestMapComponent,
     TimeAnalysisComponent
   ],
   imports: [
@@ -23,7 +26,9 @@ import { NgxEchartsModule } from 'ngx-echarts';
   ],
   providers: [
     CommonFunction,
-    TimeAnaysisResolver
+    TimeAnaysisResolver,
+    SourceMapResolver,
+    DestMapResolver,
   ],
   bootstrap: [TrafficMainComponent]
 })
