@@ -57,7 +57,7 @@ public class OrderDetails
     /// 乘客发单时，出发地与终点的预估路面距离
     /// </summary>
     /// <value></value>
-    public string start_dest_distance { get; set; }
+    public double start_dest_distance_km { get; set; }
     /// <summary>
     /// 司机点击‘到达’的时间	司机点击‘到达目的地’的时间
     /// </summary>
@@ -229,7 +229,7 @@ public class OrderDetails
 
         passenger_count = int.Parse(Cols[8]);
         driver_product_id = Cols[9];
-        start_dest_distance = Cols[10];
+        start_dest_distance_km = double.Parse(Cols[10]) / 1000;
         if (Cols[11] != "0000-00-00 00:00:00") arrive_time = DateTime.ParseExact(Cols[11], "yyyy-MM-dd HH:mm:ss", CultureInfo.CurrentCulture, DateTimeStyles.None);
         if (Cols[12] != "0000-00-00 00:00:00") departure_time = DateTime.ParseExact(Cols[12], "yyyy-MM-dd HH:mm:ss", CultureInfo.CurrentCulture, DateTimeStyles.None);
         pre_total_fee = Single.Parse(Cols[13]);

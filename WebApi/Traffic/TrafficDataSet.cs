@@ -14,11 +14,13 @@ public static class TrafficDataSet
     public static List<NameValueSet<DiaryInfo>> diaryinfos = new List<NameValueSet<DiaryInfo>>();
     public static List<NameValueSet<WeeklyInfo>> weeklyinfos = new List<NameValueSet<WeeklyInfo>>();
 
+    public static string Folder = @"F:\CCF-Visualization\dataprocess\AfterProcess\海口市-交通流量时空演变特征可视分析\";
+    //public static string Folder = @"/root/HelloChinaApi/AfterProcess/海口市-交通流量时空演变特征可视分析/";
+
+
     public static void LoadData()
     {
         //协议统计的加载
-        var Folder = @"F:\CCF-Visualization\dataprocess\AfterProcess\海口市-交通流量时空演变特征可视分析\";
-        //var Folder = @"/root/HelloChinaApi/AfterProcess/海口市-交通流量时空演变特征可视分析/";
 
         var sr = new StreamReader(Folder + "weekday_hour_orderCnt.csv");
         while (!sr.EndOfStream)

@@ -1,0 +1,54 @@
+<section class="content-header">
+    <h1>
+        概要
+    </h1>
+    <ol class="breadcrumb">
+      <li><a href="/security/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+      <li class="active">概要</li>
+    </ol>
+  </section>
+<section class="content">
+    <div class="row">
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">记录总数</span>
+                    <span class="info-box-number">{{this._dashboard.TotalOrderCnt}}</span>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">总费用</span>
+                    <span class="info-box-number">{{this._dashboard.TotalFee}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">共里程数（公里）</span>
+                    <span class="info-box-number">{{this._dashboard.TotalDistanceKm}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">每公里费用</span>
+                    <span class="info-box-number">{{this._dashboard.FeePerKm}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

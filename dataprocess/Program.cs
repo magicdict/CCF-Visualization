@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace dataprocess
+﻿namespace dataprocess
 {
     class Program
     {
@@ -9,13 +7,13 @@ namespace dataprocess
             var IsDidi = true;
             if (IsDidi)
             {
-                DataCenterForTraffic.Load(5_000_000);
+                DataCenterForTraffic.Load(8_000_000);
                 DataCenterForTraffic.EDA();
             }
             else
             {
-                DataCenterFor360.Load(-1);
-                DataCenterFor360.EDA();
+                DataCenterForSecurity.Load(-1);
+                DataCenterForSecurity.EDA();
             }
         }
     }

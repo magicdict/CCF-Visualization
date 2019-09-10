@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { TrafficRoutingModule } from './traffic-routing.module';
-import { TimeAnaysisResolver, SourceMapResolver, DestMapResolver } from './resolver.service';
+import { TimeAnaysisResolver, SourceMapResolver, DestMapResolver, DashBoardResolver } from './resolver.service';
 import { CommonFunction } from '../Common/common';
 import { HttpClientModule } from '@angular/common/http';
 import { MyCommonModule } from '../Common/MyCommon.module';
@@ -26,6 +26,7 @@ import { SourceMapComponent } from './SourceDestMap/SourceMap.component';
   ],
   providers: [
     CommonFunction,
+    DashBoardResolver,
     TimeAnaysisResolver,
     SourceMapResolver,
     DestMapResolver,

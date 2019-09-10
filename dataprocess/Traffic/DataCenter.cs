@@ -2,17 +2,13 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Net;
 
 public static class DataCenterForTraffic
 {
 
     public const string DataFolder = @"F:\CCF-Visualization\RawData\海口市-交通流量时空演变特征可视分析";
     public const string EDAFile = @"F:\CCF-Visualization\dataprocess\AfterProcess\海口市-交通流量时空演变特征可视分析\EDA.log";
-
     public const string AfterProcessFolder = @"F:\CCF-Visualization\dataprocess\AfterProcess\海口市-交通流量时空演变特征可视分析\";
-
 
     public static List<OrderDetails> orders = new List<OrderDetails>();
 
@@ -46,10 +42,23 @@ public static class DataCenterForTraffic
     /// </summary>
     public static void EDA()
     {
+        //基本信息CSV
+        var basic_sw_csv = new StreamWriter(AfterProcessFolder + "basic_info.csv");
 
-        //部分订单时间为 0000-00-00 这里按照最后的日期为依据
+        var TotalOrderCnt = orders.Count;
+        var TotalFee = (int)orders.Sum(x => x.pre_total_fee);
+        var TotalDistanceKm = (int)orders.Sum(x => x.start_dest_distance_km);
+
+        basic_sw_csv.WriteLine("TotalOrderCnt," + TotalOrderCnt);
+        basic_sw_csv.WriteLine("TotalFee," + TotalFee);
+        basic_sw_csv.WriteLine("AvgFeePerOrder," + Math.Round((double)TotalFee/ TotalOrderCnt, 2));
+        basic_sw_csv.WriteLine("TotalDistanceKm," + TotalDistanceKm);
+        basic_sw_csv.WriteLine("AvgDistanceKmPerOrder," + Math.Round((double)TotalDistanceKm / TotalOrderCnt, 4));
+        basic_sw_csv.WriteLine("FeePerKm," + Math.Round((double)TotalFee / TotalDistanceKm, 2));
+        basic_sw_csv.Flush();
 
         //1-1.订单量 按照日期统计 
+        //部分订单时间为 0000-00-00 这里按照最后的日期为依据
         var diary_orderCnt = orders.GroupBy(x => x.year.ToString("D4") + x.month.ToString("D2") + x.day.ToString("D2"))
                           .Select(x => (name: x.Key, count: x.Count())).ToList();
         diary_orderCnt.Sort((x, y) => { return x.name.CompareTo(y.name); });
@@ -59,6 +68,14 @@ public static class DataCenterForTraffic
             sw_csv.WriteLine(item.name + "," + item.count);
         }
         sw_csv.Close();
+
+        var TotalDayCnt = diary_orderCnt.Count;
+
+        basic_sw_csv.WriteLine("TotalDayCnt," + TotalDayCnt);
+        basic_sw_csv.WriteLine("AvgOrderCntEveryDay," + TotalOrderCnt / TotalDayCnt);
+        basic_sw_csv.WriteLine("AvgFeeEveryDay," + TotalFee / TotalDayCnt);
+        basic_sw_csv.WriteLine("AvgDistanceKmEveryDay," + TotalDistanceKm / TotalDayCnt);
+        basic_sw_csv.Flush();
 
         var weekday_hour_orderCnt = orders.GroupBy(x => x.departure_time.DayOfWeek.GetHashCode() + "|" + x.departure_time.Hour.ToString("D2") + ":" + ((x.departure_time.Minute / 15) * 15).ToString("D2"))
                                           .Select(x => (name: x.Key, count: x.Count())).ToList();
@@ -171,7 +188,7 @@ public static class DataCenterForTraffic
             sw.WriteLine(item.name + ":" + item.count);
         }
 
-
+        basic_sw_csv.Close();
         sw.Close();
         orders.Clear();
         GC.Collect();

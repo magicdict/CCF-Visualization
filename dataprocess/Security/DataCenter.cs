@@ -3,7 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 
-public static class DataCenterFor360
+public static class DataCenterForSecurity
 {
 
     public const string RawDataFolder = @"F:\CCF-Visualization\RawData\企业网络资产及安全事件分析与可视化";
@@ -11,7 +11,6 @@ public static class DataCenterFor360
     public const string AfterProcessFolder = @"F:\CCF-Visualization\dataprocess\AfterProcess\企业网络资产及安全事件分析与可视化\";
 
     public const string EDAFile = @"F:\CCF-Visualization\dataprocess\AfterProcess\企业网络资产及安全事件分析与可视化\EDA.log";
-
 
     public static List<NetRecord> records = new List<NetRecord>();
 

@@ -3,6 +3,19 @@ export interface NameValueSet {
     Value: number
 }
 
+export interface IDashBoard {
+    TotalOrderCnt: number;
+    TotalFee: number;
+    AvgFeePerOrder: number;
+    TotalDistanceKm: number;
+    AvgDistanceKmPerOrder: number;
+    FeePerKm: number;
+    TotalDayCnt: number;
+    AvgOrderCntEveryDay: number;
+    AvgFeeEveryDay: number;
+    AvgDistanceKmEveryDay: number;
+}
+
 export interface ITimeAnaysis {
     weekday_hour_orderCnt: NameValueSet[],
 }

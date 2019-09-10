@@ -4,17 +4,19 @@ import { TrafficMainComponent } from './TrafficMain.component';
 import { TimeAnalysisComponent } from './TimeAnalysis/TimeAnalysis.component';
 import { DestMapComponent } from './SourceDestMap/DestMap.component';
 import { SourceMapComponent } from './SourceDestMap/SourceMap.component';
-import { SourceMapResolver, DestMapResolver, TimeAnaysisResolver } from './resolver.service';
+import { SourceMapResolver, DestMapResolver, TimeAnaysisResolver, DashBoardResolver } from './resolver.service';
+import { DashboardComponent } from './Dashboard/Dashboard.component';
 
 
 const routes: Routes = [
   {
     path: 'traffic', component: TrafficMainComponent,
     children: [
+      { path: 'dashboard', component: DashboardComponent, resolve: { data: DashBoardResolver } },
       { path: 'timeanalysis', component: TimeAnalysisComponent, resolve: { data: TimeAnaysisResolver } },
       { path: 'sourcemap', component: SourceMapComponent, resolve: { data: SourceMapResolver } },
       { path: 'destmap', component: DestMapComponent , resolve: { data: DestMapResolver } },
-      { path: '', redirectTo: 'timeanalysis', pathMatch: 'full' }
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   }
 ];
