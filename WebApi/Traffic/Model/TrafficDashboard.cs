@@ -21,6 +21,18 @@ public class TrafficDashBoard
     /// </summary>
     public int Population = 227_0000;
 
+    /// <summary>
+    /// 产品线
+    /// </summary>
+    /// <returns></returns>
+    public List<NameValueSet<int>> product_ids = new List<NameValueSet<int>>();
+
+    public List<NameValueSet<int>> order_type = new List<NameValueSet<int>>();
+
+    public List<NameValueSet<int>> traffic_types = new List<NameValueSet<int>>();
+
+    public List<NameValueSet<int>> product_1levels = new List<NameValueSet<int>>();
+
     public TrafficDashBoard()
     {
         weeklyinfos = TrafficDataSet.weeklyinfos;
@@ -60,6 +72,30 @@ public class TrafficDashBoard
                     break;
                 case nameof(AvgDistanceKmEveryDay):
                     AvgDistanceKmEveryDay = int.Parse(info[1]);
+                    break;
+                case nameof(product_ids):
+                    for (int i = 1; i < info.Length - 1; i += 2)
+                    {
+                        product_ids.Add(new NameValueSet<int>() { Name = info[i], Value = int.Parse(info[i + 1]) });
+                    }
+                    break;
+                case nameof(order_type):
+                    for (int i = 1; i < info.Length - 1; i += 2)
+                    {
+                        order_type.Add(new NameValueSet<int>() { Name = info[i], Value = int.Parse(info[i + 1]) });
+                    }
+                    break;
+                case nameof(traffic_types):
+                    for (int i = 1; i < info.Length - 1; i += 2)
+                    {
+                        traffic_types.Add(new NameValueSet<int>() { Name = info[i], Value = int.Parse(info[i + 1]) });
+                    }
+                    break;
+                case nameof(product_1levels):
+                    for (int i = 1; i < info.Length - 1; i += 2)
+                    {
+                        product_1levels.Add(new NameValueSet<int>() { Name = info[i], Value = int.Parse(info[i + 1]) });
+                    }
                     break;
             }
         }

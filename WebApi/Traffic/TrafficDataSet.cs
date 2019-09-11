@@ -53,6 +53,8 @@ public static class TrafficDataSet
                     holiday = GetHoliday(info[0]),
                     isWorkday = IsWorkDay(info[0]),
                     ordercnt = int.Parse(info[1]),
+                    distance = int.Parse(info[2]),
+                    fee = int.Parse(info[3]),
                     weather = weathers[info[0]],
                     Weekno = GetWeekNo(info[0])
                 }
@@ -63,15 +65,17 @@ public static class TrafficDataSet
         weeklyinfos = diaryinfos.GroupBy(x => x.Value.Weekno).Select(
             x => new NameValueSet<WeeklyInfo>()
             {
-                Name = x.Key.ToString("D2"),
+                Name = x.Key,
                 Value = new WeeklyInfo()
                 {
-                    ordercnt = x.Sum(x => x.Value.ordercnt)
+                    ordercnt = x.Sum(x => x.Value.ordercnt),
+                    distance = x.Sum(x => x.Value.distance),
+                    fee = x.Sum(x => x.Value.fee)
                 }
             }
         ).ToList();
-
-
+        //去掉10月30日的数据点，统计数据严重不足，无意义
+        weeklyinfos.Remove(weeklyinfos.Last());
     }
 
     static string GetHoliday(string date)
@@ -110,14 +114,14 @@ public static class TrafficDataSet
     }
 
 
-    static int GetWeekNo(string date)
+    static string GetWeekNo(string date)
     {
         var d = DateTime.ParseExact(date, "yyyyMMdd", null);
         var startard = DateTime.ParseExact("20170501", "yyyyMMdd", null);
         var diff = d.Subtract(startard);
-        return (int)diff.TotalDays / 7;
+        var weekidx = (int)diff.TotalDays / 7;
+        return startard.AddDays(weekidx * 7).ToString("yyyy/MM/dd");
     }
-
 }
 
 
@@ -127,11 +131,15 @@ public class DiaryInfo
 
     public int ordercnt { get; set; }
 
+    public int distance { get; set; }
+
+    public int fee { get; set; }
+
     public string holiday { get; set; }
 
     public bool isWorkday { get; set; }
 
-    public int Weekno { get; set; }
+    public string Weekno { get; set; }
 }
 
 /// <summary>
@@ -140,6 +148,10 @@ public class DiaryInfo
 public class WeeklyInfo
 {
     public int ordercnt { get; set; }
+
+    public int distance { get; set; }
+
+    public int fee { get; set; }
 
 }
 

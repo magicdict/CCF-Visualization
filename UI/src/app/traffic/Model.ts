@@ -14,6 +14,13 @@ export interface IDashBoard {
     AvgOrderCntEveryDay: number;
     AvgFeeEveryDay: number;
     AvgDistanceKmEveryDay: number;
+    weeklyinfos: {
+        Name: string, Value: { ordercnt: number, fee: number, distance: number }
+    }[],
+    product_ids:NameValueSet[],
+    order_type:NameValueSet[],
+    traffic_types:NameValueSet[],
+    product_1levels:NameValueSet[]
 }
 
 export interface ITimeAnaysis {

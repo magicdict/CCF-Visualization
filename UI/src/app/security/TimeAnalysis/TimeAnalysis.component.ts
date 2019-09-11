@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonFunction } from 'src/app/Common/common';
-import { IStardardPolar, PolarItem, I3DarStardard } from 'src/app/Common/chartOption';
+import { IPolarStardard, PolarItem, I3DarStardard } from 'src/app/Common/chartOption';
 import { ActivatedRoute } from '@angular/router';
 import { IDashBoard, ITimeAnaysis } from '../Model';
 import { element } from 'protractor';
@@ -13,8 +13,8 @@ import { element } from 'protractor';
 export class TimeAnalysisComponent implements OnInit {
   constructor(private route: ActivatedRoute) { }
   _timeanaysis: ITimeAnaysis;
-  _protocols_rec_cnt = CommonFunction.clone(IStardardPolar);
-  _protocols_traffic_cnt = CommonFunction.clone(IStardardPolar);
+  _protocols_rec_cnt = CommonFunction.clone(IPolarStardard);
+  _protocols_traffic_cnt = CommonFunction.clone(IPolarStardard);
   _traffic_3d = CommonFunction.clone(I3DarStardard);
   _commonFunction = CommonFunction;
   ngOnInit(): void {
@@ -78,7 +78,8 @@ export class TimeAnalysisComponent implements OnInit {
     });
 
     this._traffic_3d.series[0].data = data;
-    this._traffic_3d.visualMap.max = 600;
+    let x = this._timeanaysis.traffic_hours_everyday.map(x=>x.Value);
+    this._traffic_3d.visualMap.max = Math.max(...x);
   }
 
 }

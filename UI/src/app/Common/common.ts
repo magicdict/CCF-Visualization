@@ -10,6 +10,9 @@ export class CommonFunction {
     ) { }
 
 
+    public static boxstyle_Col3 = { 'width': '380px', 'height': '400px' };
+    public static chartstyle_Col3 = { 'width': '340px', 'height': '350px' };
+
     public static boxstyle_Col4 = { 'width': '500px', 'height': '400px' };
     public static chartstyle_Col4 = { 'width': '450px', 'height': '350px' };
     public static boxstyle_Col6 = { 'width': '800px', 'height': '400px' };

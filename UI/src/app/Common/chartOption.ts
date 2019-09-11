@@ -1,6 +1,6 @@
 
 
-export const IStardardPie = {
+export const IPieStardard = {
     title: {
         text: '',
     },
@@ -37,7 +37,7 @@ export const IStardardPie = {
     ]
 };
 
-export const IStardardPolar = {
+export const IPolarStardard = {
     angleAxis: {
         type: 'category',
         data: [],   //整体数据要设定一下，不然数据将越过坐标范围
@@ -85,7 +85,7 @@ export const PolarItem = {
 
 export const ILineStardard = {
     title: {
-        text: '折线图堆叠'
+        text: ''
     },
     tooltip: {
         trigger: 'axis'

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IDashBoard } from '../Model';
-import { IStardardPie, IStardardPolar, PolarItem, ILineStardard, LineItem } from 'src/app/Common/chartOption';
+import { IPieStardard, IPolarStardard, PolarItem, ILineStardard, LineItem } from 'src/app/Common/chartOption';
 import { CommonFunction } from 'src/app/Common/common';
 
 
@@ -13,7 +13,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(private route: ActivatedRoute) { }
   _dashboard: IDashBoard;
-  _protocols = CommonFunction.clone(IStardardPie);
+  _protocols = CommonFunction.clone(IPieStardard);
   _traffic_hours = CommonFunction.clone(ILineStardard)
   _commonFunction = CommonFunction;
   //TOP10

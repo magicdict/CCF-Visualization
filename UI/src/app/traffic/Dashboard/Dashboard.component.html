@@ -3,10 +3,10 @@
         概要
     </h1>
     <ol class="breadcrumb">
-      <li><a href="/security/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
-      <li class="active">概要</li>
+        <li><a href="/security/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">概要</li>
     </ol>
-  </section>
+</section>
 <section class="content">
     <div class="row">
         <div class="col-md-3 col-sm-6 col-xs-12">
@@ -51,4 +51,37 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-6">
+            <chart [options]="_weeklyOrdercnt" [title]="'订单数统计（周单位）'" [boxstyle]="this._commonFunction.boxstyle_Col6"
+                [chartstyle]="this._commonFunction.chartstyle_Col6">
+            </chart>
+        </div>
+        <div class="col-md-6">
+            <chart [options]="_weeklyDistance" [title]="'公里数统计（周单位）'" [boxstyle]="this._commonFunction.boxstyle_Col6"
+                [chartstyle]="this._commonFunction.chartstyle_Col6"> </chart>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            <chart [options]="_product_ids" [title]="'产品线ID'" [boxstyle]="this._commonFunction.boxstyle_Col3"
+                [chartstyle]="this._commonFunction.chartstyle_Col3">
+            </chart>
+        </div>
+        <div class="col-md-3">
+            <chart [options]="_order_type" [title]="'订单时效'" [boxstyle]="this._commonFunction.boxstyle_Col3" 
+                [chartstyle]="this._commonFunction.chartstyle_Col3"> </chart>
+        </div>
+        <div class="col-md-3">
+            <chart [options]="_traffic_types" [title]="'交通类型'" [boxstyle]="this._commonFunction.boxstyle_Col3"
+                [chartstyle]="this._commonFunction.chartstyle_Col3">
+            </chart>
+        </div>
+        <div class="col-md-3">
+            <chart [options]="_product_1levels" [title]="'一级业务线'" [boxstyle]="this._commonFunction.boxstyle_Col3"
+                [chartstyle]="this._commonFunction.chartstyle_Col3"> </chart>
+        </div>
+    </div>
+
 </section>

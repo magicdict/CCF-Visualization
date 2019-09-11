@@ -10,13 +10,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { CommonFunction } from './Common/common';
 import { TrafficModule } from './traffic/traffic.module';
 import { MenuComponent } from './app.component/menu.component';
-import { DashboardComponent } from './traffic/Dashboard/Dashboard.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MenuComponent,
-    DashboardComponent
   ],
   imports: [
     BrowserModule,

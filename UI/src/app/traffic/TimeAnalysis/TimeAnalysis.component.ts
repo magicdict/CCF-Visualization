@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonFunction } from 'src/app/Common/common';
-import { I3DarStardard } from 'src/app/Common/chartOption';
+import { I3DarStardard, IPieStardard } from 'src/app/Common/chartOption';
 import { ActivatedRoute } from '@angular/router';
 import { ITimeAnaysis } from '../Model';
 
@@ -45,6 +45,8 @@ export class TimeAnalysisComponent implements OnInit {
 
     this._traffic_3d.series[0].data = data;
     this._traffic_3d.visualMap.max = 5000;
+    let x = this._timeanaysis.weekday_hour_orderCnt.map(x=>x.Value);
+    this._traffic_3d.visualMap.max = Math.max(...x);
     this._traffic_3d.grid3D.boxWidth = 200;
     this._traffic_3d.grid3D.boxDepth = 80;
     this._traffic_3d.grid3D["height"] = 750;

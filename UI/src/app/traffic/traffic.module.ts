@@ -10,10 +10,12 @@ import { TimeAnalysisComponent } from './TimeAnalysis/TimeAnalysis.component';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { DestMapComponent } from './SourceDestMap/DestMap.component';
 import { SourceMapComponent } from './SourceDestMap/SourceMap.component';
+import { DashboardComponent } from './Dashboard/Dashboard.component';
 
 @NgModule({
   declarations: [
     TrafficMainComponent,
+    DashboardComponent,
     SourceMapComponent,
     DestMapComponent,
     TimeAnalysisComponent

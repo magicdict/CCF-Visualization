@@ -51,7 +51,7 @@ public static class DataCenterForTraffic
 
         basic_sw_csv.WriteLine("TotalOrderCnt," + TotalOrderCnt);
         basic_sw_csv.WriteLine("TotalFee," + TotalFee);
-        basic_sw_csv.WriteLine("AvgFeePerOrder," + Math.Round((double)TotalFee/ TotalOrderCnt, 2));
+        basic_sw_csv.WriteLine("AvgFeePerOrder," + Math.Round((double)TotalFee / TotalOrderCnt, 2));
         basic_sw_csv.WriteLine("TotalDistanceKm," + TotalDistanceKm);
         basic_sw_csv.WriteLine("AvgDistanceKmPerOrder," + Math.Round((double)TotalDistanceKm / TotalOrderCnt, 4));
         basic_sw_csv.WriteLine("FeePerKm," + Math.Round((double)TotalFee / TotalDistanceKm, 2));
@@ -59,17 +59,17 @@ public static class DataCenterForTraffic
 
         //1-1.订单量 按照日期统计 
         //部分订单时间为 0000-00-00 这里按照最后的日期为依据
-        var diary_orderCnt = orders.GroupBy(x => x.year.ToString("D4") + x.month.ToString("D2") + x.day.ToString("D2"))
-                          .Select(x => (name: x.Key, count: x.Count())).ToList();
-        diary_orderCnt.Sort((x, y) => { return x.name.CompareTo(y.name); });
         var sw_csv = new StreamWriter(AfterProcessFolder + "diary_orderCnt.csv");
-        foreach (var item in diary_orderCnt)
+        var diaryinfos = orders.GroupBy(x => x.year.ToString("D4") + x.month.ToString("D2") + x.day.ToString("D2"))
+                          .Select(x => (name: x.Key, count: x.Count(), distance: x.ToList().Sum(o => o.start_dest_distance_km), fee: x.ToList().Sum(o => o.pre_total_fee))).ToList();
+        diaryinfos.Sort((x, y) => { return x.name.CompareTo(y.name); });
+        foreach (var item in diaryinfos)
         {
-            sw_csv.WriteLine(item.name + "," + item.count);
+            sw_csv.WriteLine(item.name + "," + item.count + "," + Math.Round(item.distance) + "," + Math.Round(item.fee));
         }
         sw_csv.Close();
 
-        var TotalDayCnt = diary_orderCnt.Count;
+        var TotalDayCnt = diaryinfos.Count;
 
         basic_sw_csv.WriteLine("TotalDayCnt," + TotalDayCnt);
         basic_sw_csv.WriteLine("AvgOrderCntEveryDay," + TotalOrderCnt / TotalDayCnt);
@@ -77,7 +77,9 @@ public static class DataCenterForTraffic
         basic_sw_csv.WriteLine("AvgDistanceKmEveryDay," + TotalDistanceKm / TotalDayCnt);
         basic_sw_csv.Flush();
 
-        var weekday_hour_orderCnt = orders.GroupBy(x => x.departure_time.DayOfWeek.GetHashCode() + "|" + x.departure_time.Hour.ToString("D2") + ":" + ((x.departure_time.Minute / 15) * 15).ToString("D2"))
+        //2-1:对于时间段进行统计
+        var weekday_hour_orderCnt = orders.GroupBy(x => x.departure_time.DayOfWeek.GetHashCode() + "|" +
+                                                   x.departure_time.Hour.ToString("D2") + ":" + ((x.departure_time.Minute / 15) * 15).ToString("D2"))
                                           .Select(x => (name: x.Key, count: x.Count())).ToList();
         weekday_hour_orderCnt.Sort((x, y) => { return x.name.CompareTo(y.name); });
         sw_csv = new StreamWriter(AfterProcessFolder + "weekday_hour_orderCnt.csv");
@@ -88,25 +90,6 @@ public static class DataCenterForTraffic
         sw_csv.Close();
 
 
-        //1-2.总费用 按照日期统计
-        var diary_Fee = orders.GroupBy(x => x.year.ToString("D4") + x.month.ToString("D2") + x.day.ToString("D2"))
-                          .Select(x => (name: x.Key, sum: x.ToList().Sum(o => o.pre_total_fee))).ToList();
-        diary_Fee.Sort((x, y) => { return x.name.CompareTo(y.name); });
-
-
-        //每日统计结果    
-        for (int i = 0; i < diary_orderCnt.Count; i++)
-        {
-            diarys.Add(new DiaryProperty()
-            {
-                Date = diary_orderCnt[i].name,
-                OrderCnt = diary_orderCnt[i].count,
-                TotalFee = diary_Fee[i].sum
-            });
-        }
-
-
-        //2-1:对于时间段进行统计
         var diary_HourCnt = orders.GroupBy(x => x.departure_time.Date)
                                   .Select(x => (name: x.Key, count: x.Count())).ToList();
         diary_HourCnt.Sort((x, y) => { return x.name.CompareTo(y.name); });
@@ -151,42 +134,60 @@ public static class DataCenterForTraffic
         //9-0 产品线ID
         var product_ids = orders.GroupBy(x => x.product_id).Select(x => (name: x.Key, count: x.Count())).ToList();
         sw.WriteLine("产品线ID[product_ids]:");
+        basic_sw_csv.Write("product_ids,");
         foreach (var item in product_ids)
         {
             sw.WriteLine(item.name + ":" + item.count);
+            basic_sw_csv.Write(item.name + "," + item.count + ",");
         }
+        basic_sw_csv.WriteLine();
 
         //9-1 订单时效
         var order_types = orders.GroupBy(x => x.order_type).Select(x => (name: x.Key, count: x.Count())).ToList();
         sw.WriteLine("订单时效[order_type]:");
+        basic_sw_csv.Write("order_type,");
         foreach (var item in order_types)
         {
             sw.WriteLine(item.name + ":" + item.count);
+            basic_sw_csv.Write(item.name + "," + item.count + ",");
         }
+        basic_sw_csv.WriteLine();
 
         //9-2 订单类型
         var combo_types = orders.GroupBy(x => x.combo_type).Select(x => (name: x.Key, count: x.Count())).ToList();
         sw.WriteLine("订单类型[combo_type]:");
+        basic_sw_csv.Write("combo_type,");
         foreach (var item in combo_types)
         {
             sw.WriteLine(item.name + ":" + item.count);
+            basic_sw_csv.Write(item.name + "," + item.count + ",");
         }
+        basic_sw_csv.WriteLine();
+
 
         //9-3 交通类型
         var traffic_types = orders.GroupBy(x => x.traffic_type).Select(x => (name: x.Key, count: x.Count())).ToList();
         sw.WriteLine("交通类型[traffic_types]:");
+        basic_sw_csv.Write("traffic_types,");
         foreach (var item in traffic_types)
         {
             sw.WriteLine(item.name + ":" + item.count);
+            basic_sw_csv.Write(item.name + "," + item.count + ",");
         }
+        basic_sw_csv.WriteLine();
+
 
         //9-4 一级业务线
         var product_1levels = orders.GroupBy(x => x.product_1level).Select(x => (name: x.Key, count: x.Count())).ToList();
         sw.WriteLine("一级业务线[product_1levels]:");
+        basic_sw_csv.Write("product_1levels,");
         foreach (var item in product_1levels)
         {
             sw.WriteLine(item.name + ":" + item.count);
+            basic_sw_csv.Write(item.name + "," + item.count + ",");
         }
+        basic_sw_csv.WriteLine();
+
 
         basic_sw_csv.Close();
         sw.Close();
@@ -194,12 +195,13 @@ public static class DataCenterForTraffic
         GC.Collect();
     }
 
-    const double baiduOffsetlng = 0.0063;
-    const double baiduOffsetlat = 0.0058;
+
 
 
     private static void CreateGeoJson(string filename, List<(OrderDetails.Geo point, System.Int32 count)> points)
     {
+        const double baiduOffsetlng = 0.0063;
+        const double baiduOffsetlat = 0.0058;
         var json = new StreamWriter(AfterProcessFolder + filename + "_PointSize.json");
         int Cnt = 0;
         json.WriteLine("[");
