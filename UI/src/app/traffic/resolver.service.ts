@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { CommonFunction } from '../Common/common';
-import { ITimeAnaysis, MapValue, IDashBoard } from './Model';
+import { ITimeAnaysis, MapValue, IDashBoard, IDiaryinfo } from './Model';
 
 
 @Injectable()
@@ -42,5 +42,15 @@ export class DestMapResolver implements Resolve<MapValue[]> {
     }
     resolve(_: ActivatedRouteSnapshot, _state: RouterStateSnapshot): MapValue[] | Observable<MapValue[]> | Promise<MapValue[]> {
         return this.commonFunction.httpRequestGetFromAsset<MapValue[]>("json/destlocs_PointSize.json");
+    }
+}
+
+@Injectable()
+export class CalendarResolver implements Resolve<IDiaryinfo[]> {
+    constructor(public commonFunction: CommonFunction) {
+
+    }
+    resolve(_: ActivatedRouteSnapshot, _state: RouterStateSnapshot): IDiaryinfo[] | Observable<IDiaryinfo[]> | Promise<IDiaryinfo[]> {
+        return this.commonFunction.httpRequestGet<IDiaryinfo[]>("Traffic/GetDiaryinfos");
     }
 }

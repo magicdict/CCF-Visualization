@@ -7,7 +7,7 @@
             var IsDidi = true;
             if (IsDidi)
             {
-                DataCenterForTraffic.Load(4_000_000);
+                DataCenterForTraffic.Load(10_000_000);
                 DataCenterForTraffic.EDA();
             }
             else

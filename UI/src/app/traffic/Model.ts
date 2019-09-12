@@ -17,10 +17,31 @@ export interface IDashBoard {
     weeklyinfos: {
         Name: string, Value: { ordercnt: number, fee: number, distance: number }
     }[],
-    product_ids:NameValueSet[],
-    order_type:NameValueSet[],
-    traffic_types:NameValueSet[],
-    product_1levels:NameValueSet[]
+    product_ids: NameValueSet[],
+    order_type: NameValueSet[],
+    traffic_types: NameValueSet[],
+    product_1levels: NameValueSet[],
+    Time: NameValueSet[],
+    Distance: NameValueSet[],
+}
+
+export interface IDiaryinfo {
+    Name: string,
+    Value: {
+        weather: IWeather;
+        ordercnt: number;
+        distance: number;
+        fee: number;
+        holiday: number;
+        isWorkday: boolean;
+        Weekno: string;
+    }
+}
+
+export interface IWeather {
+    Description: string,
+    Tempera: string,
+    Wind: string
 }
 
 export interface ITimeAnaysis {

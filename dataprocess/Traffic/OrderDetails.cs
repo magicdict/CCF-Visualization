@@ -79,7 +79,7 @@ public class OrderDetails
     /// 时长（分钟）
     /// </summary>
     /// <value></value>
-    public string normal_time { get; set; }
+    public int normal_time { get; set; }
     /// <summary>
     /// TraceID
     /// </summary>
@@ -233,7 +233,9 @@ public class OrderDetails
         if (Cols[11] != "0000-00-00 00:00:00") arrive_time = DateTime.ParseExact(Cols[11], "yyyy-MM-dd HH:mm:ss", CultureInfo.CurrentCulture, DateTimeStyles.None);
         if (Cols[12] != "0000-00-00 00:00:00") departure_time = DateTime.ParseExact(Cols[12], "yyyy-MM-dd HH:mm:ss", CultureInfo.CurrentCulture, DateTimeStyles.None);
         pre_total_fee = Single.Parse(Cols[13]);
-        normal_time = Cols[14];
+        if (Cols[14] != "NULL"){
+            normal_time = int.Parse(Cols[14]);
+        }
         bubble_trace_id = Cols[15];
 
         switch (Cols[16])

@@ -47,7 +47,7 @@ public static class TrafficDataSet
             var info = sr.ReadLine().Split(",");
             diaryinfos.Add(new NameValueSet<DiaryInfo>()
             {
-                Name = info[0],
+                Name = DateTime.ParseExact(info[0],"yyyyMMdd",null).ToString("d"),
                 Value = new DiaryInfo()
                 {
                     holiday = GetHoliday(info[0]),

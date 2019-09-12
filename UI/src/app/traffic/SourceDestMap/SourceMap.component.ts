@@ -15,10 +15,20 @@ export class SourceMapComponent implements OnInit {
   ngOnInit(): void {
     this.route.data
       .subscribe((xxx: { data: MapValue[] }) => {
-        this._map.series[0].data = xxx.data;
+        xxx.data.sort((x, y) => { return y.value[2] - x.value[2] })
+        this._map.series[0].data = xxx.data.slice(0, 2000);
+        this._map.series[0].symbolSize = this.symbolSize;
+        this._map.tooltip.formatter = this.tooltip;
         this._map.series[1].data = xxx.data.slice(0, 6);
+        this._map.series[1].symbolSize = this.symbolSize;
         this._map.title.text = "";
-     });
+      });
+  }
+  symbolSize(val: any) {
+    return Math.sqrt(val[2] * 100) / 30;
+  };
+  tooltip(val: any) {
+    return val.data.name + ":" + val.data.value[2];
   }
 }
 

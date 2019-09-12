@@ -17,6 +17,9 @@ export class DashboardComponent implements OnInit {
   _weeklyDistance = CommonFunction.clone(ILineStardard);
 
   //饼图
+  _Time = CommonFunction.clone(IPieStardard);
+  _Distance = CommonFunction.clone(IPieStardard);
+
   _product_ids = CommonFunction.clone(IPieStardard);
   _order_type = CommonFunction.clone(IPieStardard);
   _traffic_types = CommonFunction.clone(IPieStardard);
@@ -41,6 +44,12 @@ export class DashboardComponent implements OnInit {
         weeklydistance.name = "周公里数";
         weeklydistance.data = this._dashboard.weeklyinfos.map(x=>x.Value.distance);  
         this._weeklyDistance.series.push(weeklydistance);
+
+        this._Time.legend.data = this._dashboard.Time.map(x => x.Name);
+        this._Time.series[0].data = this._dashboard.Time.map(x => { return { name: x.Name, value: x.Value } });
+        this._Distance.legend.data = this._dashboard.Distance.map(x => x.Name);
+        this._Distance.series[0].data = this._dashboard.Distance.map(x => { return { name: x.Name, value: x.Value } });
+
 
         this._product_ids.legend.data = this._dashboard.product_ids.map(x => x.Name);
         this._product_ids.series[0].data = this._dashboard.product_ids.map(x => { return { name: x.Name, value: x.Value } });

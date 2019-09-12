@@ -94,14 +94,15 @@ public static class DataCenterForTraffic
                                   .Select(x => (name: x.Key, count: x.Count())).ToList();
         diary_HourCnt.Sort((x, y) => { return x.name.CompareTo(y.name); });
 
-        //出发位置
+        //3-1：出发和目的分析
         var startlocs = orders.GroupBy(x => x.starting).Select(x => (point: x.Key, count: x.Count())).ToList();
-        var destlocs = orders.GroupBy(x => x.dest).Select(x => (point: x.Key, count: x.Count())).ToList();
-
         CreateGeoJson("startlocs", startlocs);
+        var destlocs = orders.GroupBy(x => x.dest).Select(x => (point: x.Key, count: x.Count())).ToList();
         CreateGeoJson("destlocs", destlocs);
 
-        startlocs.Sort((x, y) =>
+        //3-2 深夜打车地点的统计
+
+/*         startlocs.Sort((x, y) =>
         {
             if (x.point.lat == y.point.lat)
             {
@@ -111,7 +112,7 @@ public static class DataCenterForTraffic
             {
                 return x.point.lat.CompareTo(y.point.lat);
             }
-        });
+        }); */
 
         var sw = new StreamWriter(EDAFile);
         sw.WriteLine(DiaryProperty.GetTitle());
@@ -125,10 +126,24 @@ public static class DataCenterForTraffic
         {
             sw.WriteLine(item.name + ":" + item.count);
         }
-
         sw.WriteLine("Start Loc Count:" + startlocs.Count);
         sw.WriteLine("Dest  Loc Count:" + destlocs.Count);
 
+
+        //8.对于里程数的统计
+        basic_sw_csv.Write("Distance,");
+        basic_sw_csv.Write("小于5公里," + orders.Count(x => x.start_dest_distance_km <= 5) + ",");
+        basic_sw_csv.Write("5-10公里," + orders.Count(x => x.start_dest_distance_km > 5 && x.start_dest_distance_km <= 10) + ",");
+        basic_sw_csv.Write("10-20公里," + orders.Count(x => x.start_dest_distance_km > 10 && x.start_dest_distance_km <= 20) + ",");
+        basic_sw_csv.Write("大于20公里," + orders.Count(x => x.start_dest_distance_km > 20) + ",");
+        basic_sw_csv.WriteLine();
+
+        basic_sw_csv.Write("Time,");
+        basic_sw_csv.Write("小于15分钟," + orders.Count(x => x.normal_time != 0 && x.normal_time <= 15) + ",");
+        basic_sw_csv.Write("15-30分钟," + orders.Count(x => x.normal_time > 15 && x.normal_time <= 30) + ",");
+        basic_sw_csv.Write("30-60分钟," + orders.Count(x => x.normal_time > 30 && x.normal_time <= 60) + ",");
+        basic_sw_csv.Write("大于60分钟," + orders.Count(x => x.normal_time > 60) + ",");
+        basic_sw_csv.WriteLine();
 
         //9 各种区分统计
         //9-0 产品线ID
@@ -207,8 +222,8 @@ public static class DataCenterForTraffic
         json.WriteLine("[");
         foreach (var item in points)
         {
-            var radus = Math.Min(100, item.count / 100);
-            if (radus > 5)
+            var radus = item.count;
+            if (radus > 1000)
             {
                 if (Cnt != 0) json.WriteLine(",");
                 Cnt++;

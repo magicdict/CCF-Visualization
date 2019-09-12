@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("[controller]")]
@@ -26,4 +27,12 @@ public class TrafficController : ControllerBase
         }
         return _timeanalysis;
     }
+
+
+    [HttpGet("GetDiaryinfos")]
+    public ActionResult<List<NameValueSet<DiaryInfo>>> GetDiaryinfos()
+    {
+        return TrafficDataSet.diaryinfos;
+    }
+
 }

@@ -20,6 +20,12 @@ public class TrafficDashBoard
     /// 2017年海口人数
     /// </summary>
     public int Population = 227_0000;
+    /// <summary>
+    /// 过夜游客数（万人）
+    /// </summary>
+    /// <value></value>
+    public double[] traveller = new double[] { 115.66, 138.08, 149.83, 158.99, 166.09, 209.31 };
+
 
     /// <summary>
     /// 产品线
@@ -32,6 +38,11 @@ public class TrafficDashBoard
     public List<NameValueSet<int>> traffic_types = new List<NameValueSet<int>>();
 
     public List<NameValueSet<int>> product_1levels = new List<NameValueSet<int>>();
+
+    public List<NameValueSet<int>> Distance = new List<NameValueSet<int>>();
+
+    public List<NameValueSet<int>> Time = new List<NameValueSet<int>>();
+
 
     public TrafficDashBoard()
     {
@@ -97,6 +108,19 @@ public class TrafficDashBoard
                         product_1levels.Add(new NameValueSet<int>() { Name = info[i], Value = int.Parse(info[i + 1]) });
                     }
                     break;
+                case nameof(Time):
+                    for (int i = 1; i < info.Length - 1; i += 2)
+                    {
+                        Time.Add(new NameValueSet<int>() { Name = info[i], Value = int.Parse(info[i + 1]) });
+                    }
+                    break;
+                case nameof(Distance):
+                    for (int i = 1; i < info.Length - 1; i += 2)
+                    {
+                        Distance.Add(new NameValueSet<int>() { Name = info[i], Value = int.Parse(info[i + 1]) });
+                    }
+                    break;
+
             }
         }
         sr.Close();
