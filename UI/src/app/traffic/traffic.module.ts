@@ -8,17 +8,18 @@ import { MyCommonModule } from '../Common/MyCommon.module';
 import { TrafficMainComponent } from './TrafficMain.component';
 import { TimeAnalysisComponent } from './TimeAnalysis/TimeAnalysis.component';
 import { NgxEchartsModule } from 'ngx-echarts';
-import { DestMapComponent } from './SourceDestMap/DestMap.component';
-import { SourceMapComponent } from './SourceDestMap/SourceMap.component';
+
+import { TimeLineMapComponent } from './SourceDestMap/TimeLineMap.component';
 import { DashboardComponent } from './Dashboard/Dashboard.component';
 import { CalendarComponent } from './Calendar/Calendar.component';
+import { SimpleMapComponent } from './SourceDestMap/SimpleMap.component';
 
 @NgModule({
   declarations: [
     TrafficMainComponent,
     DashboardComponent,
-    SourceMapComponent,
-    DestMapComponent,
+    TimeLineMapComponent,
+    SimpleMapComponent,
     TimeAnalysisComponent,
     CalendarComponent
   ],

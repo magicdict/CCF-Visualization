@@ -6,9 +6,9 @@ import { IMapStardard } from 'src/app/Common/chartOption';
 
 
 @Component({
-  templateUrl: './SourceMap.component.html',
+  templateUrl: './SimpleMap.component.html',
 })
-export class SourceMapComponent implements OnInit {
+export class SimpleMapComponent implements OnInit {
   constructor(private route: ActivatedRoute) { }
   _commonFunction = CommonFunction;
   _map = CommonFunction.clone(IMapStardard);

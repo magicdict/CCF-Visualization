@@ -93,27 +93,6 @@ public static class DataCenterForTraffic
         var diary_HourCnt = orders.GroupBy(x => x.departure_time.Date)
                                   .Select(x => (name: x.Key, count: x.Count())).ToList();
         diary_HourCnt.Sort((x, y) => { return x.name.CompareTo(y.name); });
-
-        //3-1：出发和目的分析
-        var startlocs = orders.GroupBy(x => x.starting).Select(x => (point: x.Key, count: x.Count())).ToList();
-        CreateGeoJson("startlocs", startlocs);
-        var destlocs = orders.GroupBy(x => x.dest).Select(x => (point: x.Key, count: x.Count())).ToList();
-        CreateGeoJson("destlocs", destlocs);
-
-        //3-2 深夜打车地点的统计
-
-/*         startlocs.Sort((x, y) =>
-        {
-            if (x.point.lat == y.point.lat)
-            {
-                return x.point.lng.CompareTo(y.point.lng);
-            }
-            else
-            {
-                return x.point.lat.CompareTo(y.point.lat);
-            }
-        }); */
-
         var sw = new StreamWriter(EDAFile);
         sw.WriteLine(DiaryProperty.GetTitle());
         foreach (var diary in diarys)
@@ -126,9 +105,32 @@ public static class DataCenterForTraffic
         {
             sw.WriteLine(item.name + ":" + item.count);
         }
+
+
+
+        //3-1：出发和目的分析
+        var startlocs = orders.GroupBy(x => x.starting).Select(x => (point: x.Key, count: x.Count())).ToList();
+        CreateGeoJson("startlocs", startlocs, 1000);
+        var destlocs = orders.GroupBy(x => x.dest).Select(x => (point: x.Key, count: x.Count())).ToList();
+        CreateGeoJson("destlocs", destlocs, 1000);
         sw.WriteLine("Start Loc Count:" + startlocs.Count);
         sw.WriteLine("Dest  Loc Count:" + destlocs.Count);
 
+        //3-2 深夜打车地点的统计(23:01- 0:59)
+        var startlocs_MidNight = orders.Where(x => x.departure_time.Hour == 23 || x.departure_time.Hour == 0)
+                                       .GroupBy(x => x.starting).Select(x => (point: x.Key, count: x.Count())).ToList();
+        CreateGeoJson("startlocs_MidNight", startlocs_MidNight, 1000);
+
+        var startlocs_Morning_RushTime = orders.Where(x => x.departure_time.Hour == 7 || x.departure_time.Hour == 8)
+                                       .GroupBy(x => x.starting).Select(x => (point: x.Key, count: x.Count())).ToList();
+        CreateGeoJson("startlocs_Morning_RushTime", startlocs_Morning_RushTime, 1000);
+
+
+        var startlocs_Afternoon_RushTime = orders.Where(x => x.departure_time.Hour == 17 || x.departure_time.Hour == 18)
+                                          .GroupBy(x => x.starting).Select(x => (point: x.Key, count: x.Count())).ToList();
+        CreateGeoJson("startlocs_Afternoon_RushTime", startlocs_Afternoon_RushTime, 1000);
+        
+        Create24HoursGeoJson();
 
         //8.对于里程数的统计
         basic_sw_csv.Write("Distance,");
@@ -210,10 +212,7 @@ public static class DataCenterForTraffic
         GC.Collect();
     }
 
-
-
-
-    private static void CreateGeoJson(string filename, List<(OrderDetails.Geo point, System.Int32 count)> points)
+    private static void CreateGeoJson(string filename, List<(OrderDetails.Geo point, System.Int32 count)> points, int downlimit = -1)
     {
         const double baiduOffsetlng = 0.0063;
         const double baiduOffsetlat = 0.0058;
@@ -223,7 +222,7 @@ public static class DataCenterForTraffic
         foreach (var item in points)
         {
             var radus = item.count;
-            if (radus > 1000)
+            if (radus > downlimit || downlimit == -1)
             {
                 if (Cnt != 0) json.WriteLine(",");
                 Cnt++;
@@ -236,6 +235,60 @@ public static class DataCenterForTraffic
         json.WriteLine("]");
         json.Close();
     }
+
+    private static void Create24HoursGeoJson()
+    {
+        const double baiduOffsetlng = 0.0063;
+        const double baiduOffsetlat = 0.0058;
+       
+        var json = new StreamWriter(AfterProcessFolder  + "startlocs_24h_PointSize.json");
+        int Cnt = 0;
+        json.WriteLine("[");
+        //按照小时计算地点
+        for (int hour = 0; hour < 24; hour++)
+        {
+            var startlocs_hour = orders.Where(x => x.departure_time.Hour == hour)
+                                       .GroupBy(x => x.starting).Select(x => (point: x.Key, count: x.Count())).ToList();
+            startlocs_hour.Sort((x, y) => { return y.count - x.count; });
+            startlocs_hour = startlocs_hour.Take(200).ToList();
+            foreach (var item in startlocs_hour)
+            {
+                if (Cnt != 0) json.WriteLine(",");
+                Cnt++;
+                json.Write(" {\"hour\":" + hour + ",\"name\": \"海口" + Cnt + "\", \"value\": ");
+                json.Write("[" + Math.Round(item.point.lng + baiduOffsetlng, 4)
+                                                + "," + Math.Round(item.point.lat + baiduOffsetlat, 4) + "," + item.count + "]}");
+            }
+        }
+        json.WriteLine();
+        json.WriteLine("]");
+        json.Close();
+
+
+        json = new StreamWriter(AfterProcessFolder + "destlocs_24h_PointSize.json");
+        Cnt = 0;
+        json.WriteLine("[");
+        //按照小时计算地点
+        for (int hour = 0; hour < 24; hour++)
+        {
+            var startlocs_hour = orders.Where(x => x.departure_time.Hour == hour)
+                                       .GroupBy(x => x.dest).Select(x => (point: x.Key, count: x.Count())).ToList();
+            startlocs_hour.Sort((x, y) => { return y.count - x.count; });
+            startlocs_hour = startlocs_hour.Take(200).ToList();
+            foreach (var item in startlocs_hour)
+            {
+                if (Cnt != 0) json.WriteLine(",");
+                Cnt++;
+                json.Write(" {\"hour\":" + hour + ",\"name\": \"海口" + Cnt + "\", \"value\": ");
+                json.Write("[" + Math.Round(item.point.lng + baiduOffsetlng, 4)
+                                                + "," + Math.Round(item.point.lat + baiduOffsetlat, 4) + "," + item.count + "]}");
+            }
+        }
+        json.WriteLine();
+        json.WriteLine("]");
+        json.Close();        
+    }
+
 }
 
 /// <summary>

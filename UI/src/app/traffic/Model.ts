@@ -49,6 +49,7 @@ export interface ITimeAnaysis {
 }
 
 export interface MapValue {
+    hour:number,
     name: string,
     value: number[]
 }

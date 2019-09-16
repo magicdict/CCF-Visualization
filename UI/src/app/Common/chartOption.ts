@@ -199,7 +199,7 @@ export const IMapStardard = {
   },
   tooltip: {
     trigger: 'item',
-    formatter:null,
+    formatter: null,
   },
   bmap: {
     center: [110.3373, 20.0303],
@@ -333,7 +333,7 @@ export const IMapStardard = {
       coordinateSystem: 'bmap',
       data: [],
       symbolSize: function (val) {
-        return val[1]/10;
+        return val[1] / 10;
       },
       showEffectOn: 'render',
       rippleEffect: {
@@ -418,9 +418,31 @@ export const ICalendarItem_scatter = {
   data: []
 };
 
-export const ICalendarItem_heatmap =  {
+export const ICalendarItem_heatmap = {
   name: '降雨量',
   type: 'heatmap',
   coordinateSystem: 'calendar',
   data: []
 };
+
+export const ITimelineStardard = {
+  baseOption: {
+    timeline: {
+      show: true,
+      autoPlay: true,
+      playInterval: 1000,
+      data: [],
+      top:20,
+      label:{formatter:null}
+    },
+    toolbox: {
+      'show': true,
+      'feature': {
+        'saveAsImage': {},
+      }
+    },
+    title: [],
+    series: []
+  },
+  options: []
+}
