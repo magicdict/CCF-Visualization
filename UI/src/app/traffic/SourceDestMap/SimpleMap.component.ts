@@ -12,7 +12,13 @@ export class SimpleMapComponent implements OnInit {
   constructor(private route: ActivatedRoute) { }
   _commonFunction = CommonFunction;
   _map = CommonFunction.clone(IMapStardard);
+  _title = "";
   ngOnInit(): void {
+    if (this.route.snapshot.routeConfig.path === "simplesourcemap") {
+      this._title = "出发地分析";
+    } else {
+      this._title = "目的地分析";
+    }
     this.route.data
       .subscribe((xxx: { data: MapValue[] }) => {
         xxx.data.sort((x, y) => { return y.value[2] - x.value[2] })

@@ -26,12 +26,32 @@ export class TimeAnaysisResolver implements Resolve<ITimeAnaysis> {
 }
 
 @Injectable()
+export class SimpleSourceMapResolver implements Resolve<MapValue[]> {
+    constructor(public commonFunction: CommonFunction) {
+
+    }
+    resolve(_: ActivatedRouteSnapshot, _state: RouterStateSnapshot): MapValue[] | Observable<MapValue[]> | Promise<MapValue[]> {
+        return this.commonFunction.httpRequestGetFromAsset<MapValue[]>("json/startlocs_PointSize.json");
+    }
+}
+
+@Injectable()
+export class SimpleDestMapResolver implements Resolve<MapValue[]> {
+    constructor(public commonFunction: CommonFunction) {
+
+    }
+    resolve(_: ActivatedRouteSnapshot, _state: RouterStateSnapshot): MapValue[] | Observable<MapValue[]> | Promise<MapValue[]> {
+        return this.commonFunction.httpRequestGetFromAsset<MapValue[]>("json/destlocs_PointSize.json");
+    }
+}
+
+@Injectable()
 export class SourceMapResolver implements Resolve<MapValue[]> {
     constructor(public commonFunction: CommonFunction) {
 
     }
     resolve(_: ActivatedRouteSnapshot, _state: RouterStateSnapshot): MapValue[] | Observable<MapValue[]> | Promise<MapValue[]> {
-        return this.commonFunction.httpRequestGetFromAsset<MapValue[]>("json/24h_PointSize.json");
+        return this.commonFunction.httpRequestGetFromAsset<MapValue[]>("json/startlocs_24h_PointSize.json");
     }
 }
 
@@ -41,7 +61,7 @@ export class DestMapResolver implements Resolve<MapValue[]> {
 
     }
     resolve(_: ActivatedRouteSnapshot, _state: RouterStateSnapshot): MapValue[] | Observable<MapValue[]> | Promise<MapValue[]> {
-        return this.commonFunction.httpRequestGetFromAsset<MapValue[]>("json/24h_PointSize.json");
+        return this.commonFunction.httpRequestGetFromAsset<MapValue[]>("json/destlocs_24h_PointSize.json");
     }
 }
 

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { TrafficRoutingModule } from './traffic-routing.module';
-import { TimeAnaysisResolver, SourceMapResolver, DestMapResolver, DashBoardResolver, CalendarResolver } from './resolver.service';
+import { TimeAnaysisResolver, SourceMapResolver, DestMapResolver, DashBoardResolver, CalendarResolver, SimpleDestMapResolver, SimpleSourceMapResolver } from './resolver.service';
 import { CommonFunction } from '../Common/common';
 import { HttpClientModule } from '@angular/common/http';
 import { MyCommonModule } from '../Common/MyCommon.module';
@@ -33,6 +33,8 @@ import { SimpleMapComponent } from './SourceDestMap/SimpleMap.component';
     CommonFunction,
     DashBoardResolver,
     TimeAnaysisResolver,
+    SimpleSourceMapResolver,
+    SimpleDestMapResolver,
     SourceMapResolver,
     DestMapResolver,
     CalendarResolver

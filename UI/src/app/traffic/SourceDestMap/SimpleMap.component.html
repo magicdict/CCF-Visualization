@@ -1,16 +1,18 @@
 <section class="content-header">
     <h1>
-        目的地坐标分析
+        {{_title}}
     </h1>
     <ol class="breadcrumb">
         <li><a href="/security/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">目的地坐标分析</li>
+        <li class="active">
+             {{_title}}
+        </li>
     </ol>
 </section>
 <section class="content">
     <div class="row">
         <div class="col-md-8">
-            <chart [options]="_map" [title]="'目的地坐标'" [boxstyle]="this._commonFunction.boxstyle_Col12_Row2"
+            <chart [options]="_map" [title]="_title" [boxstyle]="this._commonFunction.boxstyle_Col12_Row2"
                 [chartstyle]="this._commonFunction.boxstyle_Col12_Row2"></chart>
         </div>
     </div>

@@ -1,9 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   templateUrl: './TrafficMain.component.html',
-}) 
-export class TrafficMainComponent {
-  title = '企业网络资产及安全事件分析与可视化';  
+})
+export class TrafficMainComponent implements OnInit {
+  constructor(private route: ActivatedRoute) { }
+  _path = "";
+  ngOnInit(): void {
+    this._path = this.route.snapshot["_routerState"].url;
+  }
 }

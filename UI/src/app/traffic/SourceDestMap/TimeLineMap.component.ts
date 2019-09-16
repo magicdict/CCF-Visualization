@@ -10,23 +10,20 @@ import { IMapStardard, ITimelineStardard } from 'src/app/Common/chartOption';
 export class TimeLineMapComponent implements OnInit {
   constructor(private route: ActivatedRoute) { }
   _commonFunction = CommonFunction;
-  _map = CommonFunction.clone(IMapStardard);
   _map_timeline = CommonFunction.clone(ITimelineStardard);
+  _title = "";
   ngOnInit(): void {
+    if (this.route.snapshot.routeConfig.path === "sourcemap") {
+      this._title = "出发地分析";
+    } else {
+      this._title = "目的地分析";
+    }
     this.route.data
       .subscribe((xxx: { data: MapValue[] }) => {
         xxx.data.sort((x, y) => { return y.value[2] - x.value[2] })
-        this._map.tooltip.formatter = this.tooltip;
-        this._map.title.text = "";
-        this._map.series[0].data = xxx.data.slice(0, 2000);
-        this._map.series[0].symbolSize = this.symbolSize;
-        this._map.series[1].data = xxx.data.slice(0, 6);
-        this._map.series[1].symbolSize = this.symbolSize;
-
-
         this._map_timeline.baseOption.timeline.playInterval = 5000;
-        this._map_timeline.baseOption['bmap'] = CommonFunction.clone(this._map.bmap);
-        this._map_timeline.baseOption.series.push(CommonFunction.clone(this._map.series[0]));
+        this._map_timeline.baseOption['bmap'] = CommonFunction.clone(IMapStardard.bmap);
+        this._map_timeline.baseOption.series.push(CommonFunction.clone(IMapStardard.series[0]));
         this._map_timeline.baseOption.series[0].data = [];
         this._map_timeline.baseOption.series[0].symbolSize = this.symbolSize;
         this._map_timeline.baseOption.timeline.label.formatter = (x: number) => x.toString();
@@ -42,12 +39,12 @@ export class TimeLineMapComponent implements OnInit {
           )
         }
 
-        console.log(this._map_timeline);
+        //console.log(this._map_timeline);
       });
   }
 
   symbolSize(val: any) {
-    return Math.sqrt(val[2] * 100) / 3;
+    return Math.sqrt(val[2] * 100) / 10;
   };
   tooltip(val: any) {
     return val.data.name + ":" + val.data.value[2];
