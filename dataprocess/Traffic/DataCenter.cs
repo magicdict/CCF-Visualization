@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
+using static OrderDetails;
 
 public static class DataCenterForTraffic
 {
@@ -9,7 +10,7 @@ public static class DataCenterForTraffic
     public const string DataFolder = @"F:\CCF-Visualization\RawData\海口市-交通流量时空演变特征可视分析";
     public const string EDAFile = @"F:\CCF-Visualization\dataprocess\AfterProcess\海口市-交通流量时空演变特征可视分析\EDA.log";
     public const string AfterProcessFolder = @"F:\CCF-Visualization\dataprocess\AfterProcess\海口市-交通流量时空演变特征可视分析\";
-
+    public const string AngularJsonAssetsFolder = @"F:\CCF-Visualization\UI\src\assets\traffic\json\";
     public static List<OrderDetails> orders = new List<OrderDetails>();
 
     public static List<DiaryProperty> diarys = new List<DiaryProperty>();
@@ -117,6 +118,7 @@ public static class DataCenterForTraffic
         sw.WriteLine("Dest  Loc Count:" + destlocs.Count);
 
         //3-2 深夜打车地点的统计(23:01- 0:59)
+        /* 
         var startlocs_MidNight = orders.Where(x => x.departure_time.Hour == 23 || x.departure_time.Hour == 0)
                                        .GroupBy(x => x.starting).Select(x => (point: x.Key, count: x.Count())).ToList();
         CreateGeoJson("startlocs_MidNight", startlocs_MidNight, 1000);
@@ -125,11 +127,10 @@ public static class DataCenterForTraffic
                                        .GroupBy(x => x.starting).Select(x => (point: x.Key, count: x.Count())).ToList();
         CreateGeoJson("startlocs_Morning_RushTime", startlocs_Morning_RushTime, 1000);
 
-
         var startlocs_Afternoon_RushTime = orders.Where(x => x.departure_time.Hour == 17 || x.departure_time.Hour == 18)
                                           .GroupBy(x => x.starting).Select(x => (point: x.Key, count: x.Count())).ToList();
         CreateGeoJson("startlocs_Afternoon_RushTime", startlocs_Afternoon_RushTime, 1000);
-        
+        */
         Create24HoursGeoJson();
 
         //8.对于里程数的统计
@@ -214,21 +215,19 @@ public static class DataCenterForTraffic
 
     private static void CreateGeoJson(string filename, List<(OrderDetails.Geo point, System.Int32 count)> points, int downlimit = -1)
     {
-        const double baiduOffsetlng = 0.0063;
-        const double baiduOffsetlat = 0.0058;
-        var json = new StreamWriter(AfterProcessFolder + filename + "_PointSize.json");
+        var json = new StreamWriter(AngularJsonAssetsFolder + filename + "_PointSize.json");
         int Cnt = 0;
         json.WriteLine("[");
         foreach (var item in points)
         {
-            var radus = item.count;
-            if (radus > downlimit || downlimit == -1)
+            if (item.count > downlimit || downlimit == -1)
             {
+                var point = item.point;
+                var poi = GetPOI(ref point);
                 if (Cnt != 0) json.WriteLine(",");
                 Cnt++;
-                json.Write(" {\"name\": \"海口" + Cnt + "\", \"value\": ");
-                json.Write("[" + Math.Round(item.point.lng + baiduOffsetlng, 4)
-                                                + "," + Math.Round(item.point.lat + baiduOffsetlat, 4) + "," + radus + "]}");
+                json.Write(" {\"name\": \"" + poi + Cnt + "\", \"value\": ");
+                json.Write("[" + point.lng + "," + point.lat + "," + item.count + "]}");
             }
         }
         json.WriteLine();
@@ -238,10 +237,8 @@ public static class DataCenterForTraffic
 
     private static void Create24HoursGeoJson()
     {
-        const double baiduOffsetlng = 0.0063;
-        const double baiduOffsetlat = 0.0058;
-       
-        var json = new StreamWriter(AfterProcessFolder  + "startlocs_24h_PointSize.json");
+
+        var json = new StreamWriter(AngularJsonAssetsFolder + "startlocs_24h_PointSize.json");
         int Cnt = 0;
         json.WriteLine("[");
         //按照小时计算地点
@@ -253,11 +250,12 @@ public static class DataCenterForTraffic
             startlocs_hour = startlocs_hour.Take(200).ToList();
             foreach (var item in startlocs_hour)
             {
+                var point = item.point;
+                var poi = GetPOI(ref point);
                 if (Cnt != 0) json.WriteLine(",");
                 Cnt++;
-                json.Write(" {\"hour\":" + hour + ",\"name\": \"海口" + Cnt + "\", \"value\": ");
-                json.Write("[" + Math.Round(item.point.lng + baiduOffsetlng, 4)
-                                                + "," + Math.Round(item.point.lat + baiduOffsetlat, 4) + "," + item.count + "]}");
+                json.Write(" {\"hour\":" + hour + ",\"name\": \"" + poi + Cnt + "\", \"value\": ");
+                json.Write("[" + point.lng + "," + point.lat + "," + item.count + "]}");
             }
         }
         json.WriteLine();
@@ -265,7 +263,7 @@ public static class DataCenterForTraffic
         json.Close();
 
 
-        json = new StreamWriter(AfterProcessFolder + "destlocs_24h_PointSize.json");
+        json = new StreamWriter(AngularJsonAssetsFolder + "destlocs_24h_PointSize.json");
         Cnt = 0;
         json.WriteLine("[");
         //按照小时计算地点
@@ -277,18 +275,46 @@ public static class DataCenterForTraffic
             startlocs_hour = startlocs_hour.Take(200).ToList();
             foreach (var item in startlocs_hour)
             {
+                var point = item.point;
+                var poi = GetPOI(ref point);
                 if (Cnt != 0) json.WriteLine(",");
                 Cnt++;
-                json.Write(" {\"hour\":" + hour + ",\"name\": \"海口" + Cnt + "\", \"value\": ");
-                json.Write("[" + Math.Round(item.point.lng + baiduOffsetlng, 4)
-                                                + "," + Math.Round(item.point.lat + baiduOffsetlat, 4) + "," + item.count + "]}");
+                json.Write(" {\"hour\":" + hour + ",\"name\": \"" + poi + Cnt + "\", \"value\": ");
+                json.Write("[" + point.lng + "," + point.lat + "," + item.count + "]}");
             }
         }
         json.WriteLine();
         json.WriteLine("]");
-        json.Close();        
+        json.Close();
     }
 
+    /// <summary>
+    /// 坐标转换和POI取得
+    /// </summary>
+    /// <param name="Point"></param>
+    /// <returns></returns>
+    public static string GetPOI(ref Geo point)
+    {
+        const double baiduOffsetlng = 0.0063;
+        const double baiduOffsetlat = 0.0058;
+        var lng = Math.Round(point.lng + baiduOffsetlng, 4);
+        var lat = Math.Round(point.lat + baiduOffsetlat, 4);
+        point.lng = lng;
+        point.lat = lat;
+        //美兰机场
+        if (lng >= 110.4560 && lng <= 110.4875 && lat >= 19.9420 && lat <= 19.9480) return "机场";
+        //火车站东站
+        if (lng >= 110.3507 - 0.002 && lng <= 110.3507 + 0.002 && lat >= 19.9892 - 0.002 && lat <= 19.9892 + 0.002) return "火车站";
+        //汽车站
+        if (lng >= 110.2962 - 0.001 && lng <= 110.2962 + 0.001 && lat >= 20.0189 - 0.001 && lat <= 20.0189 + 0.001) return "汽车站";
+        //医院
+        if (lng >= 110.2933 - 0.001 && lng <= 110.2933 + 0.001 && lat >= 20.013 - 0.001 && lat <= 20.013 + 0.001) return "医院";
+        //日月广场商圈
+        if (lng >= 110.355 - 0.001 && lng <= 110.355 + 0.001 && lat >= 20.0217 - 0.001 && lat <= 20.0217 + 0.001) return "商圈";
+        if (lng >= 110.3284 - 0.001 && lng <= 110.3284 + 0.001 && lat >= 20.0268 - 0.001 && lat <= 20.0268 + 0.001) return "商圈";
+        if (lng >= 110.3488 - 0.001 && lng <= 110.3488 + 0.001 && lat >= 20.0359 - 0.001 && lat <= 20.0359 + 0.001) return "商圈";
+        return "海口";
+    }
 }
 
 /// <summary>

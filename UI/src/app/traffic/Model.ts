@@ -17,6 +17,7 @@ export interface IDashBoard {
     weeklyinfos: {
         Name: string, Value: { ordercnt: number, fee: number, distance: number }
     }[],
+    TravellerCnt:NameValueSet[],
     product_ids: NameValueSet[],
     order_type: NameValueSet[],
     traffic_types: NameValueSet[],

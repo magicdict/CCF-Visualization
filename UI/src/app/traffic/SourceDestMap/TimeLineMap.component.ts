@@ -24,6 +24,7 @@ export class TimeLineMapComponent implements OnInit {
         this._map_timeline.baseOption.timeline.playInterval = 5000;
         this._map_timeline.baseOption['bmap'] = CommonFunction.clone(IMapStardard.bmap);
         this._map_timeline.baseOption.series.push(CommonFunction.clone(IMapStardard.series[0]));
+        this._map_timeline.baseOption.tooltip.formatter = this.tooltip;
         this._map_timeline.baseOption.series[0].data = [];
         this._map_timeline.baseOption.series[0].symbolSize = this.symbolSize;
         this._map_timeline.baseOption.timeline.label.formatter = (x: number) => x.toString();
@@ -38,8 +39,6 @@ export class TimeLineMapComponent implements OnInit {
             }
           )
         }
-
-        //console.log(this._map_timeline);
       });
   }
 

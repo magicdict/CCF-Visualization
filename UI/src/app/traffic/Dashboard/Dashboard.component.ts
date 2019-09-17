@@ -15,7 +15,7 @@ export class DashboardComponent implements OnInit {
   _commonFunction = CommonFunction;
   _weeklyOrdercnt = CommonFunction.clone(ILineStardard);
   _weeklyDistance = CommonFunction.clone(ILineStardard);
-
+  _travellerCnt = CommonFunction.clone(ILineStardard);
   //饼图
   _Time = CommonFunction.clone(IPieStardard);
   _Distance = CommonFunction.clone(IPieStardard);
@@ -37,6 +37,12 @@ export class DashboardComponent implements OnInit {
         weeklyOrdercnt.data = this._dashboard.weeklyinfos.map(x=>x.Value.ordercnt);  
         this._weeklyOrdercnt.series.push(weeklyOrdercnt);
 
+        this._travellerCnt.title.text = "";
+        this._travellerCnt.xAxis.data =  this._dashboard.TravellerCnt.map(x=>x.Name);
+        let travellerCnt = CommonFunction.clone(LineItem);
+        travellerCnt.name = "境内外过夜旅客数";
+        travellerCnt.data = this._dashboard.TravellerCnt.map(x=>x.Value);  
+        this._travellerCnt.series.push(travellerCnt);
 
         this._weeklyDistance.title.text = "";
         this._weeklyDistance.xAxis.data =  this._dashboard.weeklyinfos.map(x=>x.Name);  

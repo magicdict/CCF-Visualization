@@ -44,9 +44,16 @@ public class TrafficDashBoard
     public List<NameValueSet<int>> Time = new List<NameValueSet<int>>();
 
 
+    public List<NameValueSet<double>> TravellerCnt = new List<NameValueSet<double>>();
+
+
     public TrafficDashBoard()
     {
         weeklyinfos = TrafficDataSet.weeklyinfos;
+        for (int i = 5; i < 11; i++)
+        {
+            TravellerCnt.Add(new NameValueSet<double>() { Name = i + "月", Value = traveller[i - 5] });
+        }
 
         var sr = new StreamReader(TrafficDataSet.Folder + "basic_info.csv");
         while (!sr.EndOfStream)

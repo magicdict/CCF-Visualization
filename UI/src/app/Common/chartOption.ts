@@ -441,6 +441,10 @@ export const ITimelineStardard = {
         'saveAsImage': {},
       }
     },
+    tooltip: {
+      trigger: 'item',
+      formatter: null,
+    },
     title: [],
     series: []
   },
