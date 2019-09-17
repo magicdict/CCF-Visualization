@@ -208,8 +208,8 @@ export class CommonFunction {
     }
 
 
-    private webapiurl = "http://39.105.206.6:8080/";
-    //private webapiurl = "http://localhost:5000/";
+    //private webapiurl = "http://39.105.206.6:8080/";
+    private webapiurl = "http://localhost:5000/";
 
     public httpRequestGet<T>(serviceUrl: string): Promise<T> {
         return this.http.get(

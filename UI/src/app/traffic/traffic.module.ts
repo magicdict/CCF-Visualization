@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { TrafficRoutingModule } from './traffic-routing.module';
-import { TimeAnaysisResolver, SourceMapResolver, DestMapResolver, DashBoardResolver, CalendarResolver, SimpleDestMapResolver, SimpleSourceMapResolver } from './resolver.service';
+import { TimeAnaysisResolver, SourceMapResolver, DestMapResolver, DashBoardResolver, 
+  CalendarResolver, SimpleDestMapResolver, SimpleSourceMapResolver, TraceResolver } from './resolver.service';
 import { CommonFunction } from '../Common/common';
 import { HttpClientModule } from '@angular/common/http';
 import { MyCommonModule } from '../Common/MyCommon.module';
@@ -13,6 +14,7 @@ import { TimeLineMapComponent } from './SourceDestMap/TimeLineMap.component';
 import { DashboardComponent } from './Dashboard/Dashboard.component';
 import { CalendarComponent } from './Calendar/Calendar.component';
 import { SimpleMapComponent } from './SourceDestMap/SimpleMap.component';
+import { TraceMapComponent } from './SourceDestMap/TraceMap.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +22,7 @@ import { SimpleMapComponent } from './SourceDestMap/SimpleMap.component';
     DashboardComponent,
     TimeLineMapComponent,
     SimpleMapComponent,
+    TraceMapComponent,
     TimeAnalysisComponent,
     CalendarComponent
   ],
@@ -37,7 +40,8 @@ import { SimpleMapComponent } from './SourceDestMap/SimpleMap.component';
     SimpleDestMapResolver,
     SourceMapResolver,
     DestMapResolver,
-    CalendarResolver
+    CalendarResolver,
+    TraceResolver
   ],
   bootstrap: [TrafficMainComponent]
 })

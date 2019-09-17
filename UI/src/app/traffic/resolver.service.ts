@@ -66,6 +66,16 @@ export class DestMapResolver implements Resolve<MapValue[]> {
 }
 
 @Injectable()
+export class TraceResolver implements Resolve<any> {
+    constructor(public commonFunction: CommonFunction) {
+
+    }
+    resolve(_: ActivatedRouteSnapshot, _state: RouterStateSnapshot): any | Observable<any> | Promise<any> {
+        return this.commonFunction.httpRequestGetFromAsset<any>("traffic/json/trace.json");
+    }
+}
+
+@Injectable()
 export class CalendarResolver implements Resolve<IDiaryinfo[]> {
     constructor(public commonFunction: CommonFunction) {
 

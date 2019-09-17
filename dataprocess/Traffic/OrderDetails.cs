@@ -167,17 +167,28 @@ public class OrderDetails
         /// </summary>
         public double lng;
         /// <summary>
-        /// 纬度
+        /// /// 纬度
         /// </summary>
         public double lat;
 
+        const double baiduOffsetlng = 0.0063;
+        const double baiduOffsetlat = 0.0058;
 
         public Geo(double _lng, double _lat)
         {
-            lng = _lng;
-            lat = _lat;
+            lng = Math.Round(_lng + baiduOffsetlng, 4);
+            lat = Math.Round(_lat + baiduOffsetlat, 4);
         }
     }
+
+    public (Geo source, Geo dest) Trace
+    {
+        get
+        {
+            return (starting, dest);
+        }
+    }
+
 
     public OrderDetails(string RawData)
     {
@@ -233,7 +244,8 @@ public class OrderDetails
         if (Cols[11] != "0000-00-00 00:00:00") arrive_time = DateTime.ParseExact(Cols[11], "yyyy-MM-dd HH:mm:ss", CultureInfo.CurrentCulture, DateTimeStyles.None);
         if (Cols[12] != "0000-00-00 00:00:00") departure_time = DateTime.ParseExact(Cols[12], "yyyy-MM-dd HH:mm:ss", CultureInfo.CurrentCulture, DateTimeStyles.None);
         pre_total_fee = Single.Parse(Cols[13]);
-        if (Cols[14] != "NULL"){
+        if (Cols[14] != "NULL")
+        {
             normal_time = int.Parse(Cols[14]);
         }
         bubble_trace_id = Cols[15];

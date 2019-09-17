@@ -450,3 +450,20 @@ export const ITimelineStardard = {
   },
   options: []
 }
+
+export const ILinesItem = {
+  type: 'lines',
+  coordinateSystem: 'bmap',
+  polyline: true,
+  data: [],
+  silent: true,
+  lineStyle: {
+    normal: {
+      color:'purple',
+      opacity: 0.9,
+      width: 1
+    }
+  },
+  progressiveThreshold: 500,
+  progressive: 200
+}

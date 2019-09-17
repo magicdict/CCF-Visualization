@@ -14,8 +14,8 @@ public static class TrafficDataSet
     public static List<NameValueSet<DiaryInfo>> diaryinfos = new List<NameValueSet<DiaryInfo>>();
     public static List<NameValueSet<WeeklyInfo>> weeklyinfos = new List<NameValueSet<WeeklyInfo>>();
 
-    //public static string Folder = @"F:\CCF-Visualization\dataprocess\AfterProcess\海口市-交通流量时空演变特征可视分析\";
-    public static string Folder = @"/root/HelloChinaApi/AfterProcess/海口市-交通流量时空演变特征可视分析/";
+    public static string Folder = @"F:\CCF-Visualization\dataprocess\AfterProcess\海口市-交通流量时空演变特征可视分析\";
+    //public static string Folder = @"/root/HelloChinaApi/AfterProcess/海口市-交通流量时空演变特征可视分析/";
 
 
     public static void LoadData()
@@ -47,7 +47,7 @@ public static class TrafficDataSet
             var info = sr.ReadLine().Split(",");
             diaryinfos.Add(new NameValueSet<DiaryInfo>()
             {
-                Name = DateTime.ParseExact(info[0],"yyyyMMdd",null).ToString("d"),
+                Name = DateTime.ParseExact(info[0],"yyyyMMdd",null).ToString("yyyy/MM/dd"), // d 的时候，操作系统的语言不通，结果也不同。这里强制定义格式
                 Value = new DiaryInfo()
                 {
                     holiday = GetHoliday(info[0]),

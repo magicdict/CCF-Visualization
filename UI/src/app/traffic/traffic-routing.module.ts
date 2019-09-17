@@ -3,10 +3,12 @@ import { Routes, RouterModule } from '@angular/router';
 import { TrafficMainComponent } from './TrafficMain.component';
 import { TimeAnalysisComponent } from './TimeAnalysis/TimeAnalysis.component';
 import { TimeLineMapComponent } from './SourceDestMap/TimeLineMap.component';
-import { SourceMapResolver, DestMapResolver, TimeAnaysisResolver, DashBoardResolver, CalendarResolver, SimpleSourceMapResolver, SimpleDestMapResolver } from './resolver.service';
+import { SourceMapResolver, DestMapResolver, TimeAnaysisResolver, DashBoardResolver, 
+  CalendarResolver, SimpleSourceMapResolver, SimpleDestMapResolver, TraceResolver } from './resolver.service';
 import { DashboardComponent } from './Dashboard/Dashboard.component';
 import { CalendarComponent } from './Calendar/Calendar.component';
 import { SimpleMapComponent } from './SourceDestMap/SimpleMap.component';
+import { TraceMapComponent } from './SourceDestMap/TraceMap.component';
 
 
 const routes: Routes = [
@@ -19,6 +21,7 @@ const routes: Routes = [
       { path: 'simpledestmap', component: SimpleMapComponent , resolve: { data: SimpleDestMapResolver } },
       { path: 'sourcemap', component: TimeLineMapComponent, resolve: { data: SourceMapResolver } },
       { path: 'destmap', component: TimeLineMapComponent , resolve: { data: DestMapResolver } },
+      { path: 'trace', component: TraceMapComponent, resolve: { data: TraceResolver }  },
       { path: 'calendar', component: CalendarComponent , resolve: { data: CalendarResolver } },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
