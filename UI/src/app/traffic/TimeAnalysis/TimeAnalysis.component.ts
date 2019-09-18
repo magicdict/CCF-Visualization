@@ -35,6 +35,7 @@ export class TimeAnalysisComponent implements OnInit {
       }
     );
     time = time.sort();
+    this._traffic_3d.zAxis3D.name = "订单量";
     this._traffic_3d.xAxis3D.data = time;
     this._traffic_3d.yAxis3D.data = weekday;
     //三维数组

@@ -3,6 +3,9 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using static OrderDetails;
+using System.Threading.Tasks;
+using System.Collections.Concurrent;
+using System.Diagnostics;
 
 public static class DataCenterForTraffic
 {
@@ -12,9 +15,7 @@ public static class DataCenterForTraffic
     public const string AfterProcessFolder = @"F:\CCF-Visualization\dataprocess\AfterProcess\海口市-交通流量时空演变特征可视分析\";
     public const string AngularJsonAssetsFolder = @"F:\CCF-Visualization\UI\src\assets\traffic\json\";
     public static List<OrderDetails> orders = new List<OrderDetails>();
-
     public static List<DiaryProperty> diarys = new List<DiaryProperty>();
-
 
     /// <summary>
     /// 加载数据
@@ -38,6 +39,11 @@ public static class DataCenterForTraffic
         Console.WriteLine("Total Record Count:" + orders.Count);
     }
 
+
+    public static bool IsCreateTrace = false;
+    public static bool IsCreate24HoursGeoJson = false;
+    public static bool IsCreateWeekNoGeoJson = false;
+    public static bool IsCreateGeoJson = false;
     /// <summary>
     /// EDA
     /// </summary>
@@ -45,7 +51,7 @@ public static class DataCenterForTraffic
     {
         //基本信息CSV
         var basic_sw_csv = new StreamWriter(AfterProcessFolder + "basic_info.csv");
-
+        var sw = new StreamWriter(EDAFile);
         var TotalOrderCnt = orders.Count;
         var TotalFee = (int)orders.Sum(x => x.pre_total_fee);
         var TotalDistanceKm = (int)orders.Sum(x => x.start_dest_distance_km);
@@ -57,6 +63,71 @@ public static class DataCenterForTraffic
         basic_sw_csv.WriteLine("AvgDistanceKmPerOrder," + Math.Round((double)TotalDistanceKm / TotalOrderCnt, 4));
         basic_sw_csv.WriteLine("FeePerKm," + Math.Round((double)TotalFee / TotalDistanceKm, 2));
         basic_sw_csv.Flush();
+
+        //0:区县
+        var countys = orders.GroupBy(x => x.county).Select(x => (name: x.Key, count: x.Count())).ToList();
+        sw.WriteLine("区号[countys]:");
+        basic_sw_csv.Write("countys,");
+
+        var othersCnt = 0;
+        foreach (var item in countys)
+        {
+            var countyname = "";
+            switch (item.name)
+            {
+                case "460106":
+                    countyname = "龙华区";
+                    break;
+                case "460105":
+                    countyname = "秀英区";
+                    break;
+                case "460107":
+                    countyname = "琼山区";
+                    break;
+                case "460108":
+                    countyname = "美兰区";
+                    break;
+                default:
+                    othersCnt += item.count;
+                    countyname = "其他";
+                    break;
+            }
+            if (countyname == "其他") continue;
+            sw.WriteLine(countyname + ":" + item.count);
+            basic_sw_csv.Write(countyname + "," + item.count + ",");
+        }
+        sw.WriteLine("其他" + ":" + othersCnt);
+        basic_sw_csv.Write("其他" + "," + othersCnt + ",");
+        basic_sw_csv.WriteLine();
+
+        //起止坐标POI
+        sw.WriteLine("起点坐标POI[starting_pois]:");
+        basic_sw_csv.Write("starting_pois,");
+        int poiCnt = 0;
+        foreach (var poiItemName in new string[] { "机场", "火车站", "汽车站", "医院", "商圈" })
+        {
+            var SinglePoiCnt = orders.Count(x => x.starting.POI.Equals(poiItemName));
+            sw.WriteLine(poiItemName + ":" + SinglePoiCnt);
+            basic_sw_csv.Write(poiItemName + "," + SinglePoiCnt + ",");
+            poiCnt += SinglePoiCnt;
+        }
+        basic_sw_csv.Write("其他" + "," + (orders.Count - poiCnt) + ",");
+        basic_sw_csv.WriteLine();
+
+        sw.WriteLine("终点坐标POI[dest_pois]:");
+        basic_sw_csv.Write("dest_pois,");
+        poiCnt = 0;
+        foreach (var poiItemName in new string[] { "机场", "火车站", "汽车站", "医院", "商圈" })
+        {
+            var SinglePoiCnt = orders.Count(x => x.dest.POI.Equals(poiItemName));
+            sw.WriteLine(poiItemName + ":" + SinglePoiCnt);
+            basic_sw_csv.Write(poiItemName + "," + SinglePoiCnt + ",");
+            poiCnt += SinglePoiCnt;
+        }
+        basic_sw_csv.Write("其他" + "," + (orders.Count - poiCnt) + ",");
+        basic_sw_csv.WriteLine();
+
+
 
         //1-1.订单量 按照日期统计 
         //部分订单时间为 0000-00-00 这里按照最后的日期为依据
@@ -94,7 +165,7 @@ public static class DataCenterForTraffic
         var diary_HourCnt = orders.GroupBy(x => x.departure_time.Date)
                                   .Select(x => (name: x.Key, count: x.Count())).ToList();
         diary_HourCnt.Sort((x, y) => { return x.name.CompareTo(y.name); });
-        var sw = new StreamWriter(EDAFile);
+
         sw.WriteLine(DiaryProperty.GetTitle());
         foreach (var diary in diarys)
         {
@@ -108,16 +179,48 @@ public static class DataCenterForTraffic
         }
 
         //3-1：出发和目的分析
-        var startlocs = orders.GroupBy(x => x.starting).Select(x => (point: x.Key, count: x.Count())).ToList();
-        CreateGeoJson("startlocs", startlocs, 1000);
-        var destlocs = orders.GroupBy(x => x.dest).Select(x => (point: x.Key, count: x.Count())).ToList();
-        CreateGeoJson("destlocs", destlocs, 1000);
-        sw.WriteLine("Start Loc Count:" + startlocs.Count);
-        sw.WriteLine("Dest  Loc Count:" + destlocs.Count);
+        if (IsCreateGeoJson)
+        {
+            var Timer = new Stopwatch();
+            Timer.Start();
+            var startlocs = orders.GroupBy(x => x.starting).Select(x => (point: x.Key, count: x.Count())).ToList();
+            CreateGeoJson("startlocs", startlocs, 1000);
+            var destlocs = orders.GroupBy(x => x.dest).Select(x => (point: x.Key, count: x.Count())).ToList();
+            CreateGeoJson("destlocs", destlocs, 1000);
+            sw.WriteLine("Start Loc Count:" + startlocs.Count);
+            sw.WriteLine("Dest  Loc Count:" + destlocs.Count);
+            Console.WriteLine("CreateGeoJson Time Usage(Seconds):" + Timer.Elapsed.TotalSeconds);
+        }
+
         //24小时分时起点终点坐标分析
-        Create24HoursGeoJson();
+        if (IsCreate24HoursGeoJson)
+        {
+            var Timer = new Stopwatch();
+            Timer.Start();
+            Create24HoursGeoJson();
+            Timer.Stop();
+            Console.WriteLine("Create24HoursGeoJson Time Usage(Seconds):" + Timer.Elapsed.TotalSeconds);
+        }
+
+        if (IsCreateWeekNoGeoJson)
+        {
+            var Timer = new Stopwatch();
+            Timer.Start();
+            CreateWeekNoGeoJson();
+            Timer.Stop();
+            Console.WriteLine("CreateWeekNoGeoJson Time Usage(Seconds):" + Timer.Elapsed.TotalSeconds);
+        }
+
         //相同起点和终点的分析
-        CreateSameSourceAndDest();
+        if (IsCreateTrace)
+        {
+            var Timer = new Stopwatch();
+            Timer.Start();
+            CreateSameSourceAndDest();
+            Timer.Stop();
+            Console.WriteLine("CreateSameSourceAndDest Time Usage(Seconds):" + Timer.Elapsed.TotalSeconds);
+
+        }
 
         //8.对于里程数的统计
         basic_sw_csv.Write("Distance,");
@@ -201,21 +304,46 @@ public static class DataCenterForTraffic
 
     private static void CreateSameSourceAndDest()
     {
-        var points = orders.GroupBy(x => x.Trace).Select(x => new { coord = x.Key, Value = x.Count() }).ToList();
-        points.Sort((x, y) => { return y.Value - x.Value; });
-        points = points.Take(500).ToList();
+        //以1_000_000 为单位进行Groupby，然后汇总
+        var TotalCnt = orders.Count();
+        var TimeCnt = TotalCnt / 1_000_000;
+        TimeCnt += 1;
+        var MapReduceDictionary = new ConcurrentDictionary<(Geo source, Geo dest), int>();
+        for (int i = 0; i < TimeCnt; i++)
+        {
+            Console.WriteLine("Time:" + i + "Start");
+            var points = orders.Skip(i * 1_000_000).Take(1_000_000).GroupBy(x => x.Trace).Select(x => (coord: x.Key, value: x.Count())).ToList();
+
+            Parallel.ForEach(points, (item, loop) =>
+            {
+                if (MapReduceDictionary.ContainsKey(item.coord))
+                {
+                    MapReduceDictionary[item.coord] += item.value;
+                }
+                else
+                {
+                    MapReduceDictionary.TryAdd(item.coord, item.value);
+                }
+            });
+        }
+
+        var result = MapReduceDictionary.Select(x => (coord: x.Key, Value: x.Value)).ToList();
+        Console.WriteLine("Start Sort");
+        result.Sort((x, y) => { return y.Value - x.Value; });
+        result = result.Take(500).ToList();
         var json = new StreamWriter(AngularJsonAssetsFolder + "trace.json");
         int Cnt = 0;
         json.WriteLine("[");
-        foreach (var item in points)
+        foreach (var item in result)
         {
             if (Cnt != 0) json.WriteLine(",");
             Cnt++;
-            json.Write("[[" + item.coord.source.lng + "," +  item.coord.source.lat + "],[" + item.coord.dest.lng + "," +  item.coord.dest.lat + "]]");
+            json.Write("[[" + item.coord.source.lng + "," + item.coord.source.lat + "],[" + item.coord.dest.lng + "," + item.coord.dest.lat + "]]");
         }
         json.WriteLine();
         json.WriteLine("]");
         json.Close();
+        GC.Collect();
     }
 
     private static void CreateGeoJson(string filename, List<(OrderDetails.Geo point, System.Int32 count)> points, int downlimit = -1)
@@ -228,16 +356,16 @@ public static class DataCenterForTraffic
             if (item.count > downlimit || downlimit == -1)
             {
                 var point = item.point;
-                var poi = GetPOI(point);
                 if (Cnt != 0) json.WriteLine(",");
                 Cnt++;
-                json.Write(" {\"name\": \"" + poi + Cnt + "\", \"value\": ");
+                json.Write(" {\"name\": \"" + point.POI + Cnt + "\", \"value\": ");
                 json.Write("[" + point.lng + "," + point.lat + "," + item.count + "]}");
             }
         }
         json.WriteLine();
         json.WriteLine("]");
         json.Close();
+        GC.Collect();
     }
 
     private static void Create24HoursGeoJson()
@@ -252,14 +380,13 @@ public static class DataCenterForTraffic
             var startlocs_hour = orders.Where(x => x.departure_time.Hour == hour)
                                        .GroupBy(x => x.starting).Select(x => (point: x.Key, count: x.Count())).ToList();
             startlocs_hour.Sort((x, y) => { return y.count - x.count; });
-            startlocs_hour = startlocs_hour.Take(200).ToList();
+            startlocs_hour = startlocs_hour.Take(300).ToList();
             foreach (var item in startlocs_hour)
             {
                 var point = item.point;
-                var poi = GetPOI(point);
                 if (Cnt != 0) json.WriteLine(",");
                 Cnt++;
-                json.Write(" {\"hour\":" + hour + ",\"name\": \"" + poi + Cnt + "\", \"value\": ");
+                json.Write(" {\"hour\":" + hour + ",\"name\": \"" + point.POI + Cnt + "\", \"value\": ");
                 json.Write("[" + point.lng + "," + point.lat + "," + item.count + "]}");
             }
         }
@@ -274,46 +401,79 @@ public static class DataCenterForTraffic
         //按照小时计算地点
         for (int hour = 0; hour < 24; hour++)
         {
-            var startlocs_hour = orders.Where(x => x.departure_time.Hour == hour)
+            var destlocs_hour = orders.Where(x => x.departure_time.Hour == hour)
                                        .GroupBy(x => x.dest).Select(x => (point: x.Key, count: x.Count())).ToList();
-            startlocs_hour.Sort((x, y) => { return y.count - x.count; });
-            startlocs_hour = startlocs_hour.Take(200).ToList();
-            foreach (var item in startlocs_hour)
+            destlocs_hour.Sort((x, y) => { return y.count - x.count; });
+            destlocs_hour = destlocs_hour.Take(300).ToList();
+            foreach (var item in destlocs_hour)
             {
                 var point = item.point;
-                var poi = GetPOI(point);
                 if (Cnt != 0) json.WriteLine(",");
                 Cnt++;
-                json.Write(" {\"hour\":" + hour + ",\"name\": \"" + poi + Cnt + "\", \"value\": ");
+                json.Write(" {\"hour\":" + hour + ",\"name\": \"" + point.POI + Cnt + "\", \"value\": ");
                 json.Write("[" + point.lng + "," + point.lat + "," + item.count + "]}");
             }
         }
         json.WriteLine();
         json.WriteLine("]");
         json.Close();
+        GC.Collect();
     }
 
-    /// <summary>
-    /// 坐标转换和POI取得
-    /// </summary>
-    /// <param name="Point"></param>
-    /// <returns></returns>
-    public static string GetPOI(Geo point)
+    private static void CreateWeekNoGeoJson()
     {
-        //美兰机场
-        if (point.lng >= 110.4560 && point.lng <= 110.4875 && point.lat >= 19.9420 && point.lat <= 19.9480) return "机场";
-        //火车站东站
-        if (point.lng >= 110.3507 - 0.002 && point.lng <= 110.3507 + 0.002 && point.lat >= 19.9892 - 0.002 && point.lat <= 19.9892 + 0.002) return "火车站";
-        //汽车站
-        if (point.lng >= 110.2962 - 0.001 && point.lng <= 110.2962 + 0.001 && point.lat >= 20.0189 - 0.001 && point.lat <= 20.0189 + 0.001) return "汽车站";
-        //医院
-        if (point.lng >= 110.2933 - 0.001 && point.lng <= 110.2933 + 0.001 && point.lat >= 20.013 - 0.001 && point.lat <= 20.013 + 0.001) return "医院";
-        //日月广场商圈
-        if (point.lng >= 110.355 - 0.001 && point.lng <= 110.355 + 0.001 && point.lat >= 20.0217 - 0.001 && point.lat <= 20.0217 + 0.001) return "商圈";
-        if (point.lng >= 110.3284 - 0.001 && point.lng <= 110.3284 + 0.001 && point.lat >= 20.0268 - 0.001 && point.lat <= 20.0268 + 0.001) return "商圈";
-        if (point.lng >= 110.3488 - 0.001 && point.lng <= 110.3488 + 0.001 && point.lat >= 20.0359 - 0.001 && point.lat <= 20.0359 + 0.001) return "商圈";
-        return "海口";
+        var weekNoList = orders.Select(x => x.WeekNo).Distinct().ToList();
+
+
+        var json = new StreamWriter(AngularJsonAssetsFolder + "startlocs_weekno_PointSize.json");
+        int Cnt = 0;
+        json.WriteLine("[");
+        //按照周次计算地点
+        foreach (var weekno in weekNoList)
+        {
+            var startlocs_weekno = orders.Where(x => x.WeekNo == weekno)
+                                       .GroupBy(x => x.starting).Select(x => (point: x.Key, count: x.Count())).ToList();
+            startlocs_weekno.Sort((x, y) => { return y.count - x.count; });
+            startlocs_weekno = startlocs_weekno.Take(300).ToList();
+            foreach (var item in startlocs_weekno)
+            {
+                var point = item.point;
+                if (Cnt != 0) json.WriteLine(",");
+                Cnt++;
+                json.Write(" {\"weekno\":" + weekno + ",\"name\": \"" + point.POI + Cnt + "\", \"value\": ");
+                json.Write("[" + point.lng + "," + point.lat + "," + item.count + "]}");
+            }
+        }
+        json.WriteLine();
+        json.WriteLine("]");
+        json.Close();
+
+
+        json = new StreamWriter(AngularJsonAssetsFolder + "destlocs_weekno_PointSize.json");
+        Cnt = 0;
+        json.WriteLine("[");
+        //按照周次计算地点
+        foreach (var weekno in weekNoList)
+        {
+            var destlocs_weekno = orders.Where(x => x.WeekNo == weekno)
+                                       .GroupBy(x => x.dest).Select(x => (point: x.Key, count: x.Count())).ToList();
+            destlocs_weekno.Sort((x, y) => { return y.count - x.count; });
+            destlocs_weekno = destlocs_weekno.Take(300).ToList();
+            foreach (var item in destlocs_weekno)
+            {
+                var point = item.point;
+                if (Cnt != 0) json.WriteLine(",");
+                Cnt++;
+                json.Write(" {\"weekno\":" + weekno + ",\"name\": \"" + point.POI + Cnt + "\", \"value\": ");
+                json.Write("[" + point.lng + "," + point.lat + "," + item.count + "]}");
+            }
+        }
+        json.WriteLine();
+        json.WriteLine("]");
+        json.Close();
+        GC.Collect();
     }
+
 }
 
 /// <summary>

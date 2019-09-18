@@ -6,7 +6,7 @@ export const IPieStardard = {
   },
   tooltip: {
     trigger: 'item',
-    formatter: "{a} <br/>{b} : {c} ({d}%)"
+    formatter: "{b} : {c} ({d}%)"
   },
   toolbox: {
     'show': true,

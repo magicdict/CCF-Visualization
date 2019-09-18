@@ -37,7 +37,13 @@ public class TrafficDashBoard
 
     public List<NameValueSet<int>> traffic_types = new List<NameValueSet<int>>();
 
+    public List<NameValueSet<int>> countys = new List<NameValueSet<int>>();
+
     public List<NameValueSet<int>> product_1levels = new List<NameValueSet<int>>();
+
+    public List<NameValueSet<int>> starting_pois = new List<NameValueSet<int>>();
+
+    public List<NameValueSet<int>> dest_pois = new List<NameValueSet<int>>();
 
     public List<NameValueSet<int>> Distance = new List<NameValueSet<int>>();
 
@@ -127,7 +133,24 @@ public class TrafficDashBoard
                         Distance.Add(new NameValueSet<int>() { Name = info[i], Value = int.Parse(info[i + 1]) });
                     }
                     break;
-
+                case nameof(countys):
+                    for (int i = 1; i < info.Length - 1; i += 2)
+                    {
+                        countys.Add(new NameValueSet<int>() { Name = info[i], Value = int.Parse(info[i + 1]) });
+                    }
+                    break;
+                case nameof(starting_pois):
+                    for (int i = 1; i < info.Length - 1; i += 2)
+                    {
+                        starting_pois.Add(new NameValueSet<int>() { Name = info[i], Value = int.Parse(info[i + 1]) });
+                    }
+                    break;
+                case nameof(dest_pois):
+                    for (int i = 1; i < info.Length - 1; i += 2)
+                    {
+                        dest_pois.Add(new NameValueSet<int>() { Name = info[i], Value = int.Parse(info[i + 1]) });
+                    }
+                    break;
             }
         }
         sr.Close();

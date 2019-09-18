@@ -45,8 +45,8 @@
                 <span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>
 
                 <div class="info-box-content">
-                    <span class="info-box-text">每公里费用</span>
-                    <span class="info-box-number">{{this._dashboard.FeePerKm}}</span>
+                    <span class="info-box-text">日期范围</span>
+                    <span class="info-box-number">2017年5月 - 2017年10月</span>
                 </div>
             </div>
         </div>
@@ -57,10 +57,14 @@
                 [chartstyle]="this._commonFunction.chartstyle_Col6">
             </chart>
         </div>
-
         <div class="col-md-6">
-            <chart [options]="_travellerCnt" [title]="'2017年海口市境内外过夜旅客数（万人）'" [boxstyle]="this._commonFunction.boxstyle_Col6"
-                [chartstyle]="this._commonFunction.chartstyle_Col6">
+            <chart [options]="_weeklyDistance" [title]="'订单距离（周单位）'"
+                [boxstyle]="this._commonFunction.boxstyle_Col6" [chartstyle]="this._commonFunction.chartstyle_Col6">
+            </chart>
+        </div>
+        <div class="col-md-6">
+            <chart [options]="_travellerCnt" [title]="'2017年海口市境内外过夜旅客数（万人）'"
+                [boxstyle]="this._commonFunction.boxstyle_Col6" [chartstyle]="this._commonFunction.chartstyle_Col6">
             </chart>
         </div>
     </div>
@@ -74,9 +78,19 @@
             <chart [options]="_Distance" [title]="'路程'" [boxstyle]="this._commonFunction.boxstyle_Col3"
                 [chartstyle]="this._commonFunction.chartstyle_Col3"> </chart>
         </div>
+        <div class="col-md-3">
+            <chart [options]="_countys" [title]="'区县'" [boxstyle]="this._commonFunction.boxstyle_Col3"
+                [chartstyle]="this._commonFunction.chartstyle_Col3"> </chart>
+        </div>
+        <div class="col-md-3">
+            <chart [options]="_traffic_types" [title]="'交通类型'" [boxstyle]="this._commonFunction.boxstyle_Col3"
+                [chartstyle]="this._commonFunction.chartstyle_Col3">
+            </chart>
+        </div>
     </div>
 
     <div class="row">
+ 
         <div class="col-md-3">
             <chart [options]="_product_ids" [title]="'产品线ID'" [boxstyle]="this._commonFunction.boxstyle_Col3"
                 [chartstyle]="this._commonFunction.chartstyle_Col3">
@@ -86,13 +100,13 @@
             <chart [options]="_order_type" [title]="'订单时效'" [boxstyle]="this._commonFunction.boxstyle_Col3"
                 [chartstyle]="this._commonFunction.chartstyle_Col3"> </chart>
         </div>
+
         <div class="col-md-3">
-            <chart [options]="_traffic_types" [title]="'交通类型'" [boxstyle]="this._commonFunction.boxstyle_Col3"
-                [chartstyle]="this._commonFunction.chartstyle_Col3">
-            </chart>
+            <chart [options]="_starting_pois" [title]="'出发地'" [boxstyle]="this._commonFunction.boxstyle_Col3"
+                [chartstyle]="this._commonFunction.chartstyle_Col3"> </chart>
         </div>
         <div class="col-md-3">
-            <chart [options]="_product_1levels" [title]="'一级业务线'" [boxstyle]="this._commonFunction.boxstyle_Col3"
+            <chart [options]="_dest_pois" [title]="'目的地'" [boxstyle]="this._commonFunction.boxstyle_Col3"
                 [chartstyle]="this._commonFunction.chartstyle_Col3"> </chart>
         </div>
     </div>

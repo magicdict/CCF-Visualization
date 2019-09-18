@@ -66,6 +66,27 @@ export class DestMapResolver implements Resolve<MapValue[]> {
 }
 
 @Injectable()
+export class SourceMapWeeKnoResolver implements Resolve<MapValue[]> {
+    constructor(public commonFunction: CommonFunction) {
+
+    }
+    resolve(_: ActivatedRouteSnapshot, _state: RouterStateSnapshot): MapValue[] | Observable<MapValue[]> | Promise<MapValue[]> {
+        return this.commonFunction.httpRequestGetFromAsset<MapValue[]>("traffic/json/startlocs_weekno_PointSize.json");
+    }
+}
+
+@Injectable()
+export class DestMapWeeKnoResolver implements Resolve<MapValue[]> {
+    constructor(public commonFunction: CommonFunction) {
+
+    }
+    resolve(_: ActivatedRouteSnapshot, _state: RouterStateSnapshot): MapValue[] | Observable<MapValue[]> | Promise<MapValue[]> {
+        return this.commonFunction.httpRequestGetFromAsset<MapValue[]>("traffic/json/destlocs_weekno_PointSize.json");
+    }
+}
+
+
+@Injectable()
 export class TraceResolver implements Resolve<any> {
     constructor(public commonFunction: CommonFunction) {
 

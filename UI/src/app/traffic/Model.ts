@@ -21,9 +21,13 @@ export interface IDashBoard {
     product_ids: NameValueSet[],
     order_type: NameValueSet[],
     traffic_types: NameValueSet[],
+    countys:NameValueSet[],
     product_1levels: NameValueSet[],
     Time: NameValueSet[],
     Distance: NameValueSet[],
+    starting_poi:NameValueSet[],
+    starting_pois:NameValueSet[],
+    dest_pois:NameValueSet[],
 }
 
 export interface IDiaryinfo {
@@ -52,5 +56,6 @@ export interface ITimeAnaysis {
 export interface MapValue {
     hour:number,
     name: string,
-    value: number[]
+    value: number[],
+    weekno:number
 }

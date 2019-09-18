@@ -119,6 +119,19 @@ public class OrderDetails
     /// <value></value>
     public int day { get; set; }
 
+    public string WeekNo
+    {
+        get
+        {
+            var d = new DateTime(year, month, day);
+            var startard = DateTime.ParseExact("20170501", "yyyyMMdd", null);
+            var diff = d.Subtract(startard);
+            var weekidx = (int)diff.TotalDays / 7;
+            return startard.AddDays(weekidx * 7).ToString("yyyyMMdd");  
+        }
+    }
+
+
     public enum Eproduct_id
     {
         滴滴专车 = 1,
@@ -178,6 +191,26 @@ public class OrderDetails
         {
             lng = Math.Round(_lng + baiduOffsetlng, 4);
             lat = Math.Round(_lat + baiduOffsetlat, 4);
+        }
+
+        public string POI
+        {
+            get
+            {
+                //美兰机场
+                if (lng >= 110.4560 && lng <= 110.4875 && lat >= 19.9420 && lat <= 19.9480) return "机场";
+                //火车站东站
+                if (lng >= 110.3507 - 0.002 && lng <= 110.3507 + 0.002 && lat >= 19.9892 - 0.002 && lat <= 19.9892 + 0.002) return "火车站";
+                //汽车站
+                if (lng >= 110.2962 - 0.001 && lng <= 110.2962 + 0.001 && lat >= 20.0189 - 0.001 && lat <= 20.0189 + 0.001) return "汽车站";
+                //医院
+                if (lng >= 110.2933 - 0.001 && lng <= 110.2933 + 0.001 && lat >= 20.013 - 0.001 && lat <= 20.013 + 0.001) return "医院";
+                //日月广场商圈
+                if (lng >= 110.355 - 0.001 && lng <= 110.355 + 0.001 && lat >= 20.0217 - 0.001 && lat <= 20.0217 + 0.001) return "商圈";
+                if (lng >= 110.3284 - 0.001 && lng <= 110.3284 + 0.001 && lat >= 20.0268 - 0.001 && lat <= 20.0268 + 0.001) return "商圈";
+                if (lng >= 110.3488 - 0.001 && lng <= 110.3488 + 0.001 && lat >= 20.0359 - 0.001 && lat <= 20.0359 + 0.001) return "商圈";
+                return "海口";
+            }
         }
     }
 
