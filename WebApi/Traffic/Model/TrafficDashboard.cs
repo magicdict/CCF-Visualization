@@ -49,7 +49,7 @@ public class TrafficDashBoard
 
     public List<NameValueSet<int>> Time = new List<NameValueSet<int>>();
 
-
+    public List<NameValueSet<int>> WaitTime = new List<NameValueSet<int>>();
     public List<NameValueSet<double>> TravellerCnt = new List<NameValueSet<double>>();
 
 
@@ -125,6 +125,12 @@ public class TrafficDashBoard
                     for (int i = 1; i < info.Length - 1; i += 2)
                     {
                         Time.Add(new NameValueSet<int>() { Name = info[i], Value = int.Parse(info[i + 1]) });
+                    }
+                    break;
+                case nameof(WaitTime):
+                    for (int i = 1; i < info.Length - 1; i += 2)
+                    {
+                        WaitTime.Add(new NameValueSet<int>() { Name = info[i], Value = int.Parse(info[i + 1]) });
                     }
                     break;
                 case nameof(Distance):

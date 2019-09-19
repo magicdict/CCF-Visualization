@@ -38,6 +38,7 @@ export interface IDashBoard {
     starting_poi: NameValueSet[],
     starting_pois: NameValueSet[],
     dest_pois: NameValueSet[],
+    WaitTime: NameValueSet[]
 }
 
 export interface IDiaryinfo {

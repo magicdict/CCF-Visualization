@@ -6,7 +6,7 @@ import { CommonFunction } from '../Common/common';
 import { HttpClientModule } from '@angular/common/http';
 import { MyCommonModule } from '../Common/MyCommon.module';
 
-import { TrafficMainComponent } from './TrafficMain.component';
+import { TrafficMainComponent } from './TrafficMain/TrafficMain.component';
 import { TimeAnalysisComponent } from './TimeAnalysis/TimeAnalysis.component';
 import { NgxEchartsModule } from 'ngx-echarts';
 
@@ -16,6 +16,9 @@ import { CalendarComponent } from './Calendar/Calendar.component';
 import { SimpleMapComponent } from './SourceDestMap/SimpleMap.component';
 import { TraceMapComponent } from './SourceDestMap/TraceMap.component';
 import { TimeLineMapWeekNoComponent } from './SourceDestMap/TimeLineMapWeekNo.component';
+
+import { TabViewModule } from 'primeng/tabview';
+
 
 @NgModule({
   declarations: [
@@ -32,7 +35,8 @@ import { TimeLineMapWeekNoComponent } from './SourceDestMap/TimeLineMapWeekNo.co
     TrafficRoutingModule,
     HttpClientModule,
     MyCommonModule,
-    NgxEchartsModule
+    NgxEchartsModule,
+    TabViewModule
   ],
   providers: [
     CommonFunction,

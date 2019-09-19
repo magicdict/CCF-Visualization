@@ -61,15 +61,15 @@
             <chart [options]="_travellerCnt" [title]="'2017年海口市境内外过夜旅客数（万人）'"
                 [boxstyle]="this._commonFunction.boxstyle_Col6" [chartstyle]="this._commonFunction.chartstyle_Col6">
             </chart>
-        </div>        
+        </div>
         <div class="col-md-6">
-            <chart [options]="_weeklyDistance" [title]="'订单距离（周单位）'"
-                [boxstyle]="this._commonFunction.boxstyle_Col6" [chartstyle]="this._commonFunction.chartstyle_Col6">
+            <chart [options]="_weeklyDistance" [title]="'订单距离（周单位）'" [boxstyle]="this._commonFunction.boxstyle_Col6"
+                [chartstyle]="this._commonFunction.chartstyle_Col6">
             </chart>
         </div>
         <div class="col-md-6">
-            <chart [options]="_weeklyTypes" [title]="'订单类型百分比（周单位）'"
-                [boxstyle]="this._commonFunction.boxstyle_Col6" [chartstyle]="this._commonFunction.chartstyle_Col6">
+            <chart [options]="_weeklyTypes" [title]="'订单类型百分比（周单位）'" [boxstyle]="this._commonFunction.boxstyle_Col6"
+                [chartstyle]="this._commonFunction.chartstyle_Col6">
             </chart>
         </div>
         <div class="col-md-6">
@@ -81,27 +81,32 @@
     </div>
     <div class="row">
         <div class="col-md-3">
-            <chart [options]="_Time" [title]="'时间'" [boxstyle]="this._commonFunction.boxstyle_Col3"
+            <chart [options]="_WaitTime" [title]="'等候时间（实时订单）'" [boxstyle]="this._commonFunction.boxstyle_Col3"
                 [chartstyle]="this._commonFunction.chartstyle_Col3">
             </chart>
         </div>
         <div class="col-md-3">
-            <chart [options]="_Distance" [title]="'路程'" [boxstyle]="this._commonFunction.boxstyle_Col3"
+            <chart [options]="_Time" [title]="'路程时间'" [boxstyle]="this._commonFunction.boxstyle_Col3"
+                [chartstyle]="this._commonFunction.chartstyle_Col3">
+            </chart>
+        </div>
+        <div class="col-md-3">
+            <chart [options]="_Distance" [title]="'路程公里数'" [boxstyle]="this._commonFunction.boxstyle_Col3"
                 [chartstyle]="this._commonFunction.chartstyle_Col3"> </chart>
         </div>
         <div class="col-md-3">
             <chart [options]="_countys" [title]="'区县'" [boxstyle]="this._commonFunction.boxstyle_Col3"
                 [chartstyle]="this._commonFunction.chartstyle_Col3"> </chart>
         </div>
+
+    </div>
+
+    <div class="row">
         <div class="col-md-3">
             <chart [options]="_traffic_types" [title]="'交通类型'" [boxstyle]="this._commonFunction.boxstyle_Col3"
                 [chartstyle]="this._commonFunction.chartstyle_Col3">
             </chart>
         </div>
-    </div>
-
-    <div class="row">
- 
         <div class="col-md-3">
             <chart [options]="_product_ids" [title]="'产品线ID'" [boxstyle]="this._commonFunction.boxstyle_Col3"
                 [chartstyle]="this._commonFunction.chartstyle_Col3">
@@ -111,7 +116,8 @@
             <chart [options]="_order_type" [title]="'订单时效'" [boxstyle]="this._commonFunction.boxstyle_Col3"
                 [chartstyle]="this._commonFunction.chartstyle_Col3"> </chart>
         </div>
-
+    </div>
+    <div class="row">
         <div class="col-md-3">
             <chart [options]="_starting_pois" [title]="'出发地'" [boxstyle]="this._commonFunction.boxstyle_Col3"
                 [chartstyle]="this._commonFunction.chartstyle_Col3"> </chart>

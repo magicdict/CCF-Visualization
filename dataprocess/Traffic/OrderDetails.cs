@@ -80,6 +80,7 @@ public class OrderDetails
     /// </summary>
     /// <value></value>
     public int normal_time { get; set; }
+
     /// <summary>
     /// TraceID
     /// </summary>
@@ -127,10 +128,22 @@ public class OrderDetails
             var startard = DateTime.ParseExact("20170501", "yyyyMMdd", null);
             var diff = d.Subtract(startard);
             var weekidx = (int)diff.TotalDays / 7;
-            return startard.AddDays(weekidx * 7).ToString("yyyyMMdd");  
+            return startard.AddDays(weekidx * 7).ToString("yyyyMMdd");
         }
     }
 
+    /// <summary>
+    /// 等待时间
+    /// </summary>
+    /// <value></value>
+    public int WaitTime
+    {
+        get
+        {
+            if (arrive_time == DateTime.MinValue || departure_time == DateTime.MinValue) return -1;
+            return (int)arrive_time.Subtract(departure_time).TotalMinutes;
+        }
+    }
 
     public enum Eproduct_id
     {

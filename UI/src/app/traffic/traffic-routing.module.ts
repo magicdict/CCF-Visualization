@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { TrafficMainComponent } from './TrafficMain.component';
+import { TrafficMainComponent } from './TrafficMain/TrafficMain.component';
 import { TimeAnalysisComponent } from './TimeAnalysis/TimeAnalysis.component';
 import { TimeLineMapComponent } from './SourceDestMap/TimeLineMap.component';
 import { SourceMapResolver, DestMapResolver, TimeAnaysisResolver, DashBoardResolver, 

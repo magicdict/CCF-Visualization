@@ -249,6 +249,14 @@ public static class DataCenterForTraffic
         basic_sw_csv.Write("大于60分钟," + orders.Count(x => x.normal_time > 60) + ",");
         basic_sw_csv.WriteLine();
 
+
+        basic_sw_csv.Write("WaitTime,");
+        basic_sw_csv.Write("小于5分钟," + orders.Where(x => x.order_type == Eorder_type.实时).Count(x => x.WaitTime <= 5) + ",");
+        basic_sw_csv.Write("5-15分钟," + orders.Where(x => x.order_type == Eorder_type.实时).Count(x => x.WaitTime > 5 && x.WaitTime <= 15) + ",");
+        basic_sw_csv.Write("15-30分钟," + orders.Where(x => x.order_type == Eorder_type.实时).Count(x => x.WaitTime > 15 && x.WaitTime <= 30) + ",");
+        basic_sw_csv.Write("大于30分钟," + orders.Where(x => x.order_type == Eorder_type.实时).Count(x => x.WaitTime > 30) + ",");
+        basic_sw_csv.WriteLine();
+
         //9 各种区分统计
         //9-0 产品线ID
         var product_ids = orders.GroupBy(x => x.product_id).Select(x => (name: x.Key, count: x.Count())).ToList();

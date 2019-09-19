@@ -23,6 +23,7 @@ export class DashboardComponent implements OnInit {
 
   //饼图
   _Time = CommonFunction.clone(IPieStardard);
+  _WaitTime = CommonFunction.clone(IPieStardard);
   _Distance = CommonFunction.clone(IPieStardard);
   _product_ids = CommonFunction.clone(IPieStardard);
   _countys = CommonFunction.clone(IPieStardard);
@@ -31,7 +32,6 @@ export class DashboardComponent implements OnInit {
   _product_1levels = CommonFunction.clone(IPieStardard);
   _starting_pois = CommonFunction.clone(IPieStardard);
   _dest_pois = CommonFunction.clone(IPieStardard);
-
   ngOnInit(): void {
     this.route.data
       .subscribe((xxx: { data: IDashBoard }) => {
@@ -94,9 +94,13 @@ export class DashboardComponent implements OnInit {
 
         this._Time.legend.data = this._dashboard.Time.map(x => x.Name);
         this._Time.series[0].data = this._dashboard.Time.map(x => { return { name: x.Name, value: x.Value } });
+
+        this._WaitTime.legend.data = this._dashboard.WaitTime.map(x => x.Name);
+        this._WaitTime.series[0].data = this._dashboard.WaitTime.map(x => { return { name: x.Name, value: x.Value } });
+
+
         this._Distance.legend.data = this._dashboard.Distance.map(x => x.Name);
         this._Distance.series[0].data = this._dashboard.Distance.map(x => { return { name: x.Name, value: x.Value } });
-
 
         this._product_ids.legend.data = this._dashboard.product_ids.map(x => x.Name);
         this._product_ids.series[0].data = this._dashboard.product_ids.map(x => { return { name: x.Name, value: x.Value } });
