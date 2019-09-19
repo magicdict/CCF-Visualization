@@ -133,11 +133,23 @@ public static class DataCenterForTraffic
         //部分订单时间为 0000-00-00 这里按照最后的日期为依据
         var sw_csv = new StreamWriter(AfterProcessFolder + "diary_orderCnt.csv");
         var diaryinfos = orders.GroupBy(x => x.year.ToString("D4") + x.month.ToString("D2") + x.day.ToString("D2"))
-                          .Select(x => (name: x.Key, count: x.Count(), distance: x.ToList().Sum(o => o.start_dest_distance_km), fee: x.ToList().Sum(o => o.pre_total_fee))).ToList();
+                            .Select(x => (
+                                name: x.Key, count: x.Count(),
+                                distance: x.ToList().Sum(o => o.start_dest_distance_km),
+                                fee: x.ToList().Sum(o => o.pre_total_fee),
+                                premier: x.Count(x => x.product_1level == Eproduct_1level.专车),
+                                reserve: x.Count(x => x.order_type == Eorder_type.预约),
+                                pickup: x.Count(x => x.traffic_type != Etraffic_type.未知),
+                                airport: x.Count(x => x.starting.POI == "机场" || x.dest.POI == "机场"),
+                                train: x.Count(x => x.starting.POI == "火车站" || x.dest.POI == "火车站"),
+                                longbus: x.Count(x => x.starting.POI == "汽车站" || x.dest.POI == "汽车站")
+                            )).ToList();
         diaryinfos.Sort((x, y) => { return x.name.CompareTo(y.name); });
         foreach (var item in diaryinfos)
         {
-            sw_csv.WriteLine(item.name + "," + item.count + "," + Math.Round(item.distance) + "," + Math.Round(item.fee));
+            sw_csv.WriteLine(item.name + "," + item.count + "," + Math.Round(item.distance) + "," +
+                             Math.Round(item.fee) + "," + item.premier + "," + item.reserve + "," + item.pickup + "," +
+                             item.airport + "," + item.train + "," + item.longbus);
         }
         sw_csv.Close();
 

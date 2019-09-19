@@ -13,9 +13,14 @@ export class DashboardComponent implements OnInit {
   constructor(private route: ActivatedRoute) { }
   _dashboard: IDashBoard;
   _commonFunction = CommonFunction;
+
   _weeklyOrdercnt = CommonFunction.clone(ILineStardard);
-  _weeklyDistance = CommonFunction.clone(ILineStardard);
   _travellerCnt = CommonFunction.clone(ILineStardard);
+
+  _weeklyDistance = CommonFunction.clone(ILineStardard);
+  _weeklyTypes = CommonFunction.clone(ILineStardard);
+  _weeklyTransport = CommonFunction.clone(ILineStardard);
+
   //饼图
   _Time = CommonFunction.clone(IPieStardard);
   _Distance = CommonFunction.clone(IPieStardard);
@@ -48,9 +53,44 @@ export class DashboardComponent implements OnInit {
         this._weeklyDistance.title.text = "";
         this._weeklyDistance.xAxis.data = this._dashboard.weeklyinfos.map(x => x.Name);
         let weeklydistance = CommonFunction.clone(LineItem);
-        weeklydistance.name = "周公里数";
+        weeklydistance.name = "公里数";
         weeklydistance.data = this._dashboard.weeklyinfos.map(x => CommonFunction.roundvalue(x.Value.distance / x.Value.ordercnt));
         this._weeklyDistance.series.push(weeklydistance);
+
+
+        this._weeklyTypes.title.text = "";
+        this._weeklyTypes.xAxis.data = this._dashboard.weeklyinfos.map(x => x.Name);
+        let weeklyPremier = CommonFunction.clone(LineItem);
+        weeklyPremier.name = "专车数";
+        weeklyPremier.data = this._dashboard.weeklyinfos.map(x => CommonFunction.roundvalue(x.Value.premier * 100 / x.Value.ordercnt));
+        this._weeklyTypes.series.push(weeklyPremier);
+
+        let weeklyReserve = CommonFunction.clone(LineItem);
+        weeklyReserve.name = "预约数";
+        weeklyReserve.data = this._dashboard.weeklyinfos.map(x => CommonFunction.roundvalue(x.Value.reserve * 100 / x.Value.ordercnt));
+        this._weeklyTypes.series.push(weeklyReserve);
+
+        let weeklyPickup = CommonFunction.clone(LineItem);
+        weeklyPickup.name = "接机送机数";
+        weeklyPickup.data = this._dashboard.weeklyinfos.map(x => CommonFunction.roundvalue(x.Value.pickup * 100 / x.Value.ordercnt));
+        this._weeklyTypes.series.push(weeklyPickup);
+        this._weeklyTypes.legend.data = ["专车数", "预约数", "接机送机数"]
+
+        this._weeklyTransport.title.text = "";
+        this._weeklyTransport.xAxis.data = this._dashboard.weeklyinfos.map(x => x.Name);
+        let weeklyAirport = CommonFunction.clone(LineItem);
+        weeklyAirport.name = "机场";
+        weeklyAirport.data = this._dashboard.weeklyinfos.map(x => CommonFunction.roundvalue((x.Value.airport) * 100 / x.Value.ordercnt));
+        this._weeklyTransport.series.push(weeklyAirport);
+        let weeklyTrain = CommonFunction.clone(LineItem);
+        weeklyTrain.name = "火车站";
+        weeklyTrain.data = this._dashboard.weeklyinfos.map(x => CommonFunction.roundvalue((x.Value.train) * 100 / x.Value.ordercnt));
+        this._weeklyTransport.series.push(weeklyTrain);
+        let weeklyLongbus = CommonFunction.clone(LineItem);
+        weeklyLongbus.name = "汽车站";
+        weeklyLongbus.data = this._dashboard.weeklyinfos.map(x => CommonFunction.roundvalue((x.Value.longbus) * 100 / x.Value.ordercnt));
+        this._weeklyTransport.series.push(weeklyLongbus);
+        this._weeklyTransport.legend.data = ["机场", "火车站", "汽车站"]
 
         this._Time.legend.data = this._dashboard.Time.map(x => x.Name);
         this._Time.series[0].data = this._dashboard.Time.map(x => { return { name: x.Name, value: x.Value } });

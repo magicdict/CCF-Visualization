@@ -58,15 +58,26 @@
             </chart>
         </div>
         <div class="col-md-6">
+            <chart [options]="_travellerCnt" [title]="'2017年海口市境内外过夜旅客数（万人）'"
+                [boxstyle]="this._commonFunction.boxstyle_Col6" [chartstyle]="this._commonFunction.chartstyle_Col6">
+            </chart>
+        </div>        
+        <div class="col-md-6">
             <chart [options]="_weeklyDistance" [title]="'订单距离（周单位）'"
                 [boxstyle]="this._commonFunction.boxstyle_Col6" [chartstyle]="this._commonFunction.chartstyle_Col6">
             </chart>
         </div>
         <div class="col-md-6">
-            <chart [options]="_travellerCnt" [title]="'2017年海口市境内外过夜旅客数（万人）'"
+            <chart [options]="_weeklyTypes" [title]="'订单类型百分比（周单位）'"
                 [boxstyle]="this._commonFunction.boxstyle_Col6" [chartstyle]="this._commonFunction.chartstyle_Col6">
             </chart>
         </div>
+        <div class="col-md-6">
+            <chart [options]="_weeklyTransport" [title]="'长途客运相关订单百分比（周单位）'"
+                [boxstyle]="this._commonFunction.boxstyle_Col6" [chartstyle]="this._commonFunction.chartstyle_Col6">
+            </chart>
+        </div>
+
     </div>
     <div class="row">
         <div class="col-md-3">

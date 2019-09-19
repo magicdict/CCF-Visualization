@@ -47,7 +47,7 @@ public static class TrafficDataSet
             var info = sr.ReadLine().Split(",");
             diaryinfos.Add(new NameValueSet<DiaryInfo>()
             {
-                Name = DateTime.ParseExact(info[0],"yyyyMMdd",null).ToString("yyyy/MM/dd"), // d 的时候，操作系统的语言不通，结果也不同。这里强制定义格式
+                Name = DateTime.ParseExact(info[0], "yyyyMMdd", null).ToString("yyyy/MM/dd"), // d 的时候，操作系统的语言不通，结果也不同。这里强制定义格式
                 Value = new DiaryInfo()
                 {
                     holiday = GetHoliday(info[0]),
@@ -56,7 +56,15 @@ public static class TrafficDataSet
                     distance = int.Parse(info[2]),
                     fee = int.Parse(info[3]),
                     weather = weathers[info[0]],
-                    Weekno = GetWeekNo(info[0])
+                    Weekno = GetWeekNo(info[0]),
+
+                    premier = int.Parse(info[4]),
+                    reserve = int.Parse(info[5]),
+                    pickup = int.Parse(info[6]),
+
+                    airport = int.Parse(info[7]),
+                    train = int.Parse(info[8]),
+                    longbus = int.Parse(info[9])
                 }
             });
         }
@@ -70,7 +78,16 @@ public static class TrafficDataSet
                 {
                     ordercnt = x.Sum(x => x.Value.ordercnt),
                     distance = x.Sum(x => x.Value.distance),
-                    fee = x.Sum(x => x.Value.fee)
+                    fee = x.Sum(x => x.Value.fee),
+
+                    premier = x.Sum(x => x.Value.premier),
+                    reserve = x.Sum(x => x.Value.reserve),
+                    pickup = x.Sum(x => x.Value.pickup),
+
+                    airport = x.Sum(x => x.Value.airport),
+                    train = x.Sum(x => x.Value.train),
+                    longbus = x.Sum(x => x.Value.longbus)
+
                 }
             }
         ).ToList();
@@ -140,6 +157,20 @@ public class DiaryInfo
     public bool isWorkday { get; set; }
 
     public string Weekno { get; set; }
+
+    public int premier { get; set; }
+
+    public int reserve { get; set; }
+
+    public int pickup { get; set; }
+
+    public int airport { get; set; }
+
+    public int train { get; set; }
+
+    public int longbus { get; set; }
+
+
 }
 
 /// <summary>
@@ -153,6 +184,18 @@ public class WeeklyInfo
 
     public int fee { get; set; }
 
+    public int premier { get; set; }
+
+    public int reserve { get; set; }
+
+    public int pickup { get; set; }
+
+
+    public int airport { get; set; }
+
+    public int train { get; set; }
+
+    public int longbus { get; set; }
 }
 
 /// <summary>

@@ -15,19 +15,29 @@ export interface IDashBoard {
     AvgFeeEveryDay: number;
     AvgDistanceKmEveryDay: number;
     weeklyinfos: {
-        Name: string, Value: { ordercnt: number, fee: number, distance: number }
+        Name: string, Value: {
+            ordercnt: number,
+            fee: number,
+            distance: number,
+            premier: number,
+            reserve: number,
+            pickup: number,
+            airport: number,
+            train: number,
+            longbus: number
+        }
     }[],
-    TravellerCnt:NameValueSet[],
+    TravellerCnt: NameValueSet[],
     product_ids: NameValueSet[],
     order_type: NameValueSet[],
     traffic_types: NameValueSet[],
-    countys:NameValueSet[],
+    countys: NameValueSet[],
     product_1levels: NameValueSet[],
     Time: NameValueSet[],
     Distance: NameValueSet[],
-    starting_poi:NameValueSet[],
-    starting_pois:NameValueSet[],
-    dest_pois:NameValueSet[],
+    starting_poi: NameValueSet[],
+    starting_pois: NameValueSet[],
+    dest_pois: NameValueSet[],
 }
 
 export interface IDiaryinfo {
@@ -54,8 +64,8 @@ export interface ITimeAnaysis {
 }
 
 export interface MapValue {
-    hour:number,
+    hour: number,
     name: string,
     value: number[],
-    weekno:number
+    weekno: number
 }
