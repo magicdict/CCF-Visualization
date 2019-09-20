@@ -3,7 +3,7 @@ using System.IO;
 
 public class TrafficDashBoard
 {
-    public List<NameValueSet<WeeklyInfo>> weeklyinfos = new List<NameValueSet<WeeklyInfo>>();
+    public List<NameValueSet<AggeInfo>> weeklyinfos = new List<NameValueSet<AggeInfo>>();
 
     public int TotalOrderCnt;
     public int TotalFee;
@@ -47,7 +47,7 @@ public class TrafficDashBoard
 
     public List<NameValueSet<int>> Distance = new List<NameValueSet<int>>();
 
-    public List<NameValueSet<int>> Time = new List<NameValueSet<int>>();
+    public List<NameValueSet<int>> NormalTime = new List<NameValueSet<int>>();
 
     public List<NameValueSet<int>> WaitTime = new List<NameValueSet<int>>();
     public List<NameValueSet<double>> TravellerCnt = new List<NameValueSet<double>>();
@@ -121,10 +121,10 @@ public class TrafficDashBoard
                         product_1levels.Add(new NameValueSet<int>() { Name = info[i], Value = int.Parse(info[i + 1]) });
                     }
                     break;
-                case nameof(Time):
+                case nameof(NormalTime):
                     for (int i = 1; i < info.Length - 1; i += 2)
                     {
-                        Time.Add(new NameValueSet<int>() { Name = info[i], Value = int.Parse(info[i + 1]) });
+                        NormalTime.Add(new NameValueSet<int>() { Name = info[i], Value = int.Parse(info[i + 1]) });
                     }
                     break;
                 case nameof(WaitTime):

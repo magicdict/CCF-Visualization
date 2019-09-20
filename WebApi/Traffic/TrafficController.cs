@@ -30,7 +30,7 @@ public class TrafficController : ControllerBase
 
 
     [HttpGet("GetDiaryinfos")]
-    public ActionResult<List<NameValueSet<DiaryInfo>>> GetDiaryinfos()
+    public ActionResult<List<NameValueSet<AggeInfo>>> GetDiaryinfos()
     {
         return TrafficDataSet.diaryinfos;
     }

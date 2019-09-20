@@ -106,7 +106,7 @@ export const ILineStardard = {
   },
   xAxis: {
     type: 'category',
-    boundaryGap: false,
+    boundaryGap: true,  //坐标轴两边留白策略，类目轴和非类目轴的设置和表现不一样。
     data: []
   },
   yAxis: {
@@ -386,7 +386,7 @@ export const ICalendarStardard = {
   calendar: [{
     left: 'center',
     top: 'middle',
-    cellSize: [65, 65],
+    cellSize: [80, 70],
     yearLabel: { show: false },
     orient: 'vertical',
     dayLabel: {

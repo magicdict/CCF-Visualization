@@ -11,8 +11,8 @@ public static class TrafficDataSet
     /// <returns></returns>
     public static List<NameValueSet<int>> weekday_hour_orderCnt = new List<NameValueSet<int>>();
     public static Dictionary<string, Weather> weathers = new Dictionary<string, Weather>();
-    public static List<NameValueSet<DiaryInfo>> diaryinfos = new List<NameValueSet<DiaryInfo>>();
-    public static List<NameValueSet<WeeklyInfo>> weeklyinfos = new List<NameValueSet<WeeklyInfo>>();
+    public static List<NameValueSet<AggeInfo>> diaryinfos = new List<NameValueSet<AggeInfo>>();
+    public static List<NameValueSet<AggeInfo>> weeklyinfos = new List<NameValueSet<AggeInfo>>();
 
     public static string Folder = @"F:\CCF-Visualization\dataprocess\AfterProcess\海口市-交通流量时空演变特征可视分析\";
     //public static string Folder = @"/root/HelloChinaApi/AfterProcess/海口市-交通流量时空演变特征可视分析/";
@@ -20,7 +20,6 @@ public static class TrafficDataSet
 
     public static void LoadData()
     {
-        //协议统计的加载
 
         var sr = new StreamReader(Folder + "weekday_hour_orderCnt.csv");
         while (!sr.EndOfStream)
@@ -41,43 +40,61 @@ public static class TrafficDataSet
         }
         sr.Close();
 
-        sr = new StreamReader(Folder + "diary_orderCnt.csv");
+        sr = new StreamReader(Folder + "diary_info.csv");
         while (!sr.EndOfStream)
         {
             var info = sr.ReadLine().Split(",");
-            diaryinfos.Add(new NameValueSet<DiaryInfo>()
+            diaryinfos.Add(new NameValueSet<AggeInfo>()
             {
                 Name = DateTime.ParseExact(info[0], "yyyyMMdd", null).ToString("yyyy/MM/dd"), // d 的时候，操作系统的语言不通，结果也不同。这里强制定义格式
-                Value = new DiaryInfo()
+                Value = new AggeInfo()
                 {
                     holiday = GetHoliday(info[0]),
                     isWorkday = IsWorkDay(info[0]),
-                    ordercnt = int.Parse(info[1]),
-                    distance = int.Parse(info[2]),
-                    fee = int.Parse(info[3]),
                     weather = weathers[info[0]],
                     Weekno = GetWeekNo(info[0]),
 
-                    premier = int.Parse(info[4]),
-                    reserve = int.Parse(info[5]),
-                    pickup = int.Parse(info[6]),
+                    ordercnt = int.Parse(info[1]),
+                    distance = int.Parse(info[2]),
+                    normaltime = int.Parse(info[3]),
+                    fee = int.Parse(info[4]),
 
-                    airport = int.Parse(info[7]),
-                    train = int.Parse(info[8]),
-                    longbus = int.Parse(info[9])
+                    premier = int.Parse(info[5]),
+                    reserve = int.Parse(info[6]),
+                    pickup = int.Parse(info[7]),
+
+                    airport = int.Parse(info[8]),
+                    train = int.Parse(info[9]),
+                    longbus = int.Parse(info[10]),
+
+                    waittime_1 = int.Parse(info[11]),
+                    waittime_2 = int.Parse(info[12]),
+                    waittime_3 = int.Parse(info[13]),
+                    waittime_4 = int.Parse(info[14]),
+
+                    distance_1 = int.Parse(info[15]),
+                    distance_2 = int.Parse(info[16]),
+                    distance_3 = int.Parse(info[17]),
+                    distance_4 = int.Parse(info[18]),
+
+                    normaltime_1 = int.Parse(info[19]),
+                    normaltime_2 = int.Parse(info[20]),
+                    normaltime_3 = int.Parse(info[21]),
+                    normaltime_4 = int.Parse(info[22]),
                 }
             });
         }
         sr.Close();
 
         weeklyinfos = diaryinfos.GroupBy(x => x.Value.Weekno).Select(
-            x => new NameValueSet<WeeklyInfo>()
+            x => new NameValueSet<AggeInfo>()
             {
                 Name = x.Key,
-                Value = new WeeklyInfo()
+                Value = new AggeInfo()
                 {
                     ordercnt = x.Sum(x => x.Value.ordercnt),
                     distance = x.Sum(x => x.Value.distance),
+                    normaltime = x.Sum(x => x.Value.normaltime),
                     fee = x.Sum(x => x.Value.fee),
 
                     premier = x.Sum(x => x.Value.premier),
@@ -86,8 +103,22 @@ public static class TrafficDataSet
 
                     airport = x.Sum(x => x.Value.airport),
                     train = x.Sum(x => x.Value.train),
-                    longbus = x.Sum(x => x.Value.longbus)
+                    longbus = x.Sum(x => x.Value.longbus),
 
+                    waittime_1 = x.Sum(x => x.Value.waittime_1),
+                    waittime_2 = x.Sum(x => x.Value.waittime_2),
+                    waittime_3 = x.Sum(x => x.Value.waittime_3),
+                    waittime_4 = x.Sum(x => x.Value.waittime_4),
+
+                    distance_1 = x.Sum(x => x.Value.distance_1),
+                    distance_2 = x.Sum(x => x.Value.distance_2),
+                    distance_3 = x.Sum(x => x.Value.distance_3),
+                    distance_4 = x.Sum(x => x.Value.distance_4),
+
+                    normaltime_1 = x.Sum(x => x.Value.normaltime_1),
+                    normaltime_2 = x.Sum(x => x.Value.normaltime_2),
+                    normaltime_3 = x.Sum(x => x.Value.normaltime_3),
+                    normaltime_4 = x.Sum(x => x.Value.normaltime_4),
                 }
             }
         ).ToList();
@@ -142,13 +173,19 @@ public static class TrafficDataSet
 }
 
 
-public class DiaryInfo
+/// <summary>
+/// 周信息
+/// </summary>
+public class AggeInfo
 {
     public Weather weather { get; set; }
+    public string Weekno { get; set; }
 
     public int ordercnt { get; set; }
 
     public int distance { get; set; }
+
+    public int normaltime { get; set; }
 
     public int fee { get; set; }
 
@@ -156,7 +193,6 @@ public class DiaryInfo
 
     public bool isWorkday { get; set; }
 
-    public string Weekno { get; set; }
 
     public int premier { get; set; }
 
@@ -170,32 +206,20 @@ public class DiaryInfo
 
     public int longbus { get; set; }
 
+    public int waittime_1 { get; set; }
+    public int waittime_2 { get; set; }
+    public int waittime_3 { get; set; }
+    public int waittime_4 { get; set; }
 
-}
+    public int distance_1 { get; set; }
+    public int distance_2 { get; set; }
+    public int distance_3 { get; set; }
+    public int distance_4 { get; set; }
 
-/// <summary>
-/// 周信息
-/// </summary>
-public class WeeklyInfo
-{
-    public int ordercnt { get; set; }
-
-    public int distance { get; set; }
-
-    public int fee { get; set; }
-
-    public int premier { get; set; }
-
-    public int reserve { get; set; }
-
-    public int pickup { get; set; }
-
-
-    public int airport { get; set; }
-
-    public int train { get; set; }
-
-    public int longbus { get; set; }
+    public int normaltime_1 { get; set; }
+    public int normaltime_2 { get; set; }
+    public int normaltime_3 { get; set; }
+    public int normaltime_4 { get; set; }
 }
 
 /// <summary>

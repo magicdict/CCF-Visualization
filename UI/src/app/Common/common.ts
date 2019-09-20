@@ -21,12 +21,19 @@ export class CommonFunction {
 
 
     public static boxstyle_Col6 = { 'width': '800px', 'height': '400px' };
-    public static chartstyle_Col6 = { 'width': '750px', 'height': '350px' };   
+    public static chartstyle_Col6 = { 'width': '750px', 'height': '350px' };  
+    public static boxstyle_Col6_Row2 = { 'width': '800px', 'height': '820px' };
+    public static chartstyle_Col6_Row2 = { 'width': '750px', 'height': '770px' };    
+
     public static boxstyle_Col8 = { 'width': '1000px', 'height': '400px' };
     public static chartstyle_Col8 = { 'width': '950px', 'height': '350px' };    
 
     public static boxstyle_Col8_Row2 = { 'width': '1000px', 'height': '820px' };
     public static chartstyle_Col8_Row2 = { 'width': '950px', 'height': '770px' };   
+
+    public static boxstyle_Col9 = { 'width': '1220px', 'height': '400px' };
+    public static chartstyle_Col9 = { 'width': '1170px', 'height': '350px' };    
+
 
     public static boxstyle_Col12_Row2 = { 'width': '1600px', 'height': '820px' };
     public static chartstyle_Col12_Row2 = { 'width': '1550px', 'height': '770px' };  
