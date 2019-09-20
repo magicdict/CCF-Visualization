@@ -21,23 +21,23 @@ export class CommonFunction {
 
 
     public static boxstyle_Col6 = { 'width': '800px', 'height': '400px' };
-    public static chartstyle_Col6 = { 'width': '750px', 'height': '350px' };  
+    public static chartstyle_Col6 = { 'width': '750px', 'height': '350px' };
     public static boxstyle_Col6_Row2 = { 'width': '800px', 'height': '820px' };
-    public static chartstyle_Col6_Row2 = { 'width': '750px', 'height': '770px' };    
+    public static chartstyle_Col6_Row2 = { 'width': '750px', 'height': '770px' };
 
     public static boxstyle_Col8 = { 'width': '1000px', 'height': '400px' };
-    public static chartstyle_Col8 = { 'width': '950px', 'height': '350px' };    
+    public static chartstyle_Col8 = { 'width': '950px', 'height': '350px' };
 
     public static boxstyle_Col8_Row2 = { 'width': '1000px', 'height': '820px' };
-    public static chartstyle_Col8_Row2 = { 'width': '950px', 'height': '770px' };   
+    public static chartstyle_Col8_Row2 = { 'width': '950px', 'height': '770px' };
 
     public static boxstyle_Col9 = { 'width': '1220px', 'height': '400px' };
-    public static chartstyle_Col9 = { 'width': '1170px', 'height': '350px' };    
+    public static chartstyle_Col9 = { 'width': '1170px', 'height': '350px' };
 
 
     public static boxstyle_Col12_Row2 = { 'width': '1600px', 'height': '820px' };
-    public static chartstyle_Col12_Row2 = { 'width': '1550px', 'height': '770px' };  
-    
+    public static chartstyle_Col12_Row2 = { 'width': '1550px', 'height': '770px' };
+
     public static GetWeatherImageByText(text: string): string {
         if (CommonFunction.IsNullOrEmpty(text)) { return "assets/image/weathy/weathy_01.png" }
         if (text === "阴") {
@@ -76,6 +76,22 @@ export class CommonFunction {
         return "assets/image/weathy/weathy_01.png";
     }
 
+    public static getImage(weather: string) {
+        if (weather == "多云") return '{cloudy|}';
+        if (weather == "大雨") return '{bigrain|}';
+        if (weather == "雷阵雨") return '{thunderstorm|}'
+        if (weather == "阵雨") return '{rain|}'
+        if (weather == "中到大雨") return '{rain|}'
+        if (weather == "小到中雨") return '{rain|}'
+        if (weather == "中雨") return '{rain|}'
+
+        if (weather == "大暴雨") return '{greatrain|}'
+        if (weather == "暴雨") return '{greatrain|}'
+        if (weather == "大到暴雨") return '{greatrain|}'
+        
+
+        return weather;
+    }
 
     /* 工具类 */
     public static checkNumbericRanger(text: string, max: number, min: number): number {
@@ -215,8 +231,8 @@ export class CommonFunction {
     }
 
 
-    //private webapiurl = "http://39.105.206.6:8080/";
-    private webapiurl = "http://localhost:5000/";
+    private webapiurl = "http://39.105.206.6:8080/";
+    //private webapiurl = "http://localhost:5000/";
 
     public httpRequestGet<T>(serviceUrl: string): Promise<T> {
         return this.http.get(

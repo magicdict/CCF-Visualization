@@ -3,24 +3,51 @@
         日期分析
     </h1>
     <ol class="breadcrumb">
-        <li><a href="/security/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="/traffic/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
         <li class="active">日期分析</li>
     </ol>
 </section>
 <p-tabView>
     <p-tabPanel [header]="'日历(5月-6月)'">
-        <chart [options]="_calendar56" [title]="'日历(5月-6月)'" [boxstyle]="this._commonFunction.boxstyle_Col6_Row2"
-            [chartstyle]="this._commonFunction.chartstyle_Col6_Row2">
-        </chart>
+        <div class="row">
+            <div class="col-md-6">
+                <chart [options]="_calendar5" [title]="'日历(5月)'" [boxstyle]="this._commonFunction.boxstyle_Col6_Row2"
+                    [chartstyle]="this._commonFunction.chartstyle_Col6_Row2">
+                </chart>
+            </div>
+            <div class="col-md-6">
+                <chart [options]="_calendar6" [title]="'日历(6月)'" [boxstyle]="this._commonFunction.boxstyle_Col6_Row2"
+                    [chartstyle]="this._commonFunction.chartstyle_Col6_Row2">
+                </chart>
+            </div>
+        </div>
     </p-tabPanel>
     <p-tabPanel [header]="'日历(7月-8月)'">
-        <chart [options]="_calendar78" [title]="'日历(7月-8月)'" [boxstyle]="this._commonFunction.boxstyle_Col6_Row2"
-            [chartstyle]="this._commonFunction.chartstyle_Col6_Row2">
-        </chart>
-    </p-tabPanel>  
-    <p-tabPanel [header]="'日历(9月-10月)'">
-        <chart [options]="_calendar910" [title]="'日历(9月-10月)'" [boxstyle]="this._commonFunction.boxstyle_Col6_Row2"
-            [chartstyle]="this._commonFunction.chartstyle_Col6_Row2">
-        </chart>
+        <div class="row">
+            <div class="col-md-6">
+                <chart [options]="_calendar7" [title]="'日历(7月)'" [boxstyle]="this._commonFunction.boxstyle_Col6_Row2"
+                    [chartstyle]="this._commonFunction.chartstyle_Col6_Row2">
+                </chart>
+            </div>
+            <div class="col-md-6">
+                <chart [options]="_calendar8" [title]="'日历(8月)'" [boxstyle]="this._commonFunction.boxstyle_Col6_Row2"
+                    [chartstyle]="this._commonFunction.chartstyle_Col6_Row2">
+                </chart>
+            </div>
+        </div>
     </p-tabPanel>
-</p-tabView> 
+    <p-tabPanel [header]="'日历(9月-10月)'">
+        <div class="row">
+            <div class="col-md-6">
+                <chart [options]="_calendar9" [title]="'日历(9月)'" [boxstyle]="this._commonFunction.boxstyle_Col6_Row2"
+                    [chartstyle]="this._commonFunction.chartstyle_Col6_Row2">
+                </chart>
+            </div>
+            <div class="col-md-6">
+                <chart [options]="_calendar10" [title]="'日历(10月)'" [boxstyle]="this._commonFunction.boxstyle_Col6_Row2"
+                    [chartstyle]="this._commonFunction.chartstyle_Col6_Row2">
+                </chart>
+            </div>
+        </div>
+    </p-tabPanel>
+</p-tabView>

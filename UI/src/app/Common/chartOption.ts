@@ -386,7 +386,7 @@ export const ICalendarStardard = {
   calendar: [{
     left: 'center',
     top: 'middle',
-    cellSize: [80, 70],
+    cellSize: [100, 100],
     yearLabel: { show: false },
     orient: 'vertical',
     dayLabel: {
@@ -425,6 +425,8 @@ export const ICalendarItem_heatmap = {
   data: []
 };
 
+
+
 export const ITimelineStardard = {
   baseOption: {
     timeline: {
@@ -432,8 +434,8 @@ export const ITimelineStardard = {
       autoPlay: true,
       playInterval: 1000,
       data: [],
-      top:20,
-      label:{formatter:null}
+      top: 20,
+      label: { formatter: null }
     },
     toolbox: {
       'show': true,
@@ -459,11 +461,51 @@ export const ILinesItem = {
   silent: true,
   lineStyle: {
     normal: {
-      color:'purple',
+      color: 'purple',
       opacity: 0.9,
       width: 1
     }
   },
   progressiveThreshold: 500,
   progressive: 200
+}
+
+
+export const Rich_Weathy = {
+  sunny: {
+    backgroundColor: {
+      image: 'assets/image/weathy/weathy_01.png'
+    },
+    height: 16
+  },
+  cloudy: {
+    backgroundColor: {
+      image: 'assets/image/weathy/weathy_04.png'
+    },
+    height: 16
+  },
+  thunderstorm: {
+    backgroundColor: {
+      image: 'assets/image/weathy/weathy_10.png'
+    },
+    height: 16
+  },
+  bigrain: {
+    backgroundColor: {
+      image: 'assets/image/weathy/weathy_08.png'
+    },
+    height: 16
+  },
+  rain: {
+    backgroundColor: {
+      image: 'assets/image/weathy/weathy_07.png'
+    },
+    height: 16
+  },
+  greatrain: {
+    backgroundColor: {
+      image: 'assets/image/weathy/weathy_09.png'
+    },
+    height: 16
+  }
 }
