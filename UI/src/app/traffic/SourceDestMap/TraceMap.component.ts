@@ -19,9 +19,9 @@ export class TraceMapComponent implements OnInit {
     this.route.data
       .subscribe((xxx: { data: [][] }) => {
         this._map['bmap'] = CommonFunction.clone(IMapStardard.bmap);
-        this._map.series.push(CommonFunction.clone(ILinesItem));
-        this._map.series[0].data = xxx.data;
-        console.log(this._map);
+        let lines = CommonFunction.clone(ILinesItem);
+        lines.data = xxx.data;
+        this._map.series.push(lines);
       });
   }
 }

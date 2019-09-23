@@ -83,6 +83,8 @@ public static class TrafficDataSet
                     normaltime_2 = int.Parse(info[22]),
                     normaltime_3 = int.Parse(info[23]),
                     normaltime_4 = int.Parse(info[24]),
+
+                    travel = int.Parse(info[25])
                 }
             });
         }
@@ -105,6 +107,7 @@ public static class TrafficDataSet
 
                     airport = x.Sum(x => x.Value.airport),
                     train = x.Sum(x => x.Value.train),
+                    travel = x.Sum(x=>x.Value.travel),
                     longbus = x.Sum(x => x.Value.longbus),
                     school = x.Sum(x => x.Value.school),
                     hospital = x.Sum(x => x.Value.hospital),
@@ -215,6 +218,7 @@ public class AggeInfo
 
     public int hospital { get; set; }
 
+    public int travel {get;set;}
 
     public int waittime_1 { get; set; }
     public int waittime_2 { get; set; }

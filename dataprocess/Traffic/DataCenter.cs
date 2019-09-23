@@ -104,7 +104,7 @@ public static class DataCenterForTraffic
         sw.WriteLine("起点坐标POI[starting_pois]:");
         basic_sw_csv.Write("starting_pois,");
         int poiCnt = 0;
-        foreach (var poiItemName in new string[] { "机场", "火车站", "汽车站", "医院", "商圈", "学校" })
+        foreach (var poiItemName in new string[] { "机场", "火车站", "汽车站", "医院", "商圈", "学校", "景点" })
         {
             var SinglePoiCnt = orders.Count(x => x.starting.POI.Equals(poiItemName));
             sw.WriteLine(poiItemName + ":" + SinglePoiCnt);
@@ -117,7 +117,7 @@ public static class DataCenterForTraffic
         sw.WriteLine("终点坐标POI[dest_pois]:");
         basic_sw_csv.Write("dest_pois,");
         poiCnt = 0;
-        foreach (var poiItemName in new string[] { "机场", "火车站", "汽车站", "医院", "商圈", "学校" })
+        foreach (var poiItemName in new string[] { "机场", "火车站", "汽车站", "医院", "商圈", "学校", "景点" })
         {
             var SinglePoiCnt = orders.Count(x => x.dest.POI.Equals(poiItemName));
             sw.WriteLine(poiItemName + ":" + SinglePoiCnt);
@@ -147,6 +147,7 @@ public static class DataCenterForTraffic
                             longbus: x.Count(x => x.starting.POI == "汽车站" || x.dest.POI == "汽车站"),
                             school: x.Count(x => x.starting.POI == "学校" || x.dest.POI == "学校"),
                             hospital: x.Count(x => x.starting.POI == "医院" || x.dest.POI == "医院"),
+                            travel: x.Count(x => x.starting.POI == "景点" || x.dest.POI == "景点"),
                             //等车时间分类
                             waittime_1: x.Where(x => x.order_type == Eorder_type.实时).Count(x => x.WaitTime != -1 && x.WaitTime <= 5),
                             waittime_2: x.Where(x => x.order_type == Eorder_type.实时).Count(x => x.WaitTime > 5 && x.WaitTime <= 15),
@@ -171,7 +172,7 @@ public static class DataCenterForTraffic
                              item.airport + "," + item.train + "," + item.longbus + "," + item.school + "," + item.hospital + "," +
                              item.waittime_1 + "," + item.waittime_2 + "," + item.waittime_3 + "," + item.waittime_4 + "," +
                              item.distance_1 + "," + item.distance_2 + "," + item.distance_3 + "," + item.distance_4 + "," +
-                             item.normaltime_1 + "," + item.normaltime_2 + "," + item.normaltime_3 + "," + item.normaltime_4
+                             item.normaltime_1 + "," + item.normaltime_2 + "," + item.normaltime_3 + "," + item.normaltime_4 + "," + item.travel
                              );
         }
         sw_csv.Close();

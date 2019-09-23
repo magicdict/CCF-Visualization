@@ -20,6 +20,7 @@ export class DashboardComponent implements OnInit {
   _weeklySpeed = CommonFunction.clone(ILineStardard);
   _weeklyTypes = CommonFunction.clone(ILineStardard);
   _weeklyTransport = CommonFunction.clone(ILineStardard);
+  _weeklyPOI = CommonFunction.clone(ILineStardard);
 
   //饼图
   _NormalTime = CommonFunction.clone(IPieStardard);
@@ -32,6 +33,9 @@ export class DashboardComponent implements OnInit {
   _product_1levels = CommonFunction.clone(IPieStardard);
   _starting_pois = CommonFunction.clone(IPieStardard);
   _dest_pois = CommonFunction.clone(IPieStardard);
+  _starting_transport = CommonFunction.clone(IPieStardard);
+  _dest_transport = CommonFunction.clone(IPieStardard);
+
 
   //堆叠图
   _WaitTimeWeekly = CommonFunction.clone(ILineStardard);
@@ -67,7 +71,7 @@ export class DashboardComponent implements OnInit {
         let weeklydistance = CommonFunction.clone(LineItem);
         weeklydistance.name = "公里数";
         weeklydistance.data = this._dashboard.weeklyinfos.map(x => CommonFunction.roundvalue(x.Value.distance / x.Value.ordercnt));
-        this._weeklyDistance.series.push(weeklydistance);        
+        this._weeklyDistance.series.push(weeklydistance);
 
 
         this._weeklyTypes.title.text = "";
@@ -90,12 +94,12 @@ export class DashboardComponent implements OnInit {
 
         this._weeklyTransport.title.text = "";
         this._weeklyTransport.xAxis.data = this._dashboard.weeklyinfos.map(x => x.Name);
-        
+
         let weeklyAirport = CommonFunction.clone(LineItem);
         weeklyAirport.name = "机场";
         weeklyAirport.data = this._dashboard.weeklyinfos.map(x => CommonFunction.roundvalue((x.Value.airport) * 100 / x.Value.ordercnt));
         this._weeklyTransport.series.push(weeklyAirport);
-        
+
         let weeklyTrain = CommonFunction.clone(LineItem);
         weeklyTrain.name = "火车站";
         weeklyTrain.data = this._dashboard.weeklyinfos.map(x => CommonFunction.roundvalue((x.Value.train) * 100 / x.Value.ordercnt));
@@ -106,17 +110,26 @@ export class DashboardComponent implements OnInit {
         weeklyLongbus.data = this._dashboard.weeklyinfos.map(x => CommonFunction.roundvalue((x.Value.longbus) * 100 / x.Value.ordercnt));
         this._weeklyTransport.series.push(weeklyLongbus);
 
+        this._weeklyTransport.legend.data = ["机场", "火车站", "汽车站"]
+
+        this._weeklyPOI.title.text = "";
+        this._weeklyPOI.xAxis.data = this._dashboard.weeklyinfos.map(x => x.Name);
+
         let weeklyschool = CommonFunction.clone(LineItem);
         weeklyschool.name = "学校";
         weeklyschool.data = this._dashboard.weeklyinfos.map(x => CommonFunction.roundvalue((x.Value.school) * 100 / x.Value.ordercnt));
-        this._weeklyTransport.series.push(weeklyschool);
+        this._weeklyPOI.series.push(weeklyschool);
 
         let weeklyhospital = CommonFunction.clone(LineItem);
         weeklyhospital.name = "医院";
         weeklyhospital.data = this._dashboard.weeklyinfos.map(x => CommonFunction.roundvalue((x.Value.hospital) * 100 / x.Value.ordercnt));
-        this._weeklyTransport.series.push(weeklyhospital);
-        
-        this._weeklyTransport.legend.data = ["机场", "火车站", "汽车站","学校","医院"]
+        this._weeklyPOI.series.push(weeklyhospital);
+
+        let weeklytravel = CommonFunction.clone(LineItem);
+        weeklytravel.name = "景点";
+        weeklytravel.data = this._dashboard.weeklyinfos.map(x => CommonFunction.roundvalue((x.Value.travel) * 100 / x.Value.ordercnt));
+        this._weeklyPOI.series.push(weeklytravel);
+        this._weeklyPOI.legend.data = ["学校", "医院", "景点"];
 
         this._NormalTime.legend.data = this._dashboard.NormalTime.map(x => x.Name);
         this._NormalTime.series[0].data = this._dashboard.NormalTime.map(x => { return { name: x.Name, value: x.Value } });
@@ -180,12 +193,21 @@ export class DashboardComponent implements OnInit {
         this._countys.legend.data = this._dashboard.countys.map(x => x.Name);
         this._countys.series[0].data = this._dashboard.countys.map(x => { return { name: x.Name, value: x.Value } });
 
-        this._starting_pois.legend.data = this._dashboard.starting_pois.map(x => x.Name);
-        this._starting_pois.series[0].data = this._dashboard.starting_pois.map(x => { return { name: x.Name, value: x.Value } });
+        this._starting_pois.legend.data = this._weeklyPOI.legend.data;
+        this._starting_pois.series[0].data = this._dashboard.starting_pois
+          .filter(x => this._weeklyPOI.legend.data.indexOf(x.Name) != -1).map(x => { return { name: x.Name, value: x.Value } });
 
-        this._dest_pois.legend.data = this._dashboard.dest_pois.map(x => x.Name);
-        this._dest_pois.series[0].data = this._dashboard.dest_pois.map(x => { return { name: x.Name, value: x.Value } });
+        this._dest_pois.legend.data = this._weeklyPOI.legend.data;
+        this._dest_pois.series[0].data = this._dashboard.dest_pois
+          .filter(x => this._weeklyPOI.legend.data.indexOf(x.Name) != -1).map(x => { return { name: x.Name, value: x.Value } });
 
+        this._starting_transport.legend.data = this._weeklyTransport.legend.data;
+        this._starting_transport.series[0].data = this._dashboard.starting_pois
+          .filter(x => this._weeklyTransport.legend.data.indexOf(x.Name) != -1).map(x => { return { name: x.Name, value: x.Value } });
+
+        this._dest_transport.legend.data = this._weeklyTransport.legend.data;
+        this._dest_transport.series[0].data = this._dashboard.dest_pois
+          .filter(x => this._weeklyTransport.legend.data.indexOf(x.Name) != -1).map(x => { return { name: x.Name, value: x.Value } });
       });
   }
 }

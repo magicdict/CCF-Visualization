@@ -14,8 +14,8 @@ namespace dataprocess
                 //相同起点和终点的分析(耗时)
                 DataCenterForTraffic.IsCreateTrace = false;
                 DataCenterForTraffic.IsCreate24HoursGeoJson = false;
-                DataCenterForTraffic.IsCreateWeekNoGeoJson = false;
-                DataCenterForTraffic.IsCreateGeoJson = true;
+                DataCenterForTraffic.IsCreateWeekNoGeoJson = true;
+                DataCenterForTraffic.IsCreateGeoJson = false;
                 DataCenterForTraffic.EDA();
             }
             else

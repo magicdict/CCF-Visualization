@@ -466,6 +466,13 @@ export const ILinesItem = {
       width: 1
     }
   },
+  effect: {
+    show: true,
+    period: 6,
+    trailLength: 0.7,
+    color: '#fff',
+    symbolSize: 3
+  },
   progressiveThreshold: 500,
   progressive: 200
 }
