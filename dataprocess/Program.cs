@@ -10,12 +10,12 @@ namespace dataprocess
             if (IsTraffic)
             {
                 DataCenterForTraffic.Load(-1);
-                //DataCenterForTraffic.Load(5_000_000);
+                //DataCenterForTraffic.Load(2_000_000);
                 //相同起点和终点的分析(耗时)
                 DataCenterForTraffic.IsCreateTrace = false;
                 DataCenterForTraffic.IsCreate24HoursGeoJson = false;
                 DataCenterForTraffic.IsCreateWeekNoGeoJson = false;
-                DataCenterForTraffic.IsCreateGeoJson = false;
+                DataCenterForTraffic.IsCreateGeoJson = true;
                 DataCenterForTraffic.EDA();
             }
             else

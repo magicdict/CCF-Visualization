@@ -66,21 +66,23 @@ public static class TrafficDataSet
                     airport = int.Parse(info[8]),
                     train = int.Parse(info[9]),
                     longbus = int.Parse(info[10]),
+                    school = int.Parse(info[11]),
+                    hospital = int.Parse(info[12]),
 
-                    waittime_1 = int.Parse(info[11]),
-                    waittime_2 = int.Parse(info[12]),
-                    waittime_3 = int.Parse(info[13]),
-                    waittime_4 = int.Parse(info[14]),
+                    waittime_1 = int.Parse(info[13]),
+                    waittime_2 = int.Parse(info[14]),
+                    waittime_3 = int.Parse(info[15]),
+                    waittime_4 = int.Parse(info[16]),
 
-                    distance_1 = int.Parse(info[15]),
-                    distance_2 = int.Parse(info[16]),
-                    distance_3 = int.Parse(info[17]),
-                    distance_4 = int.Parse(info[18]),
+                    distance_1 = int.Parse(info[17]),
+                    distance_2 = int.Parse(info[18]),
+                    distance_3 = int.Parse(info[19]),
+                    distance_4 = int.Parse(info[20]),
 
-                    normaltime_1 = int.Parse(info[19]),
-                    normaltime_2 = int.Parse(info[20]),
-                    normaltime_3 = int.Parse(info[21]),
-                    normaltime_4 = int.Parse(info[22]),
+                    normaltime_1 = int.Parse(info[21]),
+                    normaltime_2 = int.Parse(info[22]),
+                    normaltime_3 = int.Parse(info[23]),
+                    normaltime_4 = int.Parse(info[24]),
                 }
             });
         }
@@ -104,6 +106,8 @@ public static class TrafficDataSet
                     airport = x.Sum(x => x.Value.airport),
                     train = x.Sum(x => x.Value.train),
                     longbus = x.Sum(x => x.Value.longbus),
+                    school = x.Sum(x => x.Value.school),
+                    hospital = x.Sum(x => x.Value.hospital),
 
                     waittime_1 = x.Sum(x => x.Value.waittime_1),
                     waittime_2 = x.Sum(x => x.Value.waittime_2),
@@ -179,6 +183,7 @@ public static class TrafficDataSet
 public class AggeInfo
 {
     public Weather weather { get; set; }
+    
     public string Weekno { get; set; }
 
     public int ordercnt { get; set; }
@@ -205,6 +210,11 @@ public class AggeInfo
     public int train { get; set; }
 
     public int longbus { get; set; }
+
+    public int school { get; set; }
+
+    public int hospital { get; set; }
+
 
     public int waittime_1 { get; set; }
     public int waittime_2 { get; set; }

@@ -90,19 +90,33 @@ export class DashboardComponent implements OnInit {
 
         this._weeklyTransport.title.text = "";
         this._weeklyTransport.xAxis.data = this._dashboard.weeklyinfos.map(x => x.Name);
+        
         let weeklyAirport = CommonFunction.clone(LineItem);
         weeklyAirport.name = "机场";
         weeklyAirport.data = this._dashboard.weeklyinfos.map(x => CommonFunction.roundvalue((x.Value.airport) * 100 / x.Value.ordercnt));
         this._weeklyTransport.series.push(weeklyAirport);
+        
         let weeklyTrain = CommonFunction.clone(LineItem);
         weeklyTrain.name = "火车站";
         weeklyTrain.data = this._dashboard.weeklyinfos.map(x => CommonFunction.roundvalue((x.Value.train) * 100 / x.Value.ordercnt));
         this._weeklyTransport.series.push(weeklyTrain);
+
         let weeklyLongbus = CommonFunction.clone(LineItem);
         weeklyLongbus.name = "汽车站";
         weeklyLongbus.data = this._dashboard.weeklyinfos.map(x => CommonFunction.roundvalue((x.Value.longbus) * 100 / x.Value.ordercnt));
         this._weeklyTransport.series.push(weeklyLongbus);
-        this._weeklyTransport.legend.data = ["机场", "火车站", "汽车站"]
+
+        let weeklyschool = CommonFunction.clone(LineItem);
+        weeklyschool.name = "学校";
+        weeklyschool.data = this._dashboard.weeklyinfos.map(x => CommonFunction.roundvalue((x.Value.school) * 100 / x.Value.ordercnt));
+        this._weeklyTransport.series.push(weeklyschool);
+
+        let weeklyhospital = CommonFunction.clone(LineItem);
+        weeklyhospital.name = "医院";
+        weeklyhospital.data = this._dashboard.weeklyinfos.map(x => CommonFunction.roundvalue((x.Value.hospital) * 100 / x.Value.ordercnt));
+        this._weeklyTransport.series.push(weeklyhospital);
+        
+        this._weeklyTransport.legend.data = ["机场", "火车站", "汽车站","学校","医院"]
 
         this._NormalTime.legend.data = this._dashboard.NormalTime.map(x => x.Name);
         this._NormalTime.series[0].data = this._dashboard.NormalTime.map(x => { return { name: x.Name, value: x.Value } });

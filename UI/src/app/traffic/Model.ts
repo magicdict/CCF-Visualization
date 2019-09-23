@@ -26,6 +26,8 @@ export interface IDashBoard {
             airport: number,
             train: number,
             longbus: number,
+            school:number,
+            hospital:number,
             waittime_1: number,
             waittime_2: number,
             waittime_3: number,

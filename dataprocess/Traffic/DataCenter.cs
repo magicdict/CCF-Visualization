@@ -104,7 +104,7 @@ public static class DataCenterForTraffic
         sw.WriteLine("起点坐标POI[starting_pois]:");
         basic_sw_csv.Write("starting_pois,");
         int poiCnt = 0;
-        foreach (var poiItemName in new string[] { "机场", "火车站", "汽车站", "医院", "商圈" })
+        foreach (var poiItemName in new string[] { "机场", "火车站", "汽车站", "医院", "商圈", "学校" })
         {
             var SinglePoiCnt = orders.Count(x => x.starting.POI.Equals(poiItemName));
             sw.WriteLine(poiItemName + ":" + SinglePoiCnt);
@@ -117,7 +117,7 @@ public static class DataCenterForTraffic
         sw.WriteLine("终点坐标POI[dest_pois]:");
         basic_sw_csv.Write("dest_pois,");
         poiCnt = 0;
-        foreach (var poiItemName in new string[] { "机场", "火车站", "汽车站", "医院", "商圈" })
+        foreach (var poiItemName in new string[] { "机场", "火车站", "汽车站", "医院", "商圈", "学校" })
         {
             var SinglePoiCnt = orders.Count(x => x.dest.POI.Equals(poiItemName));
             sw.WriteLine(poiItemName + ":" + SinglePoiCnt);
@@ -145,6 +145,8 @@ public static class DataCenterForTraffic
                             airport: x.Count(x => x.starting.POI == "机场" || x.dest.POI == "机场"),
                             train: x.Count(x => x.starting.POI == "火车站" || x.dest.POI == "火车站"),
                             longbus: x.Count(x => x.starting.POI == "汽车站" || x.dest.POI == "汽车站"),
+                            school: x.Count(x => x.starting.POI == "学校" || x.dest.POI == "学校"),
+                            hospital: x.Count(x => x.starting.POI == "医院" || x.dest.POI == "医院"),
                             //等车时间分类
                             waittime_1: x.Where(x => x.order_type == Eorder_type.实时).Count(x => x.WaitTime != -1 && x.WaitTime <= 5),
                             waittime_2: x.Where(x => x.order_type == Eorder_type.实时).Count(x => x.WaitTime > 5 && x.WaitTime <= 15),
@@ -166,7 +168,7 @@ public static class DataCenterForTraffic
         {
             sw_csv.WriteLine(item.name + "," + item.count + "," + Math.Round(item.distance) + "," + item.normaltime + "," +
                              Math.Round(item.fee) + "," + item.premier + "," + item.reserve + "," + item.pickup + "," +
-                             item.airport + "," + item.train + "," + item.longbus + "," +
+                             item.airport + "," + item.train + "," + item.longbus + "," + item.school + "," + item.hospital + "," +
                              item.waittime_1 + "," + item.waittime_2 + "," + item.waittime_3 + "," + item.waittime_4 + "," +
                              item.distance_1 + "," + item.distance_2 + "," + item.distance_3 + "," + item.distance_4 + "," +
                              item.normaltime_1 + "," + item.normaltime_2 + "," + item.normaltime_3 + "," + item.normaltime_4
@@ -216,12 +218,8 @@ public static class DataCenterForTraffic
         {
             var Timer = new Stopwatch();
             Timer.Start();
-            var startlocs = orders.GroupBy(x => x.starting).Select(x => (point: x.Key, count: x.Count())).ToList();
-            CreateGeoJson("startlocs", startlocs, 1000);
-            var destlocs = orders.GroupBy(x => x.dest).Select(x => (point: x.Key, count: x.Count())).ToList();
-            CreateGeoJson("destlocs", destlocs, 1000);
-            sw.WriteLine("Start Loc Count:" + startlocs.Count);
-            sw.WriteLine("Dest  Loc Count:" + destlocs.Count);
+            CreateGeoJson(true, "startlocs", 1000);
+            CreateGeoJson(false, "destlocs", 1000);
             Console.WriteLine("CreateGeoJson Time Usage(Seconds):" + Timer.Elapsed.TotalSeconds);
         }
 
@@ -387,20 +385,51 @@ public static class DataCenterForTraffic
         GC.Collect();
     }
 
-    private static void CreateGeoJson(string filename, List<(OrderDetails.Geo point, System.Int32 count)> points, int downlimit = -1)
+    /// <summary>
+    /// 坐标点的GroupBy
+    /// </summary>
+    /// <param name="isStart"></param>
+    /// <param name="filename"></param>
+    /// <param name="downlimit"></param>
+    private static void CreateGeoJson(bool isStart, string filename, int downlimit = -1)
     {
+        //以1_000_000 为单位进行Groupby，然后汇总
+        var TotalCnt = orders.Count();
+        var TimeCnt = TotalCnt / 1_000_000;
+        TimeCnt += 1;
+        var MapReduceDictionary = new ConcurrentDictionary<Geo, int>();
+        for (int i = 0; i < TimeCnt; i++)
+        {
+            Console.WriteLine("Time:" + i + "Start");
+            var points = orders.Skip(i * 1_000_000).Take(1_000_000).GroupBy(x => isStart ? x.starting : x.dest)
+                                                   .Select(x => (coord: x.Key, value: x.Count())).ToList();
+            Parallel.ForEach(points, (item, loop) =>
+            {
+                if (MapReduceDictionary.ContainsKey(item.coord))
+                {
+                    MapReduceDictionary[item.coord] += item.value;
+                }
+                else
+                {
+                    MapReduceDictionary.TryAdd(item.coord, item.value);
+                }
+            });
+        }
+        var result = MapReduceDictionary.Select(x => (coord: x.Key, Value: x.Value)).ToList();
+        Console.WriteLine("Start Sort");
+        result.Sort((x, y) => { return y.Value - x.Value; });
         var json = new StreamWriter(AngularJsonAssetsFolder + filename + "_PointSize.json");
         int Cnt = 0;
         json.WriteLine("[");
-        foreach (var item in points)
+        foreach (var item in result)
         {
-            if (item.count > downlimit || downlimit == -1)
+            if (item.Value > downlimit || downlimit == -1)
             {
-                var point = item.point;
+                var point = item.coord;
                 if (Cnt != 0) json.WriteLine(",");
                 Cnt++;
                 json.Write(" {\"name\": \"" + point.POI + Cnt + "\", \"value\": ");
-                json.Write("[" + point.lng + "," + point.lat + "," + item.count + "]}");
+                json.Write("[" + point.lng + "," + point.lat + "," + item.Value + "]}");
             }
         }
         json.WriteLine();
