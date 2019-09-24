@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonFunction } from 'src/app/Common/common';
 import { IPolarStardard, PolarItem, I3DarStardard } from 'src/app/Common/chartOption';
 import { ActivatedRoute } from '@angular/router';
-import { IDashBoard, ITimeAnaysis } from '../Model';
-import { element } from 'protractor';
+import { ITimeAnaysis } from '../Model';
 
 
 @Component({

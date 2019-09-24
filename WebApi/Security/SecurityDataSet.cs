@@ -31,8 +31,8 @@ public static class SecurityDataSet
     public static void LoadData()
     {
         //协议统计的加载
-        var Folder = @"F:\CCF-Visualization\dataprocess\AfterProcess\企业网络资产及安全事件分析与可视化\";
-        //var Folder = @"/root/HelloChinaApi/AfterProcess/企业网络资产及安全事件分析与可视化/";
+        //var Folder = @"F:\CCF-Visualization\dataprocess\AfterProcess\企业网络资产及安全事件分析与可视化\";
+        var Folder = @"/root/HelloChinaApi/AfterProcess/企业网络资产及安全事件分析与可视化/";
 
         var sr = new StreamReader(Folder + "protocols.csv");
         while (!sr.EndOfStream)
