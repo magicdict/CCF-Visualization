@@ -36,7 +36,7 @@ import { TabViewModule } from 'primeng/tabview';
     HttpClientModule,
     MyCommonModule,
     NgxEchartsModule,
-    TabViewModule
+    TabViewModule,
   ],
   providers: [
     CommonFunction,

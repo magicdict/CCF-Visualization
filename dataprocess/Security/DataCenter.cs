@@ -90,19 +90,19 @@ public static class DataCenterForSecurity
         basic_sw_csv.WriteLine("DestTotalLanCnt," + DestTotalLanCnt);
 
         //1.协议统计
-        var protocols = records.GroupBy(x => x.protocol).Select(x => (protocol: x.Key, count: x.Count())).ToList();
-        basic_sw_csv.WriteLine("ProtocolCnt," + protocols.Count);
-        protocols.Sort((x, y) => { return y.count.CompareTo(x.count); });
+        var Protocols = records.GroupBy(x => x.protocol).Select(x => (protocol: x.Key, count: x.Count())).ToList();
+        basic_sw_csv.WriteLine("ProtocolCnt," + Protocols.Count);
+        Protocols.Sort((x, y) => { return y.count.CompareTo(x.count); });
 
 
         sw.WriteLine("#协议统计");
-        var sw_csv = new StreamWriter(AfterProcessFolder + "protocols.csv");
-        foreach (var item in protocols)
+        basic_sw_csv.Write("Protocols,");
+        foreach (var item in Protocols)
         {
             sw.WriteLine(item.protocol + ":" + item.count + "(" + Math.Round((float)item.count * 100 / TotalCnt, 2) + "%)");
-            sw_csv.WriteLine(item.protocol + "," + item.count);
+            basic_sw_csv.Write(item.protocol + "," + item.count + ",");
         }
-        sw_csv.Close();
+        basic_sw_csv.WriteLine();
         sw.WriteLine();
 
         //2.1日期统计
@@ -118,22 +118,22 @@ public static class DataCenterForSecurity
         //2.2按照时间统计 时间|15分钟单位
         var hours_rec_cnt = records.GroupBy(x => x.record_time.Hour.ToString("D2") + ":" + ((x.record_time.Minute / 15) * 15).ToString("D2")).Select(x => (hour: x.Key, count: x.Count())).ToList();
         hours_rec_cnt.Sort((x, y) => { return x.hour.CompareTo(y.hour); });
-        sw_csv = new StreamWriter(AfterProcessFolder + "hours_rec_cnt.csv");
+        basic_sw_csv.Write("hours_rec_cnt,");
         foreach (var item in hours_rec_cnt)
         {
             sw.WriteLine(item.hour + ":" + item.count + "(" + Math.Round((float)item.count * 100 / TotalCnt, 2) + "%)");
-            sw_csv.WriteLine(item.hour + "," + item.count);
+            basic_sw_csv.Write(item.hour + "," + item.count + ",");
         }
-        sw_csv.Close();
+        basic_sw_csv.WriteLine();
         sw.WriteLine();
 
         //对于TOP5的进行分别统计
-        var Top5protocols = protocols.Take(5).Select(x => x.protocol).ToList();
+        var Top5protocols = Protocols.Take(5).Select(x => x.protocol).ToList();
         var protocols_hours = records.Where(x => Top5protocols.Contains(x.protocol))
                               .GroupBy(x => x.protocol + "," + x.record_time.Hour.ToString("D2") + ":" + ((x.record_time.Minute / 15) * 15)
                               .ToString("D2")).Select(x => (hour: x.Key, count: x.Count())).ToList();
         protocols_hours.Sort((x, y) => { return x.hour.CompareTo(y.hour); });
-        sw_csv = new StreamWriter(AfterProcessFolder + "protocols_hours.csv");
+        var sw_csv = new StreamWriter(AfterProcessFolder + "protocols_hours.csv");
         foreach (var item in protocols_hours)
         {
             sw.WriteLine(item.hour + ":" + item.count + "(" + Math.Round((float)item.count * 100 / TotalCnt, 2) + "%)");
@@ -164,13 +164,13 @@ public static class DataCenterForSecurity
         source_dist.Sort((x, y) => { return y.count.CompareTo(x.count); });
         source_dist = source_dist.Take(100).ToList();
 
-        sw_csv = new StreamWriter(AfterProcessFolder + "source_dist.csv");
+        basic_sw_csv.Write("source_dist,");
         foreach (var item in source_dist)
         {
             sw.WriteLine(item.name + ":" + item.count + "(" + Math.Round((float)item.count * 100 / TotalCnt, 2) + "%)");
-            sw_csv.WriteLine(item.name + "," + item.count);
+            basic_sw_csv.Write(item.name + "," + item.count + ",");
         }
-        sw_csv.Close();
+        basic_sw_csv.WriteLine();
         sw.WriteLine();
 
         //4.源头统计
@@ -180,13 +180,13 @@ public static class DataCenterForSecurity
         source.Sort((x, y) => { return y.count.CompareTo(x.count); });
         source = source.Take(100).ToList();
 
-        sw_csv = new StreamWriter(AfterProcessFolder + "source.csv");
+        basic_sw_csv.Write("source,");
         foreach (var item in source)
         {
             sw.WriteLine(item.name + ":" + item.count + "(" + Math.Round((float)item.count * 100 / TotalCnt, 2) + "%)");
-            sw_csv.WriteLine(item.name + "," + item.count);
+            basic_sw_csv.Write(item.name + "," + item.count + ",");
         }
-        sw_csv.Close();
+        basic_sw_csv.WriteLine();
         sw.WriteLine();
 
         //5.目标统计
@@ -196,13 +196,13 @@ public static class DataCenterForSecurity
         dist.Sort((x, y) => { return y.count.CompareTo(x.count); });
         dist = dist.Take(100).ToList();
 
-        sw_csv = new StreamWriter(AfterProcessFolder + "dist.csv");
+        basic_sw_csv.Write("dist,");
         foreach (var item in dist)
         {
             sw.WriteLine(item.name + ":" + item.count + "(" + Math.Round((float)item.count * 100 / TotalCnt, 2) + "%)");
-            sw_csv.WriteLine(item.name + "," + item.count);
+            basic_sw_csv.Write(item.name + "," + item.count + ",");
         }
-        sw_csv.Close();
+        basic_sw_csv.WriteLine();
         sw.WriteLine();
 
         //6.各个协议的总流量统计
@@ -210,25 +210,26 @@ public static class DataCenterForSecurity
         var downlink_length = records.GroupBy(x => x.protocol).Select(x => (protocol: x.Key, count: (double)x.Sum(y => y.downlink_length) / (1024 * 1024))).ToList();
         basic_sw_csv.WriteLine("downlink_length," + Math.Round(downlink_length.Sum(x => x.count), 2));
         downlink_length.Sort((x, y) => { return y.count.CompareTo(x.count); });
-        sw_csv = new StreamWriter(AfterProcessFolder + "downlink_length.csv");
+        basic_sw_csv.Write("downlink_length_rank,");
         foreach (var item in downlink_length)
         {
             sw.WriteLine(item.protocol + ":" + Math.Round((double)item.count, 4) + "(" + Math.Round((float)item.count * 100 / TotalCnt, 2) + "%)");
-            sw_csv.WriteLine(item.protocol + "," + Math.Round((double)item.count, 4));
+            basic_sw_csv.Write(item.protocol + "," + Math.Round((double)item.count, 4) + ",");
         }
-        sw_csv.Close();
+        basic_sw_csv.WriteLine();
         sw.WriteLine();
 
         sw.WriteLine("#上行总流量统计(单位：MB)");
         var uplink_length = records.GroupBy(x => x.protocol).Select(x => (protocol: x.Key, count: (double)x.Sum(y => y.uplink_length) / (1024 * 1024))).ToList();
         basic_sw_csv.WriteLine("uplink_length," + Math.Round(uplink_length.Sum(x => x.count), 2));
         uplink_length.Sort((x, y) => { return y.count.CompareTo(x.count); });
-        sw_csv = new StreamWriter(AfterProcessFolder + "uplink_length.csv");
+        basic_sw_csv.Write("uplink_length_rank,");
         foreach (var item in uplink_length)
         {
             sw.WriteLine(item.protocol + ":" + Math.Round((double)item.count, 4) + "(" + Math.Round((float)item.count * 100 / TotalCnt, 2) + "%)");
-            sw_csv.WriteLine(item.protocol + "," + Math.Round((double)item.count, 4));
+            basic_sw_csv.Write(item.protocol + "," + Math.Round((double)item.count, 4) + ",");
         }
+        basic_sw_csv.WriteLine();
         sw_csv.Close();
 
         //上下行总流量按照时间（最近三天）      
@@ -236,13 +237,13 @@ public static class DataCenterForSecurity
                                              .GroupBy(x => x.record_time.Hour.ToString("D2") + ":" + ((x.record_time.Minute / 15) * 15).ToString("D2"))
                                              .Select(x => (hour: x.Key, count: (double)x.Sum(y => y.uplink_length + y.downlink_length) / (1024 * 1024))).ToList();
         traffic_hours_last3days.Sort((x, y) => { return x.hour.CompareTo(y.hour); });
-        sw_csv = new StreamWriter(AfterProcessFolder + "traffic_hours_last3days.csv");
+        basic_sw_csv.Write("traffic_hours_last3days,");
         foreach (var item in traffic_hours_last3days)
         {
             sw.WriteLine(item.hour + ":" + item.count + "(" + Math.Round((float)item.count * 100 / TotalCnt, 2) + "%)");
-            sw_csv.WriteLine(item.hour + "," + Math.Round((double)item.count, 4));
+            basic_sw_csv.Write(item.hour + "," + Math.Round((double)item.count, 4) + ",");
         }
-        sw_csv.Close();
+        basic_sw_csv.WriteLine();
         sw.WriteLine();
 
         //上下行总流量按照时间（昨天）
@@ -250,13 +251,13 @@ public static class DataCenterForSecurity
                                              .GroupBy(x => x.record_time.Hour.ToString("D2") + ":" + ((x.record_time.Minute / 15) * 15).ToString("D2"))
                                              .Select(x => (hour: x.Key, count: (double)x.Sum(y => y.uplink_length + y.downlink_length) / (1024 * 1024))).ToList();
         traffic_hours_last1days.Sort((x, y) => { return x.hour.CompareTo(y.hour); });
-        sw_csv = new StreamWriter(AfterProcessFolder + "traffic_hours_last1days.csv");
+        basic_sw_csv.Write("traffic_hours_last1days,");
         foreach (var item in traffic_hours_last1days)
         {
             sw.WriteLine(item.hour + ":" + item.count + "(" + Math.Round((float)item.count * 100 / TotalCnt, 2) + "%)");
-            sw_csv.WriteLine(item.hour + "," + Math.Round((double)item.count, 4));
+            basic_sw_csv.Write(item.hour + "," + Math.Round((double)item.count, 4) + ",");
         }
-        sw_csv.Close();
+        basic_sw_csv.WriteLine();
         sw.WriteLine();
 
         //上下行总流量按照时间（今天）
@@ -264,13 +265,13 @@ public static class DataCenterForSecurity
                                              .GroupBy(x => x.record_time.Hour.ToString("D2") + ":" + ((x.record_time.Minute / 15) * 15).ToString("D2"))
                                              .Select(x => (hour: x.Key, count: (double)x.Sum(y => y.uplink_length + y.downlink_length) / (1024 * 1024))).ToList();
         traffic_hours_today.Sort((x, y) => { return x.hour.CompareTo(y.hour); });
-        sw_csv = new StreamWriter(AfterProcessFolder + "traffic_hours_today.csv");
+        basic_sw_csv.Write("traffic_hours_today,");
         foreach (var item in traffic_hours_today)
         {
             sw.WriteLine(item.hour + ":" + item.count + "(" + Math.Round((float)item.count * 100 / TotalCnt, 2) + "%)");
-            sw_csv.WriteLine(item.hour + "," + Math.Round((double)item.count, 4));
+            basic_sw_csv.Write(item.hour + "," + Math.Round((double)item.count, 4) + ",");
         }
-        sw_csv.Close();
+        basic_sw_csv.WriteLine();
         sw.WriteLine();
 
         //上下行总流量按照时间（每日）
@@ -290,11 +291,11 @@ public static class DataCenterForSecurity
         sw.WriteLine("#上行/下行总流量比统计");
         var uplink_downlink_rate = records.GroupBy(x => x.protocol).Select(x => (protocol: x.Key, count: (double)x.Sum(y => y.uplink_length) / x.Sum(y => y.downlink_length))).ToList();
         uplink_downlink_rate.Sort((x, y) => { return y.count.CompareTo(x.count); });
-        sw_csv = new StreamWriter(AfterProcessFolder + "uplink_downlink_rate.csv");
+        basic_sw_csv.Write("uplink_downlink_rate,");
         foreach (var item in uplink_downlink_rate)
         {
             sw.WriteLine(item.protocol + ":" + Math.Round((double)item.count, 4));
-            sw_csv.WriteLine(item.protocol + "," + Math.Round((double)item.count, 4));
+            basic_sw_csv.Write(item.protocol + "," + Math.Round((double)item.count, 4) + ",");
         }
 
         basic_sw_csv.Close();

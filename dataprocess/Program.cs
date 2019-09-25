@@ -6,7 +6,7 @@ namespace dataprocess
     {
         static void Main(string[] args)
         {
-            var IsTraffic = true;
+            var IsTraffic = false;
             if (IsTraffic)
             {
                 DataCenterForTraffic.Load(-1);
@@ -21,6 +21,7 @@ namespace dataprocess
             else
             {
                 DataCenterForSecurity.Load(-1);
+                //DataCenterForSecurity.Load(1_000_000);
                 DataCenterForSecurity.EDA();
             }
         }
