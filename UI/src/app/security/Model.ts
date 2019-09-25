@@ -22,7 +22,6 @@ export interface IDashBoard {
 }
 
 export interface ITimeAnaysis {
-    hours_rec_cnt: NameValueSet[],
     Protocols_Hours: { [key: string]: NameValueSet[] },
     Protocols_Hours_Traffic: { [key: string]: NameValueSet[] },
     traffic_hours_everyday: NameValueSet[],

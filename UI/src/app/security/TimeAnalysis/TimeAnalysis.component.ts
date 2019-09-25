@@ -21,7 +21,7 @@ export class TimeAnalysisComponent implements OnInit {
       .subscribe((xxx: { data: ITimeAnaysis }) => {
         this._timeanaysis = xxx.data;
         this._protocols_rec_cnt.legend.data = [];
-        this._protocols_rec_cnt.angleAxis.data = this._timeanaysis.hours_rec_cnt.map(x => x.Name);
+        this._protocols_rec_cnt.angleAxis.data = [];
         for (const key in this._timeanaysis.Protocols_Hours) {
           if (this._timeanaysis.Protocols_Hours.hasOwnProperty(key)) {
             this._protocols_rec_cnt.legend.data.push(key);
@@ -30,11 +30,15 @@ export class TimeAnalysisComponent implements OnInit {
             protocols_connecttime.name = key;
             protocols_connecttime.data = element.map(x => x.Value);
             this._protocols_rec_cnt.series.push(protocols_connecttime);
+            if (this._protocols_rec_cnt.angleAxis.data.length == 0) {
+              this._protocols_rec_cnt.angleAxis.data = element.map(x => x.Name);
+              console.log(this._protocols_rec_cnt.angleAxis.data );
+            }
           }
         }
 
         this._protocols_traffic_cnt.legend.data = [];
-        this._protocols_traffic_cnt.angleAxis.data = this._timeanaysis.hours_rec_cnt.map(x => x.Name);
+        this._protocols_traffic_cnt.angleAxis.data = [];
         for (const key in this._timeanaysis.Protocols_Hours_Traffic) {
           if (this._timeanaysis.Protocols_Hours_Traffic.hasOwnProperty(key)) {
             this._protocols_traffic_cnt.legend.data.push(key);
@@ -43,6 +47,9 @@ export class TimeAnalysisComponent implements OnInit {
             protocols_connecttime.name = key;
             protocols_connecttime.data = element.map(x => x.Value);
             this._protocols_traffic_cnt.series.push(protocols_connecttime);
+            if (this._protocols_traffic_cnt.angleAxis.data.length == 0) {
+              this._protocols_traffic_cnt.angleAxis.data = element.map(x => x.Name);
+            }
           }
         }
 
@@ -77,7 +84,7 @@ export class TimeAnalysisComponent implements OnInit {
     });
 
     this._traffic_3d.series[0].data = data;
-    let x = this._timeanaysis.traffic_hours_everyday.map(x=>x.Value);
+    let x = this._timeanaysis.traffic_hours_everyday.map(x => x.Value);
     this._traffic_3d.visualMap.max = Math.max(...x);
   }
 

@@ -38,6 +38,31 @@ public static class DataCenterForSecurity
     }
 
     /// <summary>
+    /// 通讯模式
+    /// </summary>
+    public static void CommunicationMode()
+    {
+        //按照源头地址和时间进行排序
+        records.Sort((x, y) =>
+        {
+            if (x.source_ip.RawIp == y.source_ip.RawIp)
+            {
+                return x.record_time.CompareTo(y.record_time);
+            }
+            else
+            {
+                return x.source_ip.RawIp.CompareTo(y.source_ip.RawIp);
+            }
+        });
+        var sw = new StreamWriter(AfterProcessFolder + "commucationMode.csv");
+        foreach (var item in records)
+        {
+            sw.WriteLine(item.source_ip.RawIp + "," + item.record_time.ToString("yyyy-MM-dd HH:mm:ss.fff") + "," + item.protocol);
+        }
+        sw.Close();
+    }
+
+    /// <summary>
     /// EDA
     /// </summary>
     public static void EDA()

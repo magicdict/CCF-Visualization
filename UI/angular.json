@@ -34,7 +34,8 @@
               "src/styles.css"
             ],
             "scripts": [
-              "./node_modules/admin-lte/bower_components/jquery/dist/jquery.min.js",
+              "./node_modules/jquery/dist/jquery.min.js",
+              "./node_modules/jquery-ui-dist/jquery-ui.js",
               "./node_modules/admin-lte/bower_components/bootstrap/dist/js/bootstrap.min.js",
               "./node_modules/admin-lte/dist/js/adminlte.min.js"
             ]

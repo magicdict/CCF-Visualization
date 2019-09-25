@@ -20,9 +20,10 @@ namespace dataprocess
             }
             else
             {
-                DataCenterForSecurity.Load(-1);
-                //DataCenterForSecurity.Load(1_000_000);
-                DataCenterForSecurity.EDA();
+                //DataCenterForSecurity.Load(-1);
+                DataCenterForSecurity.Load(1_000_000);
+                DataCenterForSecurity.CommunicationMode();
+                //DataCenterForSecurity.EDA();
             }
         }
     }
