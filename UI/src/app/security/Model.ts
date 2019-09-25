@@ -19,6 +19,10 @@ export interface IDashBoard {
     traffic_hours_today: NameValueSet[],
     traffic_hours_last1days: NameValueSet[],
     traffic_hours_last3days: NameValueSet[],
+
+    source : NameValueSet[],
+    dist : NameValueSet[],
+    source_dist : NameValueSet[],
 }
 
 export interface ITimeAnaysis {

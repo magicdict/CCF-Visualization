@@ -52,11 +52,8 @@ export class TimeAnalysisComponent implements OnInit {
             }
           }
         }
-
-
         //对3D时间进行填充  
         this.Fill3DTime();
-
       });
   }
 

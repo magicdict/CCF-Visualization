@@ -1,18 +1,18 @@
 <section class="content-header">
     <h1>
-        {{_title}}
+        桑基图
     </h1>
     <ol class="breadcrumb">
-        <li><a href="/traffic/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="/security/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
         <li class="active">
-             {{_title}}
+             桑基图
         </li>
     </ol>
 </section>
 <section class="content">
     <div class="row">
         <div class="col-md-12">
-            <chart [options]="_map" [title]="_title" [boxstyle]="this._commonFunction.boxstyle_Col12_Row2"
+            <chart [options]="_sankey" [title]="'桑基图(源头和目标TOP100地址，且去除同时为源头和目标的IP地址)'" [boxstyle]="this._commonFunction.boxstyle_Col12_Row2"
                 [chartstyle]="this._commonFunction.boxstyle_Col12_Row2"></chart>
         </div>
     </div>

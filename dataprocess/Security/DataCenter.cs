@@ -109,8 +109,15 @@ public static class DataCenterForSecurity
         sw.WriteLine("\tLAN数：" + DestTotalLanCnt);
         sw.WriteLine();
 
+
+        basic_sw_csv.WriteLine("SourcekindACnt," + SourcekindACnt);
+        basic_sw_csv.WriteLine("SourcekindBCnt," + SourcekindBCnt);
+        basic_sw_csv.WriteLine("SourcekindCCnt," + SourcekindCCnt);
         basic_sw_csv.WriteLine("SourceSegmentCnt," + SourceSegmentCnt);
         basic_sw_csv.WriteLine("SourceTotalLanCnt," + SourceTotalLanCnt);
+        basic_sw_csv.WriteLine("DestkindACnt," + DestkindACnt);
+        basic_sw_csv.WriteLine("DestkindBCnt," + DestkindBCnt);
+        basic_sw_csv.WriteLine("DestkindCCnt," + DestkindCCnt);
         basic_sw_csv.WriteLine("DestSegmentCnt," + DestSegmentCnt);
         basic_sw_csv.WriteLine("DestTotalLanCnt," + DestTotalLanCnt);
 
@@ -197,6 +204,12 @@ public static class DataCenterForSecurity
         }
         basic_sw_csv.WriteLine();
         sw.WriteLine();
+
+        //源头目标Distinct
+        var distinctsource = source_dist.Select(x=>x.name.Split("->")[0]).Distinct().Count();
+        var distinctdist = source_dist.Select(x=>x.name.Split("->")[1]).Distinct().Count();
+        Console.WriteLine("distinctsource：" + distinctsource);
+        Console.WriteLine("distinctdist" + distinctdist);
 
         //4.源头统计
         sw.WriteLine("#源头统计");

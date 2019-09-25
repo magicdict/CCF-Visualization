@@ -8,12 +8,14 @@ import { DashboardComponent } from './Dashboard/Dashboard.component';
 import { MyCommonModule } from '../Common/MyCommon.module';
 import { TimeAnalysisComponent } from './TimeAnalysis/TimeAnalysis.component';
 import { ServerInfoComponent } from './ServerInfo/ServerInfocomponent';
+import { TrafficSankeyComponent } from './TrafficSankey/TrafficSankey.component';
 
 @NgModule({
   declarations: [
     SecurityMainComponent,
     TimeAnalysisComponent,
     DashboardComponent,
+    TrafficSankeyComponent,
     ServerInfoComponent
   ],
   imports: [

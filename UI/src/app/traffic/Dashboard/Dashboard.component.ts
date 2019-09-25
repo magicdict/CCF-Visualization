@@ -55,6 +55,7 @@ export class DashboardComponent implements OnInit {
         this._travellerCnt.title.text = "";
         this._travellerCnt.xAxis.data = this._dashboard.TravellerCnt.map(x => x.Name);
         let travellerCnt = CommonFunction.clone(LineItem);
+        travellerCnt.type = "bar";
         travellerCnt.name = "境内外过夜旅客数";
         travellerCnt.data = this._dashboard.TravellerCnt.map(x => x.Value);
         this._travellerCnt.series.push(travellerCnt);
