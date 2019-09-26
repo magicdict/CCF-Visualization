@@ -21,7 +21,10 @@ namespace dataprocess
             else
             {
                 DataCenterForSecurity.Load(-1);
+                DataCenterForSecurity.Protocol_Port();
                 //DataCenterForSecurity.Load(1_000_000);
+                //DataCenterForSecurity.CreateSourceIpTreeJson();
+                //DataCenterForSecurity.CreateDistIpTreeJson();
                 //DataCenterForSecurity.CommunicationMode();
                 DataCenterForSecurity.EDA();
             }

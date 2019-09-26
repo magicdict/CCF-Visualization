@@ -1,5 +1,3 @@
-
-
 export const IPieStardard = {
   title: {
     text: '',
@@ -471,6 +469,7 @@ export const ILinesItem = {
     period: 6,
     trailLength: 0.7,
     color: '#fff',
+    symbol: 'triangle',
     symbolSize: 3
   },
   progressiveThreshold: 500,
@@ -533,4 +532,33 @@ export const ISankeyStardard = {
     data: [],
     links: []
   }
+}
+
+export const ITreeStardard = {
+  tooltip: {
+    trigger: 'item',
+    triggerOn: 'mousemove'
+  },
+  series: [
+    {
+      type: 'tree',
+
+      data: [],
+
+      top: '5%',
+
+      bottom: '10%',
+
+      layout: 'radial',
+
+      symbol: 'emptyCircle',
+
+      symbolSize: 7,
+
+      initialTreeDepth: 3,
+
+      animationDurationUpdate: 750
+
+    }
+  ]
 }

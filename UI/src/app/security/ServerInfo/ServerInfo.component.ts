@@ -4,7 +4,6 @@ import { IServerInfo } from '../Model';
 
 
 @Component({
-  selector: 'app-root',
   templateUrl: './ServerInfo.component.html',
 })
 export class ServerInfoComponent implements OnInit {

@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 
 public static class DataCenterForSecurity
 {
@@ -11,6 +12,8 @@ public static class DataCenterForSecurity
     public const string AfterProcessFolder = @"F:\CCF-Visualization\dataprocess\AfterProcess\企业网络资产及安全事件分析与可视化\";
 
     public const string EDAFile = @"F:\CCF-Visualization\dataprocess\AfterProcess\企业网络资产及安全事件分析与可视化\EDA.log";
+
+    public const string AngularJsonAssetsFolder = @"F:\CCF-Visualization\UI\src\assets\security\json\";
 
     public static List<NetRecord> records = new List<NetRecord>();
 
@@ -35,6 +38,103 @@ public static class DataCenterForSecurity
             if (cnt == MaxRecord) break;        //内存限制
         }
         Console.WriteLine("Total Record Count:" + records.Count);
+    }
+
+
+    public static void Protocol_Port()
+    {
+        var x = records.Where(x => x.protocol == "unknown").GroupBy(x => x.destination_port).Select(x => new { port = x.Key, count = x.Count() }).ToList();
+        x.Sort((x, y) => { return y.count.CompareTo(x.count); });
+        foreach (var item in x.Take(100))
+        {
+            Console.WriteLine(item.port + ":" + item.count);
+        }
+    }
+
+    public static void CreateSourceIpTreeJson()
+    {
+        //IP地址转树形json数据
+        var tree = new treeItem() { name = "Source Ip", children = new List<treeItem>() };
+        records = records.Where(x => x.source_ip.IsIpV4 && x.source_ip.IsLAN).ToList();
+        //放入顶层IP地址
+        var rootsegs = records.Select(x => x.source_ip.SegmentRoot).Distinct();
+        var segs = records.GroupBy(x => x.source_ip.Segment)
+                          .Select(x => new treeItem()
+                          {
+                              name = x.Key,
+                              value = x.Select(x => x.source_ip.RawIp).Distinct().Count()
+                          }).ToList();
+        foreach (var rootseg in rootsegs)
+        {
+            var parentsegtrees = new List<treeItem>();
+            //准备中间层
+            var parentsegs = records.Where(x => x.source_ip.SegmentRoot == rootseg)
+                                   .Select(x => x.source_ip.SegmentParent).Distinct();
+            foreach (var parentseg in parentsegs)
+            {
+                var parenttree = new treeItem()
+                {
+                    name = parentseg,
+                    collapsed = false
+                };
+                //注意，不能使用startwith做！21，213，这样无法判定
+                parenttree.children = segs.Where(x => x.name.Substring(0, x.name.LastIndexOf(".")) == parentseg).ToList();
+                parenttree.value = parenttree.children.Count();
+                parentsegtrees.Add(parenttree);
+            }
+            tree.children.Add(new treeItem() { name = rootseg, children = parentsegtrees });
+        }
+        var sw = new StreamWriter(AngularJsonAssetsFolder + "sourceip_tree.json");
+        sw.Write(JsonConvert.SerializeObject(tree));
+        sw.Close();
+    }
+
+    public static void CreateDistIpTreeJson()
+    {
+        //IP地址转树形json数据
+        var tree = new treeItem() { name = "Dist Ip", children = new List<treeItem>() };
+        records = records.Where(x => x.destination_ip.IsIpV4 && x.destination_ip.IsLAN).ToList();
+        //放入顶层IP地址
+        var rootsegs = records.Select(x => x.destination_ip.SegmentRoot).Distinct();
+        var segs = records.GroupBy(x => x.destination_ip.Segment)
+                          .Select(x => new treeItem()
+                          {
+                              name = x.Key,
+                              value = x.Select(x => x.destination_ip.RawIp).Distinct().Count()
+                          }).ToList();
+        foreach (var rootseg in rootsegs)
+        {
+            var parentsegtrees = new List<treeItem>();
+            //准备中间层
+            var parentsegs = records.Where(x => x.destination_ip.SegmentRoot == rootseg)
+                                   .Select(x => x.destination_ip.SegmentParent).Distinct();
+            foreach (var parentseg in parentsegs)
+            {
+                var parenttree = new treeItem()
+                {
+                    name = parentseg,
+                    collapsed = false
+                };
+                //注意，不能使用startwith做！21，213，这样无法判定
+                parenttree.children = segs.Where(x => x.name.Substring(0, x.name.LastIndexOf(".")) == parentseg).ToList();
+                parenttree.value = parenttree.children.Count();
+                parentsegtrees.Add(parenttree);
+            }
+            tree.children.Add(new treeItem() { name = rootseg, children = parentsegtrees });
+        }
+        var sw = new StreamWriter(AngularJsonAssetsFolder + "distip_tree.json");
+        sw.Write(JsonConvert.SerializeObject(tree));
+        sw.Close();
+
+    }
+
+    [Serializable()]
+    class treeItem
+    {
+        public string name;
+        public List<treeItem> children;
+        public int value;
+        public bool collapsed;
     }
 
     /// <summary>
@@ -206,8 +306,8 @@ public static class DataCenterForSecurity
         sw.WriteLine();
 
         //源头目标Distinct
-        var distinctsource = source_dist.Select(x=>x.name.Split("->")[0]).Distinct().Count();
-        var distinctdist = source_dist.Select(x=>x.name.Split("->")[1]).Distinct().Count();
+        var distinctsource = source_dist.Select(x => x.name.Split("->")[0]).Distinct().Count();
+        var distinctdist = source_dist.Select(x => x.name.Split("->")[1]).Distinct().Count();
         Console.WriteLine("distinctsource：" + distinctsource);
         Console.WriteLine("distinctdist" + distinctdist);
 

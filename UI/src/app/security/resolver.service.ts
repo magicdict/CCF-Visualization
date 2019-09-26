@@ -33,3 +33,25 @@ export class ServerInfoResolver implements Resolve<IServerInfo[]> {
         return this.commonFunction.httpRequestGetFromAsset<IServerInfo[]>("security/json/server_info.json");
     }
 }
+
+
+
+@Injectable()
+export class SourceIpSegResolver implements Resolve<any> {
+    constructor(public commonFunction: CommonFunction) {
+
+    }
+    resolve(_: ActivatedRouteSnapshot, _state: RouterStateSnapshot): any | Observable<any> | Promise<any> {
+        return this.commonFunction.httpRequestGetFromAsset<any>("security/json/sourceip_tree.json");
+    }
+}
+
+@Injectable()
+export class DistIpSegResolver implements Resolve<any> {
+    constructor(public commonFunction: CommonFunction) {
+
+    }
+    resolve(_: ActivatedRouteSnapshot, _state: RouterStateSnapshot): any | Observable<any> | Promise<any> {
+        return this.commonFunction.httpRequestGetFromAsset<any>("security/json/distip_tree.json");
+    }
+}
