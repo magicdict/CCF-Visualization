@@ -25,9 +25,9 @@ export interface IDashBoard {
     access_hours_last1days: NameValueSet[],
     access_hours_last3days: NameValueSet[],
 
-    source : NameValueSet[],
-    dist : NameValueSet[],
-    source_dist : NameValueSet[],
+    source: NameValueSet[],
+    dist: NameValueSet[],
+    source_dist: NameValueSet[],
 }
 
 export interface ITimeAnaysis {
@@ -50,4 +50,12 @@ export interface IServerInfo {
     start_time: Date,
     end_time: Date,
     active_time: number
+}
+
+export interface IProfile {
+    Name:string,
+    Ports: NameValueSet[],
+    DistIps: NameValueSet[],
+    SourceIps: NameValueSet[],
+    Source_dist:NameValueSet[],
 }

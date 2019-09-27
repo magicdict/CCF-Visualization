@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { CommonFunction } from '../Common/common';
-import { IDashBoard, ITimeAnaysis, IServerInfo } from './Model';
+import { IDashBoard, ITimeAnaysis, IServerInfo, IProfile } from './Model';
 
 @Injectable()
 export class DashboardResolver implements Resolve<IDashBoard> {
@@ -55,3 +55,16 @@ export class DistIpSegResolver implements Resolve<any> {
         return this.commonFunction.httpRequestGetFromAsset<any>("security/json/distip_tree.json");
     }
 }
+
+
+@Injectable()
+export class ProfileResolver implements Resolve<IProfile> {
+    constructor(public commonFunction: CommonFunction) {
+
+    }
+    resolve(route: ActivatedRouteSnapshot, _state: RouterStateSnapshot): IProfile | Observable<IProfile> | Promise<IProfile> {
+        let protocol = route.paramMap.get('protocol');
+        return this.commonFunction.httpRequestGetFromAsset<IProfile>("security/json/" + protocol + ".json");
+    }
+}
+

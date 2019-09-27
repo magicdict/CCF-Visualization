@@ -21,6 +21,10 @@ namespace dataprocess
             else
             {
                 DataCenterForSecurity.Load(-1);
+                DataCenterForSecurity.GetProtocolProfile("ftp_control");
+                DataCenterForSecurity.GetProtocolProfile("ssl");
+                DataCenterForSecurity.GetProtocolProfile("http");
+                DataCenterForSecurity.GetProtocolProfile("http_proxy");
                 //DataCenterForSecurity.Protocol_Port();
                 //DataCenterForSecurity.Load(1_000_000);
                 //DataCenterForSecurity.CreateSourceIpTreeJson();

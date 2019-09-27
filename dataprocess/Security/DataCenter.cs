@@ -534,4 +534,53 @@ public static class DataCenterForSecurity
         sw_csv.Close();
         sw.Close();
     }
+
+    public class NameValueSet<T>
+    {
+        public string Name { get; set; }
+
+        public T Value { get; set; }
+    }
+    public class ProtocolProfile
+    {
+        public string Name;
+        public List<NameValueSet<int>> Ports;
+
+        public List<NameValueSet<int>> DistIps;
+
+        public List<NameValueSet<int>> SourceIps;
+
+        public List<NameValueSet<int>> Source_dist;
+
+    }
+
+    public static void GetProtocolProfile(string protocolname)
+    {
+        var protocolrecs = records.Where(x => x.protocol == protocolname).ToList();
+        var profile = new ProtocolProfile();
+        profile.Name = protocolname;
+        //端口号的整理
+        profile.Ports = protocolrecs.GroupBy(x => x.destination_port).Select(x => new NameValueSet<int> { Name = x.Key, Value = x.Count() }).ToList();
+        profile.Ports = profile.Ports.Take(9).ToList();
+        profile.Ports.Add(new NameValueSet<int>() { Name = "Ohter", Value = protocolrecs.Count - profile.Ports.Sum(x => x.Value) });
+        profile.Ports.Sort((x, y) => { return y.Value.CompareTo(x.Value); });
+
+        profile.DistIps = protocolrecs.GroupBy(x => x.destination_ip.RawIp).Select(x => new NameValueSet<int> { Name = x.Key, Value = x.Count() }).ToList();
+        profile.DistIps.Sort((x, y) => { return y.Value.CompareTo(x.Value); });
+        profile.DistIps = profile.DistIps.Take(5).ToList();
+
+
+        profile.SourceIps = protocolrecs.GroupBy(x => x.source_ip.RawIp).Select(x => new NameValueSet<int> { Name = x.Key, Value = x.Count() }).ToList();
+        profile.SourceIps.Sort((x, y) => { return y.Value.CompareTo(x.Value); });
+        profile.SourceIps = profile.SourceIps.Take(5).ToList();
+
+        profile.Source_dist = protocolrecs.GroupBy(x => x.source_ip.RawIp + "->" + x.destination_ip.RawIp + ":" + x.destination_port).Select(x => new NameValueSet<int> { Name = x.Key, Value = x.Count() }).ToList();
+        profile.Source_dist.Sort((x, y) => { return y.Value.CompareTo(x.Value); });
+        profile.Source_dist = profile.Source_dist.Take(5).ToList();
+
+
+        var sw = new StreamWriter(AngularJsonAssetsFolder + protocolname + ".json");
+        sw.Write(JsonConvert.SerializeObject(profile));
+        sw.Close();
+    }
 }

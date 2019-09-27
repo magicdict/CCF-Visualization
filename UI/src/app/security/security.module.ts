@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { SecurityMainComponent } from './SecurityMain.component';
 import { SecurityRoutingModule } from './security-routing.module';
-import { DashboardResolver, TimeAnaysisResolver, ServerInfoResolver, SourceIpSegResolver, DistIpSegResolver } from './resolver.service';
+import { DashboardResolver, TimeAnaysisResolver, ServerInfoResolver, SourceIpSegResolver, DistIpSegResolver, ProfileResolver } from './resolver.service';
 import { CommonFunction } from '../Common/common';
 import { HttpClientModule } from '@angular/common/http';
 import { DashboardComponent } from './Dashboard/Dashboard.component';
@@ -10,6 +10,7 @@ import { TimeAnalysisComponent } from './TimeAnalysis/TimeAnalysis.component';
 import { ServerInfoComponent } from './ServerInfo/ServerInfo.component';
 import { TrafficSankeyComponent } from './TrafficSankey/TrafficSankey.component';
 import { IpSegmentComponent } from './IpSegment/IpSegment.component';
+import { ProtocolProfileComponent } from './Protocol/ProtocolProfile.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { IpSegmentComponent } from './IpSegment/IpSegment.component';
     DashboardComponent,
     TrafficSankeyComponent,
     ServerInfoComponent,
-    IpSegmentComponent
+    IpSegmentComponent,
+    ProtocolProfileComponent
   ],
   imports: [
     SecurityRoutingModule,
@@ -31,7 +33,8 @@ import { IpSegmentComponent } from './IpSegment/IpSegment.component';
     TimeAnaysisResolver,
     ServerInfoResolver,
     SourceIpSegResolver,
-    DistIpSegResolver
+    DistIpSegResolver,
+    ProfileResolver
   ],
   bootstrap: [SecurityMainComponent]
 })
