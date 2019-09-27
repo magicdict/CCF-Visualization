@@ -14,11 +14,16 @@ export interface IDashBoard {
     DestSegmentCnt: number,
     DestTotalLanCnt: number,
 
-    Protocols: NameValueSet[],
+    protocols: NameValueSet[],
+    ports: NameValueSet[],
 
     traffic_hours_today: NameValueSet[],
     traffic_hours_last1days: NameValueSet[],
     traffic_hours_last3days: NameValueSet[],
+
+    access_hours_today: NameValueSet[],
+    access_hours_last1days: NameValueSet[],
+    access_hours_last3days: NameValueSet[],
 
     source : NameValueSet[],
     dist : NameValueSet[],

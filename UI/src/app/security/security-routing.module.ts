@@ -13,12 +13,11 @@ const routes: Routes = [
   {
     path: 'security', component: SecurityMainComponent, children: [
       { path: 'dashboard', component: DashboardComponent, resolve: { data: DashboardResolver } },
+      { path: 'serverinfo', component: ServerInfoComponent, resolve: { data: DashboardResolver } },
       { path: 'timeanalysis', component: TimeAnalysisComponent, resolve: { data: TimeAnaysisResolver } },
       { path: 'sankey', component: TrafficSankeyComponent, resolve: { data: DashboardResolver } },
       { path: 'sourceipseg', component: IpSegmentComponent, resolve: { data: SourceIpSegResolver } },
       { path: 'distipseg', component: IpSegmentComponent, resolve: { data: DistIpSegResolver } },
-      { path: 'serverinfo', component: ServerInfoComponent, resolve: { data: ServerInfoResolver } },
-      { path: 'serverinfo', component: ServerInfoComponent, resolve: { data: ServerInfoResolver } },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   }

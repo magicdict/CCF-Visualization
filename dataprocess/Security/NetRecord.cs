@@ -38,7 +38,7 @@ public class NetRecord
                 case "18": protocol = "msp"; break;
                 case "19": protocol = "chargen"; break;
                 case "20": protocol = "ftp-data"; break;
-                case "21": protocol = "ftp"; break;
+                case "21": protocol = "ftp_control"; break; //和题目保持一致
                 case "22": protocol = "ssh"; break;
                 case "23": protocol = "telnet"; break;
                 case "25": protocol = "smtp"; break;
@@ -143,16 +143,15 @@ public class NetRecord
                 case "1883": protocol = "mqtt"; break;
                 case "2181": protocol = "zookeeper"; break;
                 case "5223": protocol = "apns"; break;
-                case "8080": protocol = "webcache"; break;
+                case "8080": protocol = "http_proxy"; break;
+                case "8082": protocol = "http"; break;
+                case "8360": protocol = "http_proxy"; break;
                 default:
                     break;
             }
         }
     }
 }
-
-
-
 
 public class IPAddress
 {

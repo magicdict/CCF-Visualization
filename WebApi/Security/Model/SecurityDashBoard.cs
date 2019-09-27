@@ -19,7 +19,8 @@ public class SecurityDashBoard
     public long DestSegmentCnt = 0;
     public long DestTotalLanCnt = 0;
 
-    public List<NameValueSet<int>> Protocols = new List<NameValueSet<int>>();
+    public List<NameValueSet<int>> protocols = new List<NameValueSet<int>>();
+    public List<NameValueSet<int>> ports = new List<NameValueSet<int>>();
     /// <summary>
     /// 上下行比例
     /// </summary>
@@ -28,6 +29,11 @@ public class SecurityDashBoard
     public List<NameValueSet<int>> traffic_hours_today = new List<NameValueSet<int>>();
     public List<NameValueSet<int>> traffic_hours_last1days = new List<NameValueSet<int>>();
     public List<NameValueSet<int>> traffic_hours_last3days = new List<NameValueSet<int>>();
+
+    public List<NameValueSet<int>> access_hours_today = new List<NameValueSet<int>>();
+    public List<NameValueSet<int>> access_hours_last1days = new List<NameValueSet<int>>();
+    public List<NameValueSet<int>> access_hours_last3days = new List<NameValueSet<int>>();
+
     public List<NameValueSet<int>> source_dist = new List<NameValueSet<int>>();
     public List<NameValueSet<int>> source = new List<NameValueSet<int>>();
     public List<NameValueSet<int>> dist = new List<NameValueSet<int>>();
@@ -47,10 +53,16 @@ public class SecurityDashBoard
                 case nameof(SecurityDashBoard.uplink_length):
                     BasicInfo.Add(new NameValueSet<long>() { Name = info[0], Value = (long)double.Parse(info[1]) });
                     break;
-                case nameof(Protocols):
+                case nameof(protocols):
                     for (int i = 1; i < info.Length - 1; i += 2)
                     {
-                        Protocols.Add(new NameValueSet<int>() { Name = info[i], Value = int.Parse(info[i + 1]) });
+                        protocols.Add(new NameValueSet<int>() { Name = info[i], Value = int.Parse(info[i + 1]) });
+                    }
+                    break;
+                case nameof(ports):
+                    for (int i = 1; i < info.Length - 1; i += 2)
+                    {
+                        ports.Add(new NameValueSet<int>() { Name = info[i], Value = int.Parse(info[i + 1]) });
                     }
                     break;
                 case nameof(traffic_hours_last1days):
@@ -69,6 +81,24 @@ public class SecurityDashBoard
                     for (int i = 1; i < info.Length - 1; i += 2)
                     {
                         traffic_hours_today.Add(new NameValueSet<int>() { Name = info[i], Value = (int)double.Parse(info[i + 1]) });
+                    }
+                    break;
+                case nameof(access_hours_last1days):
+                    for (int i = 1; i < info.Length - 1; i += 2)
+                    {
+                        access_hours_last1days.Add(new NameValueSet<int>() { Name = info[i], Value = (int)double.Parse(info[i + 1]) });
+                    }
+                    break;
+                case nameof(access_hours_last3days):
+                    for (int i = 1; i < info.Length - 1; i += 2)
+                    {
+                        access_hours_last3days.Add(new NameValueSet<int>() { Name = info[i], Value = (int)double.Parse(info[i + 1]) });
+                    }
+                    break;
+                case nameof(access_hours_today):
+                    for (int i = 1; i < info.Length - 1; i += 2)
+                    {
+                        access_hours_today.Add(new NameValueSet<int>() { Name = info[i], Value = (int)double.Parse(info[i + 1]) });
                     }
                     break;
                 case nameof(source):
@@ -112,8 +142,13 @@ public class SecurityDashBoard
         DestSegmentCnt = BasicInfo.Where(x => x.Name == nameof(DestSegmentCnt)).First().Value;
         DestTotalLanCnt = BasicInfo.Where(x => x.Name == nameof(DestTotalLanCnt)).First().Value;
         //协议
-        Protocols = Protocols.Take(9).ToList();
+        protocols = protocols.Take(9).ToList();
         //将TOP9之后的协议都放到其他里面
-        Protocols.Add(new NameValueSet<int>() { Name = "Others", Value = Protocols.Sum(x => x.Value) - Protocols.Sum(x => x.Value) });
+        protocols.Add(new NameValueSet<int>() { Name = "Others", Value = (int)RecordCnt - protocols.Sum(x => x.Value) });
+
+        ports = ports.Take(9).ToList();
+        //将TOP9之后的协议都放到其他里面
+        ports.Add(new NameValueSet<int>() { Name = "Others", Value = (int)RecordCnt - ports.Sum(x => x.Value) });
+
     }
 }

@@ -9,6 +9,49 @@
 </section>
 <section class="content">
     <div class="row">
-
+        <div class="col-md-6">
+            <chart [options]="_source_Top10" [title]="'源头TOP10'" [boxstyle]="this._commonFunction.boxstyle_Col6"
+                [chartstyle]="this._commonFunction.chartstyle_Col6">
+            </chart>
+        </div>
+        <div class="col-md-6">
+            <chart [options]="_dist_Top10" [title]="'目标TOP10'" [boxstyle]="this._commonFunction.boxstyle_Col6"
+                [chartstyle]="this._commonFunction.chartstyle_Col6">
+            </chart>
+        </div>
     </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">基本数据</h3>
+                    <div class="box-tools pull-right">
+                    </div>
+                </div>
+                <div class="box-body">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td>源头IP地址 A类地址数(内网)：10967982</td>
+                            </tr>
+                            <tr>
+                                <td>源头IP地址 网段数(内网)：373</td>
+                            </tr>
+                            <tr>
+                                <td>目标IP地址 A类地址数(内网)：4361199</td>
+                            </tr>
+                            <tr>
+                                <td>目标IP地址 网段数(内网)：1041</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <chart [options]="_source_dist_Top10" [title]="'源头目标TOP10'" [boxstyle]="this._commonFunction.boxstyle_Col6"
+                [chartstyle]="this._commonFunction.chartstyle_Col6">
+            </chart>
+        </div>
+    </div> 
 </section>

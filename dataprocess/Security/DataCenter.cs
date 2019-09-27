@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 public static class DataCenterForSecurity
 {
@@ -222,20 +223,49 @@ public static class DataCenterForSecurity
         basic_sw_csv.WriteLine("DestTotalLanCnt," + DestTotalLanCnt);
 
         //1.协议统计
-        var Protocols = records.GroupBy(x => x.protocol).Select(x => (protocol: x.Key, count: x.Count())).ToList();
-        basic_sw_csv.WriteLine("ProtocolCnt," + Protocols.Count);
-        Protocols.Sort((x, y) => { return y.count.CompareTo(x.count); });
-
-
         sw.WriteLine("#协议统计");
-        basic_sw_csv.Write("Protocols,");
-        foreach (var item in Protocols)
+        var protocols = records.GroupBy(x => x.protocol).Select(x => (protocol: x.Key, count: x.Count())).ToList();
+        basic_sw_csv.WriteLine("ProtocolCnt," + protocols.Count);
+        protocols.Sort((x, y) => { return y.count.CompareTo(x.count); });
+        basic_sw_csv.Write("protocols,");
+        foreach (var item in protocols)
         {
             sw.WriteLine(item.protocol + ":" + item.count + "(" + Math.Round((float)item.count * 100 / TotalCnt, 2) + "%)");
             basic_sw_csv.Write(item.protocol + "," + item.count + ",");
         }
         basic_sw_csv.WriteLine();
         sw.WriteLine();
+
+
+        sw.WriteLine("#端口统计");
+        var ports = records.GroupBy(x => x.destination_port).Select(x => (port: x.Key, count: x.Count())).ToList();
+        basic_sw_csv.WriteLine("PortCnt," + ports.Count);
+        ports.Sort((x, y) => { return y.count.CompareTo(x.count); });
+        ports = ports.Take(100).ToList();
+        basic_sw_csv.Write("ports,");
+        foreach (var item in ports)
+        {
+            sw.WriteLine(item.port + ":" + item.count + "(" + Math.Round((float)item.count * 100 / TotalCnt, 2) + "%)");
+            basic_sw_csv.Write(item.port + "," + item.count + ",");
+        }
+        basic_sw_csv.WriteLine();
+        sw.WriteLine();
+
+
+        sw.WriteLine("#端口协议统计");
+        var protocolports = records.GroupBy(x => x.protocol + ":" + x.destination_port).Select(x => (port: x.Key, count: x.Count())).ToList();
+        basic_sw_csv.WriteLine("protocolportsCnt," + protocolports.Count);
+        protocolports.Sort((x, y) => { return y.count.CompareTo(x.count); });
+        protocolports = protocolports.Take(100).ToList();
+        basic_sw_csv.Write("protocolports,");
+        foreach (var item in protocolports)
+        {
+            sw.WriteLine(item.port + ":" + item.count + "(" + Math.Round((float)item.count * 100 / TotalCnt, 2) + "%)");
+            basic_sw_csv.Write(item.port + "," + item.count + ",");
+        }
+        basic_sw_csv.WriteLine();
+        sw.WriteLine();
+
 
         //2.1日期统计
         sw.WriteLine("#日期统计");
@@ -246,6 +276,50 @@ public static class DataCenterForSecurity
             sw.WriteLine(item.date + ":" + item.count + "(" + Math.Round((float)item.count * 100 / TotalCnt, 2) + "%)");
         }
         sw.WriteLine();
+
+
+        //上下行总次数按照时间（最近三天）      
+        var access_hours_last3days = records.Where(x => x.record_time.Day == 15 || x.record_time.Day == 16 || x.record_time.Day == 17)
+                                             .GroupBy(x => x.record_time.Hour.ToString("D2") + ":" + ((x.record_time.Minute / 15) * 15).ToString("D2"))
+                                             .Select(x => (hour: x.Key, count: x.Count())).ToList();
+        access_hours_last3days.Sort((x, y) => { return x.hour.CompareTo(y.hour); });
+        basic_sw_csv.Write("access_hours_last3days,");
+        foreach (var item in access_hours_last3days)
+        {
+            sw.WriteLine(item.hour + ":" + item.count + "(" + Math.Round((float)item.count * 100 / TotalCnt, 2) + "%)");
+            basic_sw_csv.Write(item.hour + "," + item.count + ",");
+        }
+        basic_sw_csv.WriteLine();
+        sw.WriteLine();
+
+        //上下行总次数按照时间（昨天）
+        var access_hours_last1days = records.Where(x => x.record_time.Day == 17)
+                                             .GroupBy(x => x.record_time.Hour.ToString("D2") + ":" + ((x.record_time.Minute / 15) * 15).ToString("D2"))
+                                             .Select(x => (hour: x.Key, count: x.Count())).ToList();
+        access_hours_last1days.Sort((x, y) => { return x.hour.CompareTo(y.hour); });
+        basic_sw_csv.Write("access_hours_last1days,");
+        foreach (var item in access_hours_last1days)
+        {
+            sw.WriteLine(item.hour + ":" + item.count + "(" + Math.Round((float)item.count * 100 / TotalCnt, 2) + "%)");
+            basic_sw_csv.Write(item.hour + "," + item.count + ",");
+        }
+        basic_sw_csv.WriteLine();
+        sw.WriteLine();
+
+        //上下行总次数按照时间（今天）
+        var access_hours_today = records.Where(x => x.record_time.Day == 18)
+                                             .GroupBy(x => x.record_time.Hour.ToString("D2") + ":" + ((x.record_time.Minute / 15) * 15).ToString("D2"))
+                                             .Select(x => (hour: x.Key, count: x.Count())).ToList();
+        access_hours_today.Sort((x, y) => { return x.hour.CompareTo(y.hour); });
+        basic_sw_csv.Write("access_hours_today,");
+        foreach (var item in access_hours_today)
+        {
+            sw.WriteLine(item.hour + ":" + item.count + "(" + Math.Round((float)item.count * 100 / TotalCnt, 2) + "%)");
+            basic_sw_csv.Write(item.hour + "," + item.count + ",");
+        }
+        basic_sw_csv.WriteLine();
+        sw.WriteLine();
+
 
         //2.2按照时间统计 时间|15分钟单位
         var hours_rec_cnt = records.GroupBy(x => x.record_time.Hour.ToString("D2") + ":" + ((x.record_time.Minute / 15) * 15).ToString("D2")).Select(x => (hour: x.Key, count: x.Count())).ToList();
@@ -260,7 +334,7 @@ public static class DataCenterForSecurity
         sw.WriteLine();
 
         //对于TOP5的进行分别统计
-        var Top5protocols = Protocols.Take(5).Select(x => x.protocol).ToList();
+        var Top5protocols = protocols.Take(5).Select(x => x.protocol).ToList();
         var protocols_hours = records.Where(x => Top5protocols.Contains(x.protocol))
                               .GroupBy(x => x.protocol + "," + x.record_time.Hour.ToString("D2") + ":" + ((x.record_time.Minute / 15) * 15)
                               .ToString("D2")).Select(x => (hour: x.Key, count: x.Count())).ToList();
@@ -290,7 +364,7 @@ public static class DataCenterForSecurity
 
         //3.源头和目标统计
         sw.WriteLine("#源头和目标统计");
-        var source_dist = records.GroupBy(x => x.source_ip.RawIp + "->" + x.destination_ip.RawIp).Select(x => (name: x.Key, count: x.Count())).ToList();
+        var source_dist = records.GroupBy(x => x.source_ip.RawIp + "->" + x.destination_ip.RawIp + ":" + x.destination_port).Select(x => (name: x.Key, count: x.Count())).ToList();
         basic_sw_csv.WriteLine("SourceDistIpCnt," + source_dist.Count);  //抢先记录，下面被Take掉了
 
         source_dist.Sort((x, y) => { return y.count.CompareTo(x.count); });
@@ -311,15 +385,18 @@ public static class DataCenterForSecurity
         Console.WriteLine("distinctsource：" + distinctsource);
         Console.WriteLine("distinctdist" + distinctdist);
 
+
+
+
         //4.源头统计
         sw.WriteLine("#源头统计");
         var source = records.GroupBy(x => x.source_ip.RawIp).Select(x => (name: x.Key, count: x.Count())).ToList();
         basic_sw_csv.WriteLine("SourceIpCnt," + source.Count);  //抢先记录，下面被Take掉了
         source.Sort((x, y) => { return y.count.CompareTo(x.count); });
-        source = source.Take(100).ToList();
+        var source_Top100 = source.Take(100).ToList();
 
         basic_sw_csv.Write("source,");
-        foreach (var item in source)
+        foreach (var item in source_Top100)
         {
             sw.WriteLine(item.name + ":" + item.count + "(" + Math.Round((float)item.count * 100 / TotalCnt, 2) + "%)");
             basic_sw_csv.Write(item.name + "," + item.count + ",");
@@ -332,10 +409,10 @@ public static class DataCenterForSecurity
         var dist = records.GroupBy(x => x.destination_ip.RawIp).Select(x => (name: x.Key, count: x.Count())).ToList();
         basic_sw_csv.WriteLine("DistIpCnt," + dist.Count);  //抢先记录，下面被Take掉了
         dist.Sort((x, y) => { return y.count.CompareTo(x.count); });
-        dist = dist.Take(100).ToList();
+        var dist_Top100 = dist.Take(100).ToList();
 
         basic_sw_csv.Write("dist,");
-        foreach (var item in dist)
+        foreach (var item in dist_Top100)
         {
             sw.WriteLine(item.name + ":" + item.count + "(" + Math.Round((float)item.count * 100 / TotalCnt, 2) + "%)");
             basic_sw_csv.Write(item.name + "," + item.count + ",");
@@ -343,7 +420,24 @@ public static class DataCenterForSecurity
         basic_sw_csv.WriteLine();
         sw.WriteLine();
 
-        //6.各个协议的总流量统计
+        //在源头和目标的次数都很多
+        basic_sw_csv.Write("source_dist_Same,");
+        Parallel.ForEach(source, (s, loop) =>
+        {
+            var d = dist.Where(x => x.name == s.name);
+            if (d.Count() == 1)
+            {
+                var rate = Math.Round((float)s.count * 100 / (s.count + d.First().count), 2);
+                var totalcnt = s.count + d.First().count;
+                if (rate > 35 && rate < 65 && totalcnt > 1000)
+                {
+                    basic_sw_csv.Write(s.name + "," + s.count + "|" + d.First().count + "|" + rate + "%" + ",");
+                }
+            }
+        });
+        basic_sw_csv.WriteLine();
+
+        //6.流量统计
         sw.WriteLine("#下行总流量统计(单位：MB)");
         var downlink_length = records.GroupBy(x => x.protocol).Select(x => (protocol: x.Key, count: (double)x.Sum(y => y.downlink_length) / (1024 * 1024))).ToList();
         basic_sw_csv.WriteLine("downlink_length," + Math.Round(downlink_length.Sum(x => x.count), 2));

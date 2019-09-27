@@ -206,11 +206,18 @@
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">HEADER</li>
         <!-- Optionally, you can add icons to the links -->
-        <li class="active"><a href="security/dashboard"><i class="fa fa-link"></i> <span>仪表盘</span></a></li>
-        <li><a href="security/timeanalysis"><i class="fa fa-link"></i> <span>时间分析</span></a></li>
-        <li><a href="security/sankey"><i class="fa fa-link"></i> <span>桑基图</span></a></li>
-        <li><a href="security/sourceipseg"><i class="fa fa-link"></i> <span>源头IP地址网段分析</span></a></li>
-        <li><a href="security/distipseg"><i class="fa fa-link"></i> <span>目标IP地址网段分析</span></a></li>
+        <li [class.active]="_path ==='/security/dashboard'"><a href="security/dashboard"><i class="fa fa-link"></i>
+            <span>仪表盘</span></a></li>
+        <li [class.active]="_path ==='/security/serverinfo'"><a href="security/serverinfo"><i class="fa fa-link"></i>
+            <span>服务器信息</span></a></li>
+        <li [class.active]="_path ==='/security/timeanalysis'"><a href="security/timeanalysis"><i
+              class="fa fa-link"></i> <span>时间分析</span></a></li>
+        <li [class.active]="_path ==='/security/sankey'"><a href="security/sankey"><i class="fa fa-link"></i>
+            <span>桑基图</span></a></li>
+        <li [class.active]="_path ==='/security/sourceipseg'"><a href="security/sourceipseg"><i class="fa fa-link"></i>
+            <span>源头IP地址网段分析</span></a></li>
+        <li [class.active]="_path ==='/security/distipseg'"><a href="security/distipseg"><i class="fa fa-link"></i>
+            <span>目标IP地址网段分析</span></a></li>
       </ul>
       <!-- /.sidebar-menu -->
     </section>
