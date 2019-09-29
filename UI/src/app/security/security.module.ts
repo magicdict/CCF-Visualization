@@ -11,6 +11,7 @@ import { ServerInfoComponent } from './ServerInfo/ServerInfo.component';
 import { TrafficSankeyComponent } from './TrafficSankey/TrafficSankey.component';
 import { IpSegmentComponent } from './IpSegment/IpSegment.component';
 import { ProtocolProfileComponent } from './Protocol/ProtocolProfile.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -23,9 +24,10 @@ import { ProtocolProfileComponent } from './Protocol/ProtocolProfile.component';
     ProtocolProfileComponent
   ],
   imports: [
-    SecurityRoutingModule,
+    SecurityRoutingModule, 
     HttpClientModule,
-    MyCommonModule
+    MyCommonModule,
+    CommonModule
   ],
   providers: [
     CommonFunction,

@@ -53,9 +53,22 @@ export interface IServerInfo {
 }
 
 export interface IProfile {
-    Name:string,
+    Name: string,
     Ports: NameValueSet[],
     DistIps: NameValueSet[],
     SourceIps: NameValueSet[],
-    Source_dist:NameValueSet[],
+    Source_dist: NameValueSet[],
+    HostCnt: number,
+    Top100HostInfo: IHostInfo[]
+}
+
+export interface IHostInfo {
+    Ip:string,
+    SourceCnt:number,
+    DistCnt:number,
+    DistProtocolCnt:number,
+    DistRat:number,
+    SourceProtocols:NameValueSet[],
+    DistProtocols:NameValueSet[],
+    ProtocolRate:number,
 }

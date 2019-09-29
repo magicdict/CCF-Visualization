@@ -1,6 +1,8 @@
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
+using static DataCenterForSecurity;
 
 public class NetRecord
 {
@@ -259,4 +261,62 @@ public class IPAddress
         }
     }
 
+}
+
+/// <summary>
+/// 主机信息
+/// </summary>
+public class HostInfo
+{
+    public string Ip { set; get; }
+    /// <summary>
+    /// 作为源头的次数
+    /// </summary>
+    /// <value></value>
+    public int SourceCnt { set; get; }
+    /// <summary>
+    /// 作为目标的次数
+    /// </summary>
+    /// <value></value>
+    public int DistCnt { set; get; }
+
+    public int DistProtocolCnt { set; get; }
+    /// <summary>
+    /// 作为目标的比例
+    /// </summary>
+    /// <value></value>
+    public double DistRat
+    {
+        get
+        {
+            return Math.Round((double)DistCnt * 100 / (SourceCnt + DistCnt), 2);
+        }
+    }
+
+    public List<NameValueSet<int>> SourceProtocols { get; set; }
+
+    public List<NameValueSet<int>> DistProtocols { get; set; }
+
+    public double ProtocolRate { get; set; }
+}
+
+public class NameValueSet<T>
+{
+    public string Name { get; set; }
+
+    public T Value { get; set; }
+}
+public class ProtocolProfile
+{
+    public string Name;
+    public List<NameValueSet<int>> Ports;
+
+    public List<NameValueSet<int>> DistIps;
+
+    public List<NameValueSet<int>> SourceIps;
+
+    public List<NameValueSet<int>> Source_dist;
+
+    public int HostCnt { get; set; }
+    public List<HostInfo> Top100HostInfo { get; set; }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
+using System.Collections.Concurrent;
 
 public static class DataCenterForSecurity
 {
@@ -86,7 +87,7 @@ public static class DataCenterForSecurity
             tree.children.Add(new treeItem() { name = rootseg, children = parentsegtrees });
         }
         var sw = new StreamWriter(AngularJsonAssetsFolder + "sourceip_tree.json");
-        sw.Write(JsonConvert.SerializeObject(tree));
+        sw.Write(JsonConvert.SerializeObject(tree, Formatting.Indented));
         sw.Close();
     }
 
@@ -124,7 +125,7 @@ public static class DataCenterForSecurity
             tree.children.Add(new treeItem() { name = rootseg, children = parentsegtrees });
         }
         var sw = new StreamWriter(AngularJsonAssetsFolder + "distip_tree.json");
-        sw.Write(JsonConvert.SerializeObject(tree));
+        sw.Write(JsonConvert.SerializeObject(tree, Formatting.Indented));
         sw.Close();
 
     }
@@ -535,24 +536,7 @@ public static class DataCenterForSecurity
         sw.Close();
     }
 
-    public class NameValueSet<T>
-    {
-        public string Name { get; set; }
 
-        public T Value { get; set; }
-    }
-    public class ProtocolProfile
-    {
-        public string Name;
-        public List<NameValueSet<int>> Ports;
-
-        public List<NameValueSet<int>> DistIps;
-
-        public List<NameValueSet<int>> SourceIps;
-
-        public List<NameValueSet<int>> Source_dist;
-
-    }
 
     public static void GetProtocolProfile(string protocolname)
     {
@@ -577,10 +561,56 @@ public static class DataCenterForSecurity
         profile.Source_dist = protocolrecs.GroupBy(x => x.source_ip.RawIp + "->" + x.destination_ip.RawIp + ":" + x.destination_port).Select(x => new NameValueSet<int> { Name = x.Key, Value = x.Count() }).ToList();
         profile.Source_dist.Sort((x, y) => { return y.Value.CompareTo(x.Value); });
         profile.Source_dist = profile.Source_dist.Take(5).ToList();
-
-
+        profile.HostCnt = records.Where(x => x.protocol == protocolname).Select(x => x.destination_ip.RawIp).Distinct().Count();
+        profile.Top100HostInfo = GetHostInfo(protocolname);
+        profile.Top100HostInfo.Sort((x, y) =>
+        {
+            if (x.DistProtocolCnt == y.DistProtocolCnt)
+            {
+                if (x.ProtocolRate == y.ProtocolRate)
+                {
+                    return y.DistRat.CompareTo(x.DistRat);
+                }
+                else
+                {
+                    return y.ProtocolRate.CompareTo(x.ProtocolRate);
+                }
+            }
+            else
+            {
+                return y.DistProtocolCnt.CompareTo(x.DistProtocolCnt);
+            }
+        });
         var sw = new StreamWriter(AngularJsonAssetsFolder + protocolname + ".json");
-        sw.Write(JsonConvert.SerializeObject(profile));
+        sw.Write(JsonConvert.SerializeObject(profile, Formatting.Indented));
         sw.Close();
+    }
+    /// <summary>
+    /// 获得主机信息
+    /// /// </summary>
+    static List<HostInfo> GetHostInfo(string protocolname)
+    {
+        var Counts = records.Where(x => x.protocol == protocolname).GroupBy(x => x.destination_ip.RawIp)
+                              .Select(x => new NameValueSet<int>() { Name = x.Key, Value = x.Count() }).ToList();
+        Console.WriteLine(protocolname + "：" + Counts.Count);
+        Counts.Sort((x, y) => { return y.Value.CompareTo(x.Value); });
+        var HostList = Counts.Take(100).Select(x => x.Name);
+        var Hosts = new ConcurrentBag<HostInfo>();
+        Parallel.ForEach(HostList, (ip, _) =>
+        {
+            var dispRecords = records.Where(x => x.destination_ip.RawIp == ip);
+            var sourceRecords = records.Where(x => x.source_ip.RawIp == ip);
+            Hosts.Add(new HostInfo()
+            {
+                Ip = ip,
+                SourceCnt = sourceRecords.Count(),
+                DistCnt = dispRecords.Count(),
+                DistProtocolCnt = dispRecords.Count(x => x.protocol == protocolname),
+                SourceProtocols = sourceRecords.GroupBy(x => x.protocol).Select(x => new NameValueSet<int> { Name = x.Key, Value = x.Count() }).ToList(),
+                DistProtocols = dispRecords.GroupBy(x => x.protocol).Select(x => new NameValueSet<int> { Name = x.Key, Value = x.Count() }).ToList(),
+                ProtocolRate = Math.Round(dispRecords.Count(x => x.protocol == protocolname) * 100 / (double)dispRecords.Count(), 2)
+            });
+        });
+        return Hosts.ToList();
     }
 }

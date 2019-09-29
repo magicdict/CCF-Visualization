@@ -23,13 +23,61 @@
     <div class="row">
         <div class="col-md-6">
             <chart [options]="_source_dist_Top5" [title]="'源头目标TOP5'" [boxstyle]="this._commonFunction.boxstyle_Col6"
-            [chartstyle]="this._commonFunction.chartstyle_Col6">
-        </chart>
+                [chartstyle]="this._commonFunction.chartstyle_Col6">
+            </chart>
         </div>
         <div class="col-md-6">
             <chart [options]="_dist_Top5" [title]="'目标TOP5'" [boxstyle]="this._commonFunction.boxstyle_Col6"
                 [chartstyle]="this._commonFunction.chartstyle_Col6">
             </chart>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">基本数据</h3>
+                    <div class="box-tools pull-right">
+                    </div>
+                </div>
+                <div class="box-body">
+                    <table class="table  table-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    IP地址
+                                </th>
+                                <th>
+                                    被访问次数（{{_protocolname}}）
+                                </th>
+                                <th>
+                                    被访问次数（总体）
+                                </th>
+                                <th>
+                                    {{_protocolname}}协议被访问比例
+                                </th>
+                                <th>
+                                    主动访问次数（总体）
+                                </th>
+                                <th>
+                                    被访问次数占总体比例
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of _profile.Top100HostInfo">
+                                <td>{{item.Ip}}</td>
+                                <td>{{item.DistProtocolCnt}}</td>
+                                <td>{{item.DistCnt}}</td>
+                                <td>{{item.ProtocolRate}}%</td>
+                                <td>{{item.SourceCnt}}</td>
+                                <td>{{item.DistRat}}%</td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </section>
