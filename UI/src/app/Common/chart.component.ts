@@ -12,6 +12,7 @@ export class ChartComponent {
     @Input() footer = "";
     @Input() options = null;
     @Output() ChartInit = new EventEmitter();
+    @Input() miniMode = false;
     public ChartInited(e: any) {
         this.ChartInit.emit(e);
     }

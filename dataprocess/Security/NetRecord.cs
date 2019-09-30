@@ -261,6 +261,14 @@ public class IPAddress
         }
     }
 
+    public bool IsRouteIp
+    {
+        get
+        {
+            return RawIp.Equals("192.168.1.1") || RawIp.Equals("192.168.0.1") || RawIp.Equals("192.168.1.1");
+        }
+    }
+
 }
 
 /// <summary>

@@ -48,6 +48,17 @@ export class ProtocolProfileComponent implements OnInit {
         source_dist_item.type = "bar";
         this._source_dist_Top5.series.push(source_dist_item);
 
+
+        this._profile.Top100HostInfo.forEach(
+          el=>{
+            let opt = CommonFunction.clone(IPieStardard);
+            opt.series[0].center  =  ['50%', '50%'],
+            opt.series[0].data = el.DistProtocols.map(x => { return { name: x.Name, value: x.Value } });
+            opt.toolbox.show = false;
+            el.option = opt;
+          }
+        );
+
       });
   }
 

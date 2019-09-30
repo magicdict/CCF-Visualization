@@ -9,6 +9,8 @@ export class CommonFunction {
         private http: HttpClient
     ) { }
 
+    public static boxstyle_mini = { 'width': '250px', 'height': '150px' };    
+    public static chartstyle_mini = { 'width': '240px', 'height': '140px' };
 
     public static boxstyle_Col3 = { 'width': '380px', 'height': '400px' };
     public static chartstyle_Col3 = { 'width': '340px', 'height': '350px' };

@@ -71,4 +71,5 @@ export interface IHostInfo {
     SourceProtocols:NameValueSet[],
     DistProtocols:NameValueSet[],
     ProtocolRate:number,
+    option:any
 }

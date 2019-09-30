@@ -40,6 +40,10 @@ public static class DataCenterForSecurity
             if (cnt == MaxRecord) break;        //内存限制
         }
         Console.WriteLine("Total Record Count:" + records.Count);
+
+        var routecnt = records.Count(x => x.destination_ip.IsRouteIp || x.source_ip.IsRouteIp);
+        Console.WriteLine("Route Record Count:" + routecnt);
+
     }
 
 
