@@ -68,3 +68,13 @@ export class ProfileResolver implements Resolve<IProfile> {
     }
 }
 
+@Injectable()
+export class GephiResolver implements Resolve<any> {
+    constructor(public commonFunction: CommonFunction) {
+
+    }
+    resolve(_route: ActivatedRouteSnapshot, _state: RouterStateSnapshot): any | Observable<any> | Promise<any> {
+        return this.commonFunction.httpRequestGetFromAssetAsXml("security/json/net.gexf");
+    }
+}
+

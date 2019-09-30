@@ -262,6 +262,18 @@ export class CommonFunction {
             .catch(this.handleError);
     }
 
+    public httpRequestGetFromAssetAsXml(serviceUrl: string): Promise<any> {
+        return this.http.get(
+            "/assets/" + serviceUrl,
+            {responseType: 'text'}
+        )
+            .toPromise()
+            .then(response => {
+                return response;
+            })
+            .catch(this.handleError);
+    }
+
     public httpRequestPost<T>(serviceUrl: string, params: any = {}): Promise<T> {
         return this.http.post(
             this.webapiurl + serviceUrl,

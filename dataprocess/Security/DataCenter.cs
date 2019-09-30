@@ -44,6 +44,17 @@ public static class DataCenterForSecurity
         var routecnt = records.Count(x => x.destination_ip.IsRouteIp || x.source_ip.IsRouteIp);
         Console.WriteLine("Route Record Count:" + routecnt);
 
+        var gephi_sw = new StreamWriter(AfterProcessFolder + "gephi.csv");
+        var gephi = records.GroupBy(x => x.source_ip.RawIp + "," + x.destination_ip.RawIp).Select(x => (name: x.Key, count: x.Count())).ToList();
+        gephi.Sort((x, y) => { return y.count.CompareTo(x.count); });
+        gephi = gephi.Take(1000).ToList();
+        gephi_sw.WriteLine("Source,Target,Weight");
+        foreach (var item in gephi)
+        {
+            gephi_sw.WriteLine(item.name + "," + item.count);
+        }
+        gephi_sw.Close();
+
     }
 
 
