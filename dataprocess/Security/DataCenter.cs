@@ -44,8 +44,28 @@ public static class DataCenterForSecurity
         var routecnt = records.Count(x => x.destination_ip.IsRouteIp || x.source_ip.IsRouteIp);
         Console.WriteLine("Route Record Count:" + routecnt);
 
+        Func<List<NetRecord>, string> maxprotocol = (x) =>
+        {
+            var m = x.GroupBy(x => x.protocol).Select(y => (protocol: y.Key, count: y.Count())).ToList();
+            m.Sort((x, y) => { return y.count.CompareTo(x.count); });
+            return m[0].protocol;
+        };
+        //除去访问外网地址
         var gephi_sw = new StreamWriter(AfterProcessFolder + "gephi.csv");
-        var gephi = records.GroupBy(x => x.source_ip.RawIp + "," + x.destination_ip.RawIp).Select(x => (name: x.Key, count: x.Count())).ToList();
+        var gephi = records.GroupBy(x => x.source_ip.RawIp + "," + x.destination_ip.RawIp).
+                Select(x => (name: x.Key, count: x.Count(), protocol: maxprotocol(x.ToList()))).ToList();
+        gephi.Sort((x, y) => { return y.count.CompareTo(x.count); });
+        gephi = gephi.Take(1000).ToList();
+        gephi_sw.WriteLine("Source,Target,Weight,Protocol");
+        foreach (var item in gephi)
+        {
+            gephi_sw.WriteLine(item.name + "," + item.count + "," + item.protocol);
+        }
+        gephi_sw.Close();
+
+        gephi_sw = new StreamWriter(AfterProcessFolder + "ftp_control_gephi.csv");
+        gephi = records.Where(x => x.protocol == "ftp_control").GroupBy(x => x.source_ip.RawIp + "," + x.destination_ip.RawIp)
+                       .Select(x => (name: x.Key, count: x.Count(), protocol: "ftp_control")).ToList();
         gephi.Sort((x, y) => { return y.count.CompareTo(x.count); });
         gephi = gephi.Take(1000).ToList();
         gephi_sw.WriteLine("Source,Target,Weight");
@@ -55,6 +75,7 @@ public static class DataCenterForSecurity
         }
         gephi_sw.Close();
 
+        //records = records.Where(x => x.destination_ip.IsLAN).ToList();
     }
 
 

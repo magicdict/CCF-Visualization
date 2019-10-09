@@ -78,3 +78,14 @@ export class GephiResolver implements Resolve<any> {
     }
 }
 
+@Injectable()
+export class GephiOpenOrdResolver implements Resolve<any> {
+    constructor(public commonFunction: CommonFunction) {
+
+    }
+    resolve(_route: ActivatedRouteSnapshot, _state: RouterStateSnapshot): any | Observable<any> | Promise<any> {
+        return this.commonFunction.httpRequestGetFromAssetAsXml("security/json/net_OpenOrd.gexf");
+    }
+}
+
+

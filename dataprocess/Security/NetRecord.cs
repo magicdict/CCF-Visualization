@@ -207,6 +207,7 @@ public class IPAddress
     {
         get
         {
+            if (IsIpV6) return "";
             return RawIp.Split(".")[0] + "." + RawIp.Split(".")[1] + "." + RawIp.Split(".")[2];
         }
     }

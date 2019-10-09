@@ -214,8 +214,21 @@
             <span>服务器信息</span></a></li>
         <li [class.active]="_path ==='/security/sankey'"><a href="security/sankey"><i class="fa fa-link"></i>
             <span>桑基图</span></a></li>
-        <li [class.active]="_path ==='/security/gephi'"><a href="security/gephi"><i class="fa fa-link"></i>
-            <span>关系图</span></a></li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-edit"></i> <span>网络布局</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li [class.active]="_path ==='/security/gephiopenord'"><a href="security/gephiopenord"><i
+                  class="fa fa-link"></i>
+                <span>OpenOrd</span></a></li>
+            <li [class.active]="_path ==='/security/gephi'"><a href="security/gephi"><i class="fa fa-link"></i>
+                <span>Fruchterman Reingold</span></a></li>
+          </ul>
+        </li>
         <li [class.active]="_path ==='/security/sourceipseg'"><a href="security/sourceipseg"><i class="fa fa-link"></i>
             <span>源头IP地址网段分析</span></a></li>
         <li [class.active]="_path ==='/security/distipseg'"><a href="security/distipseg"><i class="fa fa-link"></i>
