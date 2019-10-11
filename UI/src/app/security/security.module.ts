@@ -13,6 +13,7 @@ import { IpSegmentComponent } from './IpSegment/IpSegment.component';
 import { ProtocolProfileComponent } from './Protocol/ProtocolProfile.component';
 import { CommonModule } from '@angular/common';
 import { TrafficGephiComponent } from './TrafficSankey/TrafficGephi.component';
+import { TopologyComponent } from './TrafficSankey/Topology.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { TrafficGephiComponent } from './TrafficSankey/TrafficGephi.component';
     DashboardComponent,
     TrafficSankeyComponent,
     TrafficGephiComponent,
+    TopologyComponent,
     ServerInfoComponent,
     IpSegmentComponent,
     ProtocolProfileComponent

@@ -12,6 +12,7 @@ import { TrafficSankeyComponent } from './TrafficSankey/TrafficSankey.component'
 import { IpSegmentComponent } from './IpSegment/IpSegment.component';
 import { ProtocolProfileComponent } from './Protocol/ProtocolProfile.component';
 import { TrafficGephiComponent } from './TrafficSankey/TrafficGephi.component';
+import { TopologyComponent } from './TrafficSankey/Topology.component';
 
 
 const routes: Routes = [
@@ -22,6 +23,7 @@ const routes: Routes = [
       { path: 'timeanalysis', component: TimeAnalysisComponent, resolve: { data: TimeAnaysisResolver } },
       { path: 'sankey', component: TrafficSankeyComponent, resolve: { data: DashboardResolver } },
       { path: 'gephi', component: TrafficGephiComponent, resolve: { data: GephiResolver } },
+      { path: 'topology', component: TopologyComponent},
       { path: 'gephiopenord', component: TrafficGephiComponent, resolve: { data: GephiOpenOrdResolver } },
       { path: 'sourceipseg', component: IpSegmentComponent, resolve: { data: SourceIpSegResolver } },
       { path: 'distipseg', component: IpSegmentComponent, resolve: { data: DistIpSegResolver } },
