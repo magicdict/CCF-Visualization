@@ -571,7 +571,7 @@ export const ITopologyStardard = {
       trigger: 'item',
       formatter: '{b}',
   },
-  backgroundColor: "#F5F5F5",
+  //backgroundColor: "#F5F5F5",
   xAxis: {
       min: 0,
       max: 12,
@@ -671,7 +671,7 @@ export const IGephiStardard = {
           bounding: 'raw',
           origin: [75, 75],
           style: {
-              image: 'assets/security/net_gexf_color.PNG',
+              image: 'assets/security/net_gexf_color.png',
               width: 200,
               height: 250,
               //opacity: 0.4

@@ -82,17 +82,6 @@
     </div>
     <div class="row">
         <div class="col-md-3">
-            <chart [options]="_Distance" [title]="'路程公里数'" [boxstyle]="this._commonFunction.boxstyle_Col3"
-                [chartstyle]="this._commonFunction.chartstyle_Col3"> </chart>
-        </div>
-        <div class="col-md-6">
-            <chart [options]="_weeklyDistance" [title]="'订单距离（周单位）'" [boxstyle]="this._commonFunction.boxstyle_Col6"
-                [chartstyle]="this._commonFunction.chartstyle_Col6">
-            </chart>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-3">
             <chart [options]="_WaitTime" [title]="'等候时间（实时订单）'" [boxstyle]="this._commonFunction.boxstyle_Col3"
                 [chartstyle]="this._commonFunction.chartstyle_Col3">
             </chart>
@@ -100,6 +89,17 @@
         <div class="col-md-6">
             <chart [options]="_WaitTimeWeekly" [title]="'等候时间（实时订单）百分比（周单位）'"
                 [boxstyle]="this._commonFunction.boxstyle_Col6" [chartstyle]="this._commonFunction.chartstyle_Col6">
+            </chart>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <chart [options]="_Distance" [title]="'路程公里数'" [boxstyle]="this._commonFunction.boxstyle_Col3"
+                [chartstyle]="this._commonFunction.chartstyle_Col3"> </chart>
+        </div>
+        <div class="col-md-6">
+            <chart [options]="_weeklyDistance" [title]="'订单距离（周单位）'" [boxstyle]="this._commonFunction.boxstyle_Col6"
+                [chartstyle]="this._commonFunction.chartstyle_Col6">
             </chart>
         </div>
     </div>

@@ -41,7 +41,7 @@ export class CommonFunction {
     public static chartstyle_Col12_Row2 = { 'width': '1550px', 'height': '770px' };
 
     public static boxstyle_Col12_Row3 = { 'width': '1600px', 'height': '1230px' };
-    public static chartstyle_Col12_Row3 = { 'width': '1550px', 'height': '1180px' };    
+    public static chartstyle_Col12_Row3 = { 'width': '1580px', 'height': '1160px' };    
 
     public static GetWeatherImageByText(text: string): string {
         if (CommonFunction.IsNullOrEmpty(text)) { return "assets/image/weathy/weathy_01.png" }
