@@ -18,7 +18,7 @@ export interface IDashBoard {
         Name: string, Value: {
             ordercnt: number,
             fee: number,
-            normaltime:number,
+            normaltime: number,
             distance: number,
             premier: number,
             reserve: number,
@@ -26,8 +26,8 @@ export interface IDashBoard {
             airport: number,
             train: number,
             longbus: number,
-            school:number,
-            hospital:number,
+            school: number,
+            hospital: number,
             travel: number,
             waittime_1: number,
             waittime_2: number,
@@ -81,4 +81,11 @@ export interface MapValue {
     name: string,
     value: number[],
     weekno: number
+}
+
+export interface ITraceItem {
+    coords: any,
+    lineStyle: {
+        width: number;
+    }
 }

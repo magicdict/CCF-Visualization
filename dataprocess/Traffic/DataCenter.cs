@@ -378,7 +378,9 @@ public static class DataCenterForTraffic
         {
             if (Cnt != 0) json.WriteLine(",");
             Cnt++;
-            json.Write("[[" + item.coord.source.lng + "," + item.coord.source.lat + "],[" + item.coord.dest.lng + "," + item.coord.dest.lat + "]]");
+            //json.Write("[[" + item.coord.source.lng + "," + item.coord.source.lat + "],[" + item.coord.dest.lng + "," + item.coord.dest.lat + "]]");
+            json.Write("{\"coords\":[[" + item.coord.source.lng + "," + item.coord.source.lat + "],[" + item.coord.dest.lng + "," + item.coord.dest.lat + "]],");
+            json.Write("\"lineStyle\": { \"width\":" + (int)Math.Log2(item.Value) + "}}");
         }
         json.WriteLine();
         json.WriteLine("]");

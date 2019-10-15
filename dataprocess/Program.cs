@@ -6,16 +6,16 @@ namespace dataprocess
     {
         static void Main(string[] args)
         {
-            var IsTraffic = false;
+            var IsTraffic = true;
             if (IsTraffic)
             {
                 DataCenterForTraffic.Load(-1);
                 //DataCenterForTraffic.Load(2_000_000);
                 //相同起点和终点的分析(耗时)
                 DataCenterForTraffic.IsCreateTrace = true;
-                DataCenterForTraffic.IsCreate24HoursGeoJson = true;
-                DataCenterForTraffic.IsCreateWeekNoGeoJson = true;
-                DataCenterForTraffic.IsCreateGeoJson = true;
+                //DataCenterForTraffic.IsCreate24HoursGeoJson = true;
+                //DataCenterForTraffic.IsCreateWeekNoGeoJson = true;
+                //DataCenterForTraffic.IsCreateGeoJson = true;
                 DataCenterForTraffic.EDA();
             }
             else
