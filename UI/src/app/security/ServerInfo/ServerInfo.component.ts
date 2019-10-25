@@ -20,25 +20,25 @@ export class ServerInfoComponent implements OnInit {
     this.route.data
       .subscribe((xxx: { data: IDashBoard }) => {
         this._dashboard = xxx.data;
-        this._source_Top5.xAxis.data = this._dashboard.source.slice(0, 5).map(x => x.Name);
+        this._source_Top5.xAxis.data = this._dashboard.source.slice(0, 20).map(x => x.Name);
         let sourceitem = CommonFunction.clone(LineItem);
-        sourceitem.name = "源头TOP5";
-        sourceitem.data = this._dashboard.source.slice(0, 5).map(x => x.Value);
+        sourceitem.name = "源头TOP20";
+        sourceitem.data = this._dashboard.source.slice(0, 20).map(x => x.Value);
         sourceitem.type = "bar";
         this._source_Top5.series.push(sourceitem);
 
-        this._dist_Top5.xAxis.data = this._dashboard.dist.slice(0, 5).map(x => x.Name);
+        this._dist_Top5.xAxis.data = this._dashboard.dist.slice(0, 20).map(x => x.Name);
         let distitem = CommonFunction.clone(LineItem);
-        distitem.name = "目标TOP5";
-        distitem.data = this._dashboard.dist.slice(0, 5).map(x => x.Value);
+        distitem.name = "目标TOP20";
+        distitem.data = this._dashboard.dist.slice(0, 20).map(x => x.Value);
         distitem.type = "bar";
         this._dist_Top5.series.push(distitem);
 
-        this._source_dist_Top5.xAxis.data = this._dashboard.source_dist.slice(0, 5).map(this.source_dist_xAxis);
-        this._source_dist_Top5.xAxis["axisLabel"] = { interval: 0 };
+        this._source_dist_Top5.xAxis.data = this._dashboard.source_dist.slice(0, 20).map(this.source_dist_xAxis);
+        //this._source_dist_Top5.xAxis["axisLabel"] = { interval: 0 };
         let source_distitem = CommonFunction.clone(LineItem);
-        source_distitem.name = "源头目标TOP5";
-        source_distitem.data = this._dashboard.source_dist.slice(0, 5).map(x => x.Value);
+        source_distitem.name = "源头目标TOP20";
+        source_distitem.data = this._dashboard.source_dist.slice(0, 20).map(x => x.Value);
         source_distitem.type = "bar";
         this._source_dist_Top5.series.push(source_distitem);
       });

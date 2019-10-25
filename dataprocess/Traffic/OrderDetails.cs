@@ -193,13 +193,19 @@ public class OrderDetails
         /// </summary>
         public double lng;
         /// <summary>
-        /// /// 纬度
+        /// 纬度
         /// </summary>
         public double lat;
 
         const double baiduOffsetlng = 0.0063;
         const double baiduOffsetlat = 0.0058;
-
+        public string key
+        {
+            get
+            {
+                return lng.ToString() + "_" + lat.ToString();
+            }
+        }
         public Geo(double _lng, double _lat)
         {
             lng = Math.Round(_lng + baiduOffsetlng, 4);

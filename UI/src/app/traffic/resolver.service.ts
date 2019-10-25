@@ -36,6 +36,16 @@ export class SimpleSourceMapResolver implements Resolve<MapValue[]> {
 }
 
 @Injectable()
+export class LongWaitMapResolver implements Resolve<MapValue[]> {
+    constructor(public commonFunction: CommonFunction) {
+
+    }
+    resolve(_: ActivatedRouteSnapshot, _state: RouterStateSnapshot): MapValue[] | Observable<MapValue[]> | Promise<MapValue[]> {
+        return this.commonFunction.httpRequestGetFromAsset<MapValue[]>("traffic/json/longwait_PointSize.json");
+    }
+}
+
+@Injectable()
 export class SimpleDestMapResolver implements Resolve<MapValue[]> {
     constructor(public commonFunction: CommonFunction) {
 

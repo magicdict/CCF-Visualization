@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { TrafficRoutingModule } from './traffic-routing.module';
 import { TimeAnaysisResolver, SourceMapResolver, DestMapResolver, DashBoardResolver, 
-  CalendarResolver, SimpleDestMapResolver, SimpleSourceMapResolver, TraceResolver, SourceMapWeeKnoResolver, DestMapWeeKnoResolver } from './resolver.service';
+  CalendarResolver, SimpleDestMapResolver, SimpleSourceMapResolver, TraceResolver, SourceMapWeeKnoResolver, DestMapWeeKnoResolver, LongWaitMapResolver } from './resolver.service';
 import { CommonFunction } from '../Common/common';
 import { HttpClientModule } from '@angular/common/http';
 import { MyCommonModule } from '../Common/MyCommon.module';
@@ -42,6 +42,7 @@ import { TabViewModule } from 'primeng/tabview';
     CommonFunction,
     DashBoardResolver,
     TimeAnaysisResolver,
+    LongWaitMapResolver,
     SimpleSourceMapResolver,
     SimpleDestMapResolver,
     SourceMapResolver,

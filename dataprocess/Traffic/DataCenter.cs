@@ -10,10 +10,10 @@ using System.Diagnostics;
 public static class DataCenterForTraffic
 {
 
-    public const string DataFolder = @"F:\CCF-Visualization\RawData\海口市-交通流量时空演变特征可视分析";
-    public const string EDAFile = @"F:\CCF-Visualization\dataprocess\AfterProcess\海口市-交通流量时空演变特征可视分析\EDA.log";
-    public const string AfterProcessFolder = @"F:\CCF-Visualization\dataprocess\AfterProcess\海口市-交通流量时空演变特征可视分析\";
-    public const string AngularJsonAssetsFolder = @"F:\CCF-Visualization\UI\src\assets\traffic\json\";
+    public static string DataFolder = @"F:\CCF-Visualization\RawData\海口市-交通流量时空演变特征可视分析";
+    public static string EDAFile = @"F:\CCF-Visualization\dataprocess\AfterProcess\海口市-交通流量时空演变特征可视分析\EDA.log";
+    public static string AfterProcessFolder = @"F:\CCF-Visualization\dataprocess\AfterProcess\海口市-交通流量时空演变特征可视分析\";
+    public static string AngularJsonAssetsFolder = @"F:\CCF-Visualization\UI\src\assets\traffic\json\";
     public static List<OrderDetails> orders = new List<OrderDetails>();
     public static List<DiaryProperty> diarys = new List<DiaryProperty>();
 
@@ -398,6 +398,7 @@ public static class DataCenterForTraffic
     {
         //以1_000_000 为单位进行Groupby，然后汇总
         var TotalCnt = orders.Count();
+        Console.WriteLine("TotalCnt:" + TotalCnt);
         var TimeCnt = TotalCnt / 1_000_000;
         TimeCnt += 1;
         var MapReduceDictionary = new ConcurrentDictionary<Geo, int>();
@@ -546,6 +547,51 @@ public static class DataCenterForTraffic
         json.Close();
         GC.Collect();
     }
+
+    /// <summary>
+    /// 每一个坐标点的属性
+    /// </summary>
+    public static void GetEveryGeoPointAttr()
+    {
+        //选择最多的1000个出发地
+        var MostStartPoint = orders.GroupBy(x => x.starting.key).Select(x => (x.Key, x.Count())).ToList();
+        var MostDestPoint = orders.GroupBy(x => x.dest.key).Select(x => (x.Key, x.Count())).ToList();
+        MostStartPoint.Sort((x, y) => y.Item2.CompareTo(x.Item2));
+        MostDestPoint.Sort((x, y) => y.Item2.CompareTo(x.Item2));
+        var keys = MostStartPoint.Take(1000).Select(x => x.Key).ToList();
+        keys.AddRange(MostDestPoint.Take(1000).Select(x => x.Key).ToList());
+        keys = keys.Distinct().ToList();
+        Console.WriteLine("PointCount:" + keys.Count);
+        var Points = new ConcurrentBag<GeoAttrProperty>();
+        Parallel.ForEach(keys, (key, _) =>
+        {
+            var startcnt = orders.Count(x => x.starting.key == key);
+            var destcnt = orders.Count(x => x.dest.key == key);
+            var p = new GeoAttrProperty() { Key = key, StartCount = startcnt, DestCount = destcnt };
+            Points.Add(p);
+        });
+        Console.WriteLine("PointCount:" + Points.Count);
+        var json = new StreamWriter(AngularJsonAssetsFolder + "PointAttr.json");
+        int Cnt = 0;
+        json.WriteLine("[");
+        foreach (var item in Points.ToList())
+        {
+            if (Cnt != 0) json.WriteLine(",");
+            Cnt++;
+            json.Write(" {\"key\": \"" + item.Key + "\", \"startcount\":" + item.StartCount + ",\"destcount\":" + item.DestCount + "}");
+        }
+        json.WriteLine();
+        json.WriteLine("]");
+        json.Close();
+        GC.Collect();
+    }
+}
+
+public class GeoAttrProperty
+{
+    public string Key { get; set; }
+    public int StartCount { get; set; }
+    public int DestCount { get; set; }
 
 }
 
