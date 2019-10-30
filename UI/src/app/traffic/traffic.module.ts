@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { TrafficRoutingModule } from './traffic-routing.module';
 import { TimeAnaysisResolver, SourceMapResolver, DestMapResolver, DashBoardResolver, 
-  CalendarResolver, SimpleDestMapResolver, SimpleSourceMapResolver, TraceResolver, SourceMapWeeKnoResolver, DestMapWeeKnoResolver, LongWaitMapResolver } from './resolver.service';
+  CalendarResolver, SimpleDestMapResolver, SimpleSourceMapResolver, TraceResolver, SourceMapWeeKnoResolver, DestMapWeeKnoResolver, HotPointMapResolver } from './resolver.service';
 import { CommonFunction } from '../Common/common';
 import { HttpClientModule } from '@angular/common/http';
 import { MyCommonModule } from '../Common/MyCommon.module';
@@ -18,6 +18,7 @@ import { TraceMapComponent } from './SourceDestMap/TraceMap.component';
 import { TimeLineMapWeekNoComponent } from './SourceDestMap/TimeLineMapWeekNo.component';
 
 import { TabViewModule } from 'primeng/tabview';
+import { HotPointMapComponent } from './SourceDestMap/HotPointMap.component';
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import { TabViewModule } from 'primeng/tabview';
     DashboardComponent,
     TimeLineMapComponent,
     TimeLineMapWeekNoComponent,
+    HotPointMapComponent,
     SimpleMapComponent,
     TraceMapComponent,
     TimeAnalysisComponent,
@@ -42,7 +44,7 @@ import { TabViewModule } from 'primeng/tabview';
     CommonFunction,
     DashBoardResolver,
     TimeAnaysisResolver,
-    LongWaitMapResolver,
+    HotPointMapResolver,
     SimpleSourceMapResolver,
     SimpleDestMapResolver,
     SourceMapResolver,

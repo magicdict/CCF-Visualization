@@ -6,6 +6,7 @@ using static OrderDetails;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using Newtonsoft.Json;
 
 public static class DataCenterForTraffic
 {
@@ -219,8 +220,8 @@ public static class DataCenterForTraffic
         {
             var Timer = new Stopwatch();
             Timer.Start();
-            CreateGeoJson(true, "startlocs", 1000);
-            CreateGeoJson(false, "destlocs", 1000);
+            CreateGeoJson(orders, true, "startlocs", 1000);
+            CreateGeoJson(orders, false, "destlocs", 1000);
             Console.WriteLine("CreateGeoJson Time Usage(Seconds):" + Timer.Elapsed.TotalSeconds);
         }
 
@@ -394,10 +395,10 @@ public static class DataCenterForTraffic
     /// <param name="isStart"></param>
     /// <param name="filename"></param>
     /// <param name="downlimit"></param>
-    private static void CreateGeoJson(bool isStart, string filename, int downlimit = -1)
+    private static void CreateGeoJson(List<OrderDetails> evaluateorders, bool isStart, string filename, int downlimit = -1)
     {
         //以1_000_000 为单位进行Groupby，然后汇总
-        var TotalCnt = orders.Count();
+        var TotalCnt = evaluateorders.Count();
         Console.WriteLine("TotalCnt:" + TotalCnt);
         var TimeCnt = TotalCnt / 1_000_000;
         TimeCnt += 1;
@@ -405,7 +406,7 @@ public static class DataCenterForTraffic
         for (int i = 0; i < TimeCnt; i++)
         {
             Console.WriteLine("Time:" + i + "Start");
-            var points = orders.Skip(i * 1_000_000).Take(1_000_000).GroupBy(x => isStart ? x.starting : x.dest)
+            var points = evaluateorders.Skip(i * 1_000_000).Take(1_000_000).GroupBy(x => isStart ? x.starting : x.dest)
                                                    .Select(x => (coord: x.Key, value: x.Count())).ToList();
             Parallel.ForEach(points, (item, loop) =>
             {
@@ -497,8 +498,6 @@ public static class DataCenterForTraffic
     private static void CreateWeekNoGeoJson()
     {
         var weekNoList = orders.Select(x => x.WeekNo).Distinct().ToList();
-
-
         var json = new StreamWriter(AngularJsonAssetsFolder + "startlocs_weekno_PointSize.json");
         int Cnt = 0;
         json.WriteLine("[");
@@ -548,51 +547,88 @@ public static class DataCenterForTraffic
         GC.Collect();
     }
 
+
+    public static void GetLongWait()
+    {
+        //等待时间超过15分钟，起点位置的统计
+        var filterpoint = orders.Where(x => x.WaitTime > 15).ToList();
+        //取超过50次的点
+        CreateGeoJson(filterpoint, true, "longwait", 50);
+    }
+
     /// <summary>
     /// 每一个坐标点的属性
     /// </summary>
-    public static void GetEveryGeoPointAttr()
+    public static void GetHotPointAttr()
     {
         //选择最多的1000个出发地
         var MostStartPoint = orders.GroupBy(x => x.starting.key).Select(x => (x.Key, x.Count())).ToList();
         var MostDestPoint = orders.GroupBy(x => x.dest.key).Select(x => (x.Key, x.Count())).ToList();
         MostStartPoint.Sort((x, y) => y.Item2.CompareTo(x.Item2));
         MostDestPoint.Sort((x, y) => y.Item2.CompareTo(x.Item2));
-        var keys = MostStartPoint.Take(1000).Select(x => x.Key).ToList();
-        keys.AddRange(MostDestPoint.Take(1000).Select(x => x.Key).ToList());
+        var keys = MostStartPoint.Take(300).Select(x => x.Key).ToList();
+        keys.AddRange(MostDestPoint.Take(300).Select(x => x.Key).ToList());
         keys = keys.Distinct().ToList();
         Console.WriteLine("PointCount:" + keys.Count);
+        var filterpoint = orders.AsParallel().Where(x => keys.Contains(x.starting.key) || keys.Contains(x.dest.key)).ToList();
         var Points = new ConcurrentBag<GeoAttrProperty>();
         Parallel.ForEach(keys, (key, _) =>
         {
-            var startcnt = orders.Count(x => x.starting.key == key);
-            var destcnt = orders.Count(x => x.dest.key == key);
-            var p = new GeoAttrProperty() { Key = key, StartCount = startcnt, DestCount = destcnt };
+            var startcnt = filterpoint.Count(x => x.starting.key == key);
+            var destcnt = filterpoint.Count(x => x.dest.key == key);
+            var waittime = filterpoint.Where(x => x.starting.key == key).Average(x => x.WaitTime);
+            var normal_time = filterpoint.Where(x => x.starting.key == key).Average(x => x.normal_time);
+            var distance = filterpoint.Where(x => x.starting.key == key).Average(x => x.start_dest_distance_km);
+            var p = new GeoAttrProperty()
+            {
+                lng = key.Split("_")[0],
+                lat = key.Split("_")[1],
+                StartCount = startcnt,
+                DestCount = destcnt,
+                WatiTime = (int)waittime,
+                NormalTime = (int)normal_time,
+                Distance = (int)distance,
+            };
             Points.Add(p);
         });
         Console.WriteLine("PointCount:" + Points.Count);
-        var json = new StreamWriter(AngularJsonAssetsFolder + "PointAttr.json");
-        int Cnt = 0;
-        json.WriteLine("[");
-        foreach (var item in Points.ToList())
-        {
-            if (Cnt != 0) json.WriteLine(",");
-            Cnt++;
-            json.Write(" {\"key\": \"" + item.Key + "\", \"startcount\":" + item.StartCount + ",\"destcount\":" + item.DestCount + "}");
-        }
-        json.WriteLine();
-        json.WriteLine("]");
-        json.Close();
+        var sw = new StreamWriter(AngularJsonAssetsFolder + "PointAttr.json");
+        sw.Write(JsonConvert.SerializeObject(Points, Formatting.Indented));
+        sw.Close();
         GC.Collect();
     }
+    /// <summary>
+    /// 不同条件的时间周次图
+    /// </summary>
+    /// <param name="condition"></param>
+    /// <param name="filename"></param>
+    public static void CreateWeedDayTime(Func<OrderDetails, bool> condition, string filename)
+    {
+        var weekday_hour_orderCnt = orders.Where(condition).GroupBy(x => x.departure_time.DayOfWeek.GetHashCode() + "|" +
+                                                x.departure_time.Hour.ToString("D2") + ":" + ((x.departure_time.Minute / 15) * 15).ToString("D2"))
+                                                .Select(x => (name: x.Key, count: x.Count())).ToList();
+        weekday_hour_orderCnt.Sort((x, y) => { return x.name.CompareTo(y.name); });
+        var sw_csv = new StreamWriter(AfterProcessFolder + filename);
+        foreach (var item in weekday_hour_orderCnt)
+        {
+            sw_csv.WriteLine(item.name + "," + item.count);
+        }
+        sw_csv.Close();
+    }
+
 }
+
+
 
 public class GeoAttrProperty
 {
-    public string Key { get; set; }
+    public string lng { get; set; }
+    public string lat { get; set; }
     public int StartCount { get; set; }
     public int DestCount { get; set; }
-
+    public int WatiTime { get; set; }
+    public int NormalTime { get; set; }
+    public int Distance { get; set; }
 }
 
 /// <summary>

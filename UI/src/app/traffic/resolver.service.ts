@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { CommonFunction } from '../Common/common';
-import { ITimeAnaysis, MapValue, IDashBoard, IDiaryinfo } from './Model';
+import { ITimeAnaysis, MapValue, IDashBoard, IDiaryinfo, IPointAttr } from './Model';
 
 
 @Injectable()
@@ -36,12 +36,12 @@ export class SimpleSourceMapResolver implements Resolve<MapValue[]> {
 }
 
 @Injectable()
-export class LongWaitMapResolver implements Resolve<MapValue[]> {
+export class HotPointMapResolver implements Resolve<IPointAttr[]> {
     constructor(public commonFunction: CommonFunction) {
 
     }
-    resolve(_: ActivatedRouteSnapshot, _state: RouterStateSnapshot): MapValue[] | Observable<MapValue[]> | Promise<MapValue[]> {
-        return this.commonFunction.httpRequestGetFromAsset<MapValue[]>("traffic/json/longwait_PointSize.json");
+    resolve(_: ActivatedRouteSnapshot, _state: RouterStateSnapshot): IPointAttr[] | Observable<IPointAttr[]> | Promise<IPointAttr[]> {
+        return this.commonFunction.httpRequestGetFromAsset<IPointAttr[]>("traffic/json/PointAttr.json");
     }
 }
 

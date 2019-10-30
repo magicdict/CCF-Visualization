@@ -74,6 +74,13 @@ export interface IWeather {
 
 export interface ITimeAnaysis {
     weekday_hour_orderCnt: NameValueSet[],
+    weekday_hour_orderCnt_airport: NameValueSet[],
+    weekday_hour_orderCnt_train: NameValueSet[],
+    weekday_hour_orderCnt_longbus: NameValueSet[],
+    weekday_hour_orderCnt_cbd: NameValueSet[],
+    weekday_hour_orderCnt_hospital: NameValueSet[],
+    weekday_hour_orderCnt_school: NameValueSet[],
+    weekday_hour_orderCnt_travel: NameValueSet[],    
 }
 
 export interface MapValue {
@@ -88,4 +95,14 @@ export interface ITraceItem {
     lineStyle: {
         width: number;
     }
+}
+
+export interface IPointAttr {
+    lng: number;
+    lat: number;
+    StartCount: number;
+    DestCount: number;
+    WatiTime: number;
+    NormalTime: number;
+    Distance: number;
 }

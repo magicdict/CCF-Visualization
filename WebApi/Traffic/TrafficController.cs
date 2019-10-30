@@ -27,7 +27,7 @@ public class TrafficController : ControllerBase
         }
         return _timeanalysis;
     }
-
+   
 
     [HttpGet("GetDiaryinfos")]
     public ActionResult<List<NameValueSet<AggeInfo>>> GetDiaryinfos()

@@ -207,10 +207,43 @@
         <!-- Optionally, you can add icons to the links -->
         <li [class.active]="_path ==='/traffic/dashboard'"><a href="traffic/dashboard"><i class="fa fa-link"></i>
             <span>概况</span></a></li>
-        <li [class.active]="_path ==='/traffic/timeanalysis'"><a href="traffic/timeanalysis"><i class="fa fa-link"></i>
-            <span>时间分析</span></a></li>
         <li [class.active]="_path ==='/traffic/calendar'"><a href="traffic/calendar"><i class="fa fa-link"></i>
             <span>日期分析</span></a></li>
+
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-edit"></i> <span>时间分析</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li [class.active]="_path ==='/traffic/timeanalysis'"><a href="traffic/timeanalysis"><i
+                  class="fa fa-link"></i> <span>全部</span></a></li>
+            <li [class.active]="_path ==='/traffic/timeanalysis_airport'"><a href="traffic/timeanalysis_airport"><i
+                  class="fa fa-link"></i>
+                <span>飞机场</span></a></li>
+            <li [class.active]="_path ==='/traffic/timeanalysis_longbus'"><a href="traffic/timeanalysis_longbus"><i
+                  class="fa fa-link"></i>
+                <span>汽车站</span></a></li>
+            <li [class.active]="_path ==='/traffic/timeanalysis_train'"><a href="traffic/timeanalysis_train"><i
+                  class="fa fa-link"></i>
+                <span>火车站</span></a></li>
+            <li [class.active]="_path ==='/traffic/timeanalysis_cbd'"><a href="traffic/timeanalysis_cbd"><i
+                  class="fa fa-link"></i>
+                <span>商圈</span></a></li>
+            <li [class.active]="_path ==='/traffic/timeanalysis_hospital'"><a href="traffic/timeanalysis_hospital"><i
+                  class="fa fa-link"></i>
+                <span>医院</span></a></li>
+            <li [class.active]="_path ==='/traffic/timeanalysis_school'"><a href="traffic/timeanalysis_school"><i
+                  class="fa fa-link"></i>
+                <span>学校</span></a></li>
+            <li [class.active]="_path ==='/traffic/timeanalysis_travel'"><a href="traffic/timeanalysis_travel"><i
+                  class="fa fa-link"></i>
+                <span>景点</span></a></li>
+          </ul>
+        </li>
+
 
         <li class="treeview">
           <a href="#">
@@ -248,7 +281,8 @@
                 <span>目的地分析[周次]</span></a></li>
           </ul>
         </li>
-
+        <li [class.active]="_path ==='/traffic/hotpoint'"><a href="traffic/hotpoint"><i class="fa fa-link"></i>
+            <span>热门地点分析</span></a></li>
         <li [class.active]="_path ==='/traffic/trace'"><a href="traffic/trace"><i class="fa fa-link"></i>
             <span>轨迹分析</span></a></li>
       </ul>

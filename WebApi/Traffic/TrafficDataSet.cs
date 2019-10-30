@@ -9,7 +9,7 @@ public static class TrafficDataSet
     /// 不同协议通信次数
     /// </summary>
     /// <returns></returns>
-    public static List<NameValueSet<int>> weekday_hour_orderCnt = new List<NameValueSet<int>>();
+    //public static List<NameValueSet<int>> weekday_hour_orderCnt = new List<NameValueSet<int>>();
     public static Dictionary<string, Weather> weathers = new Dictionary<string, Weather>();
     public static List<NameValueSet<AggeInfo>> diaryinfos = new List<NameValueSet<AggeInfo>>();
     public static List<NameValueSet<AggeInfo>> weeklyinfos = new List<NameValueSet<AggeInfo>>();
@@ -20,16 +20,7 @@ public static class TrafficDataSet
 
     public static void LoadData()
     {
-
-        var sr = new StreamReader(Folder + "weekday_hour_orderCnt.csv");
-        while (!sr.EndOfStream)
-        {
-            var info = sr.ReadLine().Split(",");
-            weekday_hour_orderCnt.Add(new NameValueSet<int>() { Name = info[0], Value = int.Parse(info[1]) });
-        }
-        sr.Close();
-
-        sr = new StreamReader(Folder + "海口历史天气数据.csv");
+        var sr = new StreamReader(Folder + "海口历史天气数据.csv");
         while (!sr.EndOfStream)
         {
             var info = sr.ReadLine().Split("\t");
