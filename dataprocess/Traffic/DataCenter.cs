@@ -149,6 +149,7 @@ public static class DataCenterForTraffic
                             school: x.Count(x => x.starting.POI == "学校" || x.dest.POI == "学校"),
                             hospital: x.Count(x => x.starting.POI == "医院" || x.dest.POI == "医院"),
                             travel: x.Count(x => x.starting.POI == "景点" || x.dest.POI == "景点"),
+                            cbd: x.Count(x => x.starting.POI == "商圈" || x.dest.POI == "商圈"),
                             //等车时间分类
                             waittime_1: x.Where(x => x.order_type == Eorder_type.实时).Count(x => x.WaitTime != -1 && x.WaitTime <= 5),
                             waittime_2: x.Where(x => x.order_type == Eorder_type.实时).Count(x => x.WaitTime > 5 && x.WaitTime <= 15),
@@ -173,7 +174,7 @@ public static class DataCenterForTraffic
                              item.airport + "," + item.train + "," + item.longbus + "," + item.school + "," + item.hospital + "," +
                              item.waittime_1 + "," + item.waittime_2 + "," + item.waittime_3 + "," + item.waittime_4 + "," +
                              item.distance_1 + "," + item.distance_2 + "," + item.distance_3 + "," + item.distance_4 + "," +
-                             item.normaltime_1 + "," + item.normaltime_2 + "," + item.normaltime_3 + "," + item.normaltime_4 + "," + item.travel
+                             item.normaltime_1 + "," + item.normaltime_2 + "," + item.normaltime_3 + "," + item.normaltime_4 + "," + item.travel + "," + item.cbd
                              );
         }
         sw_csv.Close();
@@ -612,6 +613,58 @@ public static class DataCenterForTraffic
         foreach (var item in weekday_hour_orderCnt)
         {
             sw_csv.WriteLine(item.name + "," + item.count);
+        }
+        sw_csv.Close();
+    }
+
+    public static void CreateDiaryInfo()
+    {
+        //1-1.订单量 按照日期统计 
+        //部分订单时间为 0000-00-00 这里按照最后的日期为依据
+        var sw_csv = new StreamWriter(AfterProcessFolder + "diary_info.csv");
+        var diaryinfos = orders.GroupBy(x => x.year.ToString("D4") + x.month.ToString("D2") + x.day.ToString("D2"))
+                        .Select(x => (
+                            name: x.Key, count: x.Count(),
+                            distance: x.ToList().Sum(o => o.start_dest_distance_km),
+                            normaltime: x.ToList().Sum(o => o.normal_time),
+                            fee: x.ToList().Sum(o => o.pre_total_fee),
+                            premier: x.Count(x => x.product_1level == Eproduct_1level.专车),
+                            reserve: x.Count(x => x.order_type == Eorder_type.预约),
+                            pickup: x.Count(x => x.traffic_type != Etraffic_type.未知),
+                            //POI
+                            airport: x.Count(x => x.starting.POI == "机场" || x.dest.POI == "机场"),
+                            train: x.Count(x => x.starting.POI == "火车站" || x.dest.POI == "火车站"),
+                            longbus: x.Count(x => x.starting.POI == "汽车站" || x.dest.POI == "汽车站"),
+                            school: x.Count(x => x.starting.POI == "学校" || x.dest.POI == "学校"),
+                            hospital: x.Count(x => x.starting.POI == "医院" || x.dest.POI == "医院"),
+                            travel: x.Count(x => x.starting.POI == "景点" || x.dest.POI == "景点"),
+                            cbd: x.Count(x => x.starting.POI == "商圈" || x.dest.POI == "商圈"),
+                            //等车时间分类
+                            waittime_1: x.Where(x => x.order_type == Eorder_type.实时).Count(x => x.WaitTime != -1 && x.WaitTime <= 5),
+                            waittime_2: x.Where(x => x.order_type == Eorder_type.实时).Count(x => x.WaitTime > 5 && x.WaitTime <= 15),
+                            waittime_3: x.Where(x => x.order_type == Eorder_type.实时).Count(x => x.WaitTime > 15 && x.WaitTime <= 30),
+                            waittime_4: x.Where(x => x.order_type == Eorder_type.实时).Count(x => x.WaitTime > 30),
+                            //距离分类
+                            distance_1: x.Count(x => x.start_dest_distance_km <= 5),
+                            distance_2: x.Count(x => x.start_dest_distance_km > 5 && x.start_dest_distance_km <= 10),
+                            distance_3: x.Count(x => x.start_dest_distance_km > 10 && x.start_dest_distance_km <= 20),
+                            distance_4: x.Count(x => x.start_dest_distance_km > 20),
+                            //乘车时间分类
+                            normaltime_1: x.Count(x => x.normal_time != 0 && x.normal_time <= 15),
+                            normaltime_2: x.Count(x => x.normal_time > 15 && x.normal_time <= 30),
+                            normaltime_3: x.Count(x => x.normal_time > 30 && x.normal_time <= 60),
+                            normaltime_4: x.Count(x => x.normal_time > 60)
+                        )).ToList();
+        diaryinfos.Sort((x, y) => { return x.name.CompareTo(y.name); });
+        foreach (var item in diaryinfos)
+        {
+            sw_csv.WriteLine(item.name + "," + item.count + "," + Math.Round(item.distance) + "," + item.normaltime + "," +
+                             Math.Round(item.fee) + "," + item.premier + "," + item.reserve + "," + item.pickup + "," +
+                             item.airport + "," + item.train + "," + item.longbus + "," + item.school + "," + item.hospital + "," +
+                             item.waittime_1 + "," + item.waittime_2 + "," + item.waittime_3 + "," + item.waittime_4 + "," +
+                             item.distance_1 + "," + item.distance_2 + "," + item.distance_3 + "," + item.distance_4 + "," +
+                             item.normaltime_1 + "," + item.normaltime_2 + "," + item.normaltime_3 + "," + item.normaltime_4 + "," + item.travel + "," + item.cbd
+                             );
         }
         sw_csv.Close();
     }

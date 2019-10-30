@@ -14,8 +14,8 @@ public static class TrafficDataSet
     public static List<NameValueSet<AggeInfo>> diaryinfos = new List<NameValueSet<AggeInfo>>();
     public static List<NameValueSet<AggeInfo>> weeklyinfos = new List<NameValueSet<AggeInfo>>();
 
-    public static string Folder = @"F:\CCF-Visualization\dataprocess\AfterProcess\海口市-交通流量时空演变特征可视分析\";
-    //public static string Folder = @"/root/HelloChinaApi/AfterProcess/海口市-交通流量时空演变特征可视分析/";
+    //public static string Folder = @"F:\CCF-Visualization\dataprocess\AfterProcess\海口市-交通流量时空演变特征可视分析\";
+    public static string Folder = @"/root/HelloChinaApi/AfterProcess/海口市-交通流量时空演变特征可视分析/";
 
 
     public static void LoadData()
@@ -75,7 +75,8 @@ public static class TrafficDataSet
                     normaltime_3 = int.Parse(info[23]),
                     normaltime_4 = int.Parse(info[24]),
 
-                    travel = int.Parse(info[25])
+                    travel = int.Parse(info[25]),
+                    cbd = int.Parse(info[26])
                 }
             });
         }
@@ -102,6 +103,7 @@ public static class TrafficDataSet
                     longbus = x.Sum(x => x.Value.longbus),
                     school = x.Sum(x => x.Value.school),
                     hospital = x.Sum(x => x.Value.hospital),
+                    cbd = x.Sum(x => x.Value.cbd),
 
                     waittime_1 = x.Sum(x => x.Value.waittime_1),
                     waittime_2 = x.Sum(x => x.Value.waittime_2),
@@ -210,6 +212,9 @@ public class AggeInfo
     public int hospital { get; set; }
 
     public int travel { get; set; }
+
+
+    public int cbd { get; set; }
 
     public int waittime_1 { get; set; }
     public int waittime_2 { get; set; }

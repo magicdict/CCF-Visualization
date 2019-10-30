@@ -7,8 +7,8 @@ public static class SecurityDataSet
     public static List<NameValueSet<int>> Protocols_Hours_Traffic = new List<NameValueSet<int>>();
     public static List<NameValueSet<int>> traffic_hours_everyday = new List<NameValueSet<int>>();
 
-    public static string Folder = @"F:\CCF-Visualization\dataprocess\AfterProcess\企业网络资产及安全事件分析与可视化\";
-    //public static string Folder = @"/root/HelloChinaApi/AfterProcess/企业网络资产及安全事件分析与可视化/";
+    //public static string Folder = @"F:\CCF-Visualization\dataprocess\AfterProcess\企业网络资产及安全事件分析与可视化\";
+    public static string Folder = @"/root/HelloChinaApi/AfterProcess/企业网络资产及安全事件分析与可视化/";
 
     public static void LoadData()
     {

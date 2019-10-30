@@ -58,6 +58,14 @@ export interface IDiaryinfo {
     Value: {
         weather: IWeather;
         ordercnt: number;
+        airport:number;
+        train:number;
+        longbus:number;
+        cbd:number;
+        school:number;
+        hospital:number;
+        travel:number;
+        
         distance: number;
         fee: number;
         holiday: number;

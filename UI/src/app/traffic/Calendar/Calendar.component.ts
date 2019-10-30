@@ -37,15 +37,13 @@ export class CalendarComponent implements OnInit {
     ].join('\n');
   }
 
-
+  _title = "全体";
 
   ngOnInit(): void {
     this.route.data
       .subscribe((xxx: { data: IDiaryinfo[] }) => {
         this._dashboard = xxx.data;
         this._calendar5.calendar[0].range = ['2017-05'];
-        this._calendar5.visualMap.max = 120000;
-        this._calendar5.visualMap.min = 50000;
         this._calendar5.visualMap.seriesIndex = [1];
         this._calendar5.visualMap.inRange = null;
         let data = xxx.data.map(x => [x.Name, 1, x.Value.holiday, x.Value.isWorkday, x.Value.weather]);
@@ -55,8 +53,69 @@ export class CalendarComponent implements OnInit {
         item.data = data;
         this._calendar5.series.push(item);
         let heatmapitem = CommonFunction.clone(ICalendarItem_heatmap);
-        heatmapitem.data = xxx.data.map(x => [x.Name, x.Value.ordercnt]);
-        this._calendar5.series.push(heatmapitem);
+
+        switch (this.route.snapshot.routeConfig.path) {
+          case "calendar":
+            this._title = "全体";
+            heatmapitem.data = xxx.data.map(x => [x.Name, x.Value.ordercnt]);
+            this._calendar5.series.push(heatmapitem);
+            this._calendar5.visualMap.max = 120000;
+            this._calendar5.visualMap.min = 50000;
+            break;
+          case "calendar_airport":
+            this._title = "机场";
+            heatmapitem.data = xxx.data.map(x => [x.Name, x.Value.airport]);
+            this._calendar5.series.push(heatmapitem);
+            this._calendar5.visualMap.max = 10000;
+            this._calendar5.visualMap.min = 2000;
+            break;
+          case "calendar_longbus":
+            this._title = "汽车站";
+            heatmapitem.data = xxx.data.map(x => [x.Name, x.Value.longbus]);
+            this._calendar5.series.push(heatmapitem);
+            this._calendar5.visualMap.max = 500;
+            this._calendar5.visualMap.min = 2000;
+            break;
+          case "calendar_train":
+            this._title = "火车站";
+            heatmapitem.data = xxx.data.map(x => [x.Name, x.Value.train]);
+            this._calendar5.series.push(heatmapitem);
+            this._calendar5.visualMap.max = 10000;
+            this._calendar5.visualMap.min = 2000;
+            break;
+          case "calendar_cbd":
+            this._title = "商圈";
+            heatmapitem.data = xxx.data.map(x => [x.Name, x.Value.cbd]);
+            this._calendar5.series.push(heatmapitem);
+            this._calendar5.visualMap.max = 10000;
+            this._calendar5.visualMap.min = 2000;
+            break;
+          case "calendar_hospital":
+            this._title = "医院";
+            heatmapitem.data = xxx.data.map(x => [x.Name, x.Value.hospital]);
+            this._calendar5.series.push(heatmapitem);
+            this._calendar5.visualMap.max = 1500;
+            this._calendar5.visualMap.min = 200;
+            break;
+          case "calendar_school":
+            this._title = "学校";
+            heatmapitem.data = xxx.data.map(x => [x.Name, x.Value.school]);
+            this._calendar5.series.push(heatmapitem);
+            this._calendar5.visualMap.max = 2500;
+            this._calendar5.visualMap.min = 1000;
+            break;
+          case "calendar_travel":
+            this._title = "景点";
+            heatmapitem.data = xxx.data.map(x => [x.Name, x.Value.travel]);
+            this._calendar5.series.push(heatmapitem);
+            this._calendar5.visualMap.max = 2000;
+            this._calendar5.visualMap.min = 1000;
+            break;
+          default:
+            break;
+        }
+
+
 
         this._calendar6 = CommonFunction.clone(this._calendar5);
         this._calendar6.calendar[0].range = ['2017-06'];
