@@ -23,17 +23,16 @@ export class CalendarComponent implements OnInit {
 
   symbol(val: any) {
     let strDate: string = val.data[0];
-    strDate = strDate.substr(5);
     let weather: IWeather = val.data[4];
     let isWorkday: boolean = val.data[3];
-    let workday = isWorkday ? "" : "休息日";
+    strDate = (isWorkday ? "{bluebold|" : "{redbold|") + strDate.substr(5) + "}";
     let weatherImg1 = CommonFunction.getImage(weather.Description.replace(" ", "").split("/")[0]);
     let weatherImg2 = CommonFunction.getImage(weather.Description.replace(" ", "").split("/")[1]);
     return [
-      strDate,
-      weatherImg1 + weather.Tempera.replace(" / ", "/").split("/")[0],
-      weatherImg2 + weather.Tempera.replace(" / ", "/").split("/")[1],
-      val.data[2] + " " + workday
+      strDate,"",
+      weatherImg1 + weather.Tempera.replace(" / ", "/").split("/")[0] + "        ",
+      "        " + weatherImg2 + weather.Tempera.replace(" / ", "/").split("/")[1],"",
+      "{blackbold|" + val.data[2] + "}"
     ].join('\n');
   }
 

@@ -50,6 +50,19 @@ export class DashboardComponent implements OnInit {
         let weeklyOrdercnt = CommonFunction.clone(LineItem);
         weeklyOrdercnt.name = "周订单数";
         weeklyOrdercnt.data = this._dashboard.weeklyinfos.map(x => x.Value.ordercnt);
+        
+        weeklyOrdercnt['markPoint'] = {
+          data: [
+            { type: 'max', name: '最大值' },
+            { type: 'min', name: '最小值' }
+          ]
+        },
+        weeklyOrdercnt['markLine'] = {
+          data: [
+            { type: 'average', name: '平均值' }
+          ]
+        },
+
         this._weeklyOrdercnt.series.push(weeklyOrdercnt);
 
         this._travellerCnt.title.text = "";

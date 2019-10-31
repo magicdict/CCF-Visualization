@@ -18,7 +18,9 @@ export class TraceMapComponent implements OnInit {
   ngOnInit(): void {
     this.route.data
       .subscribe((xxx: { data: ITraceItem[] }) => {
-        this._map['bmap'] = CommonFunction.clone(IMapStardard.bmap);
+        let bmapoption = CommonFunction.clone(IMapStardard.bmap);
+        bmapoption.zoom = 13;
+        this._map['bmap'] = bmapoption;
         let lines = CommonFunction.clone(ILinesItem);
         lines.data = xxx.data.map(this.convertTrace);
         this._map.series.push(lines);
@@ -26,12 +28,12 @@ export class TraceMapComponent implements OnInit {
   }
 
   convertTrace(inItem: ITraceItem): ITraceItem {
-    var color = inItem.lineStyle.width > 8 ? "red":"blue";
+    var color = inItem.lineStyle.width > 8 ? "#FF0080" : (inItem.lineStyle.width > 7 ? "#2E2EFE" : "#74DF00");
     var outItem = {
       coords: inItem.coords,
       lineStyle: {
-        width: inItem.lineStyle.width - 5,
-        color:color
+        width: 2,
+        color: color
       }
     }
     return outItem;

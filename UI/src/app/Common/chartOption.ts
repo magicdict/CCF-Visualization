@@ -417,7 +417,7 @@ export const ICalendarItem_scatter = {
 };
 
 export const ICalendarItem_heatmap = {
-  name: '降雨量',
+  name: '客流量',
   type: 'heatmap',
   coordinateSystem: 'calendar',
   data: []
@@ -478,6 +478,24 @@ export const ILinesItem = {
 
 
 export const Rich_Weathy = {
+  bluebold: {
+    fontWeight: 'bold',
+    fontSize: 15,
+    color: '#0431B4',
+    align:"center"
+  },
+  redbold: {
+    fontWeight: 'bold',
+    fontSize: 15,
+    color: '#FF0040',
+    align:"center"
+  },
+  blackbold: {
+    fontWeight: 'bold',
+    fontSize: 13,
+    color: '#1C1C1C',
+    align:"center"
+  },
   sunny: {
     backgroundColor: {
       image: 'assets/image/weathy/weathy_01.png'
@@ -565,90 +583,90 @@ export const ITreeStardard = {
 
 export const ITopologyStardard = {
   title: {
-      text: '网络拓扑图'
+    text: '网络拓扑图'
   },
   tooltip: {
-      trigger: 'item',
-      formatter: '{b}',
+    trigger: 'item',
+    formatter: '{b}',
   },
   //backgroundColor: "#F5F5F5",
   xAxis: {
-      min: 0,
-      max: 12,
-      show: false,
-      type: 'value'
+    min: 0,
+    max: 12,
+    show: false,
+    type: 'value'
   },
   yAxis: {
+    min: 0,
+    max: 12,
+    show: false,
+    type: 'value'
+  },
+  series: [{
+    type: 'graph',
+    layout: 'none',
+    id: 'a',
+    coordinateSystem: 'cartesian2d',
+    edgeSymbol: ['', 'arrow'],
+    // symbolSize: 50,
+    label: {
+      normal: {
+        show: true,
+        position: 'bottom',
+        color: '#12b5d0'
+      }
+    },
+    lineStyle: {
+      normal: {
+        width: 2,
+        shadowColor: 'none'
+      }
+    },
+    xAxis: {
       min: 0,
       max: 12,
       show: false,
       type: 'value'
-  },
-  series: [{
-      type: 'graph',
-      layout: 'none',
-      id: 'a',
-      coordinateSystem: 'cartesian2d',
-      edgeSymbol: ['', 'arrow'],
-      // symbolSize: 50,
-      label: {
-          normal: {
-              show: true,
-              position: 'bottom',
-              color: '#12b5d0'
-          }
-      },
-      lineStyle: {
-          normal: {
-              width: 2,
-              shadowColor: 'none'
-          }
-      },
-      xAxis: {
-          min: 0,
-          max: 12,
-          show: false,
-          type: 'value'
-      },
-      yAxis: {
-          min: 0,
-          max: 12,
-          show: false,
-          type: 'value'
-      },
-      // edgeSymbolSize: 8,
-      draggable: true,
-      data: [],
-      links: [],
-      z: 4,
-      itemStyle: {
-          normal: {
-              label: {
-                  show: true,
-                  formatter: function (item) {
-                      return item.data.name
-                  }
-              }
-          }
-      }
-  }, {
-      name: 'A',
-      type: 'lines',
-      coordinateSystem: 'cartesian2d',
-      z: 4,
-      effect: {
+    },
+    yAxis: {
+      min: 0,
+      max: 12,
+      show: false,
+      type: 'value'
+    },
+    // edgeSymbolSize: 8,
+    draggable: true,
+    data: [],
+    links: [],
+    z: 4,
+    itemStyle: {
+      normal: {
+        label: {
           show: true,
-          trailLength: 0,
-          symbol: 'arrow',
-          color: '#12b5d0',
-          symbolSize: 8
-      },
-      lineStyle: {
-          normal: {
-              curveness: 0
+          formatter: function (item) {
+            return item.data.name
           }
-      },
-      data: [],
+        }
+      }
+    }
+  }, {
+    name: 'A',
+    type: 'lines',
+    coordinateSystem: 'cartesian2d',
+    z: 4,
+    effect: {
+      show: true,
+      trailLength: 0,
+      symbol: 'arrow',
+      color: '#12b5d0',
+      symbolSize: 8
+    },
+    lineStyle: {
+      normal: {
+        curveness: 0
+      }
+    },
+    data: [],
 
   }]
 };
@@ -656,61 +674,61 @@ export const ITopologyStardard = {
 
 export const IGephiStardard = {
   title: {
-      text: '',
-      subtext: '',
-      top: 'bottom',
-      left: 'right'
+    text: '',
+    subtext: '',
+    top: 'bottom',
+    left: 'right'
   },
   graphic: [
-      {
-          type: 'image',
-          id: 'logo',
-          right: 20,
-          top: 20,
-          z: -10,
-          bounding: 'raw',
-          origin: [75, 75],
-          style: {
-              image: 'assets/security/net_gexf_color.png',
-              width: 200,
-              height: 250,
-              //opacity: 0.4
-          }
-      }],
+    {
+      type: 'image',
+      id: 'logo',
+      right: 20,
+      top: 20,
+      z: -10,
+      bounding: 'raw',
+      origin: [75, 75],
+      style: {
+        image: 'assets/security/net_gexf_color.png',
+        width: 200,
+        height: 250,
+        //opacity: 0.4
+      }
+    }],
   tooltip: {},
   animationDuration: 1500,
   animationEasingUpdate: 'quinticInOut',
   series: [
-      {
-          //name: 'Les Miserables',
-          type: 'graph',
-          layout: 'none',
-          data: [],
-          links: [],
-          categories: [],
-          roam: true,
-          focusNodeAdjacency: true,
-          itemStyle: {
-              normal: {
-                  borderColor: '#fff',
-                  borderWidth: 1,
-                  shadowBlur: 10,
-                  shadowColor: 'rgba(0, 0, 0, 0.3)'
-              }
-          },
-          label: {
-              position: 'right',
-              formatter: '{b}'
-          },
-          lineStyle: {
-              color: 'source',
-              curveness: 0.3
-          },
-          emphasis: {
-              lineStyle: {
-                  width: 10
-              }
-          }
+    {
+      //name: 'Les Miserables',
+      type: 'graph',
+      layout: 'none',
+      data: [],
+      links: [],
+      categories: [],
+      roam: true,
+      focusNodeAdjacency: true,
+      itemStyle: {
+        normal: {
+          borderColor: '#fff',
+          borderWidth: 1,
+          shadowBlur: 10,
+          shadowColor: 'rgba(0, 0, 0, 0.3)'
+        }
+      },
+      label: {
+        position: 'right',
+        formatter: '{b}'
+      },
+      lineStyle: {
+        color: 'source',
+        curveness: 0.3
+      },
+      emphasis: {
+        lineStyle: {
+          width: 10
+        }
       }
+    }
   ]
 };
