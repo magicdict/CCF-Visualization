@@ -13,6 +13,8 @@ import { SimpleMapComponent } from './SourceDestMap/SimpleMap.component';
 import { TraceMapComponent } from './SourceDestMap/TraceMap.component';
 import { TimeLineMapWeekNoComponent } from './SourceDestMap/TimeLineMapWeekNo.component';
 import { HotPointMapComponent } from './SourceDestMap/HotPointMap.component';
+import { TimeDistanceComponent } from './Dashboard/TimeDistance.component';
+import { TimeAnalysisSPeedComponent } from './TimeAnalysis/TimeAnalysisSpeed.component';
 
 
 const routes: Routes = [
@@ -20,6 +22,16 @@ const routes: Routes = [
     path: 'traffic', component: TrafficMainComponent,
     children: [
       { path: 'dashboard', component: DashboardComponent, resolve: { data: DashBoardResolver } },
+      { path: 'dashboard_timedistance', component: TimeDistanceComponent, resolve: { data: DashBoardResolver } },
+
+      { path: 'speedtimeanalysis', component: TimeAnalysisSPeedComponent, resolve: { data: DashBoardResolver } },
+      { path: 'speedtimeanalysis_airport', component: TimeAnalysisSPeedComponent, resolve: { data: DashBoardResolver } },
+      { path: 'speedtimeanalysis_train', component: TimeAnalysisSPeedComponent, resolve: { data: DashBoardResolver } },
+      { path: 'speedtimeanalysis_longbus', component: TimeAnalysisSPeedComponent, resolve: { data: DashBoardResolver } },
+      { path: 'speedtimeanalysis_cbd', component: TimeAnalysisSPeedComponent, resolve: { data: DashBoardResolver } },
+      { path: 'speedtimeanalysis_hospital', component: TimeAnalysisSPeedComponent, resolve: { data: DashBoardResolver } },
+      { path: 'speedtimeanalysis_school', component: TimeAnalysisSPeedComponent, resolve: { data: DashBoardResolver } },
+      { path: 'speedtimeanalysis_travel', component: TimeAnalysisSPeedComponent, resolve: { data: DashBoardResolver } },
 
       { path: 'calendar', component: CalendarComponent, resolve: { data: CalendarResolver } },
       { path: 'calendar_airport', component: CalendarComponent, resolve: { data: CalendarResolver } },

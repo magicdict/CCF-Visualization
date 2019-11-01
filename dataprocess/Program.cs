@@ -16,8 +16,17 @@
                     DataCenterForTraffic.AngularJsonAssetsFolder = DataCenterForTraffic.AngularJsonAssetsFolder.Replace("F:", @"D:\share\CPU Test");
                 }
                 DataCenterForTraffic.Load(-1);
-                DataCenterForTraffic.CreateDiaryInfo();
-                /* DataCenterForTraffic.CreateWeedDayTime((x) => { return x.starting.POI == "机场"; }, "weekday_hour_orderCnt_机场.csv");
+                DataCenterForTraffic.CreateWeedDayTimeSpeed((x) => { return x.starting.POI == "机场"; }, "weekday_hour_speed_机场.csv");
+                /* 
+                DataCenterForTraffic.CreateWeedDayTimeSpeed((x) => { return true; }, "weekday_hour_speed.csv");
+                DataCenterForTraffic.CreateWeedDayTimeSpeed((x) => { return x.starting.POI == "火车站"; }, "weekday_hour_speed_火车站.csv");
+                DataCenterForTraffic.CreateWeedDayTimeSpeed((x) => { return x.starting.POI == "汽车站"; }, "weekday_hour_speed_汽车站.csv");
+                DataCenterForTraffic.CreateWeedDayTimeSpeed((x) => { return x.starting.POI == "医院"; }, "weekday_hour_speed_医院.csv");
+                DataCenterForTraffic.CreateWeedDayTimeSpeed((x) => { return x.starting.POI == "商圈"; }, "weekday_hour_speed_商圈.csv");
+                DataCenterForTraffic.CreateWeedDayTimeSpeed((x) => { return x.starting.POI == "学校"; }, "weekday_hour_speed_学校.csv");
+                DataCenterForTraffic.CreateWeedDayTimeSpeed((x) => { return x.starting.POI == "景点"; }, "weekday_hour_speed_景点.csv"); 
+                //DataCenterForTraffic.CreateDiaryInfo();
+                DataCenterForTraffic.CreateWeedDayTime((x) => { return x.starting.POI == "机场"; }, "weekday_hour_orderCnt_机场.csv");
                 DataCenterForTraffic.CreateWeedDayTime((x) => { return x.starting.POI == "火车站"; }, "weekday_hour_orderCnt_火车站.csv");
                 DataCenterForTraffic.CreateWeedDayTime((x) => { return x.starting.POI == "汽车站"; }, "weekday_hour_orderCnt_汽车站.csv");
                 DataCenterForTraffic.CreateWeedDayTime((x) => { return x.starting.POI == "医院"; }, "weekday_hour_orderCnt_医院.csv");

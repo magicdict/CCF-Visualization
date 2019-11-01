@@ -19,19 +19,24 @@ import { TimeLineMapWeekNoComponent } from './SourceDestMap/TimeLineMapWeekNo.co
 
 import { TabViewModule } from 'primeng/tabview';
 import { HotPointMapComponent } from './SourceDestMap/HotPointMap.component';
+import { TimeDistanceComponent } from './Dashboard/TimeDistance.component';
+import { TimeAnalysisSPeedComponent } from './TimeAnalysis/TimeAnalysisSpeed.component';
+
 
 
 @NgModule({
   declarations: [
     TrafficMainComponent,
     DashboardComponent,
+    TimeDistanceComponent,
     TimeLineMapComponent,
     TimeLineMapWeekNoComponent,
     HotPointMapComponent,
     SimpleMapComponent,
     TraceMapComponent,
     TimeAnalysisComponent,
-    CalendarComponent
+    CalendarComponent,
+    TimeAnalysisSPeedComponent
   ],
   imports: [
     TrafficRoutingModule,

@@ -52,6 +52,25 @@ public class TrafficDashBoard
     public List<NameValueSet<int>> WaitTime = new List<NameValueSet<int>>();
     public List<NameValueSet<double>> TravellerCnt = new List<NameValueSet<double>>();
 
+    public List<NameValueSet<int>> speed = new List<NameValueSet<int>>();
+
+    public List<NameValueSet<int>> distance_km = new List<NameValueSet<int>>();
+
+    public List<NameValueSet<int>> weekday_hour_speed = new List<NameValueSet<int>>();
+
+    public List<NameValueSet<int>> weekday_hour_speed_airport = new List<NameValueSet<int>>();
+
+    public List<NameValueSet<int>> weekday_hour_speed_train = new List<NameValueSet<int>>();
+
+    public List<NameValueSet<int>> weekday_hour_speed_longbus = new List<NameValueSet<int>>();
+
+    public List<NameValueSet<int>> weekday_hour_speed_cbd = new List<NameValueSet<int>>();
+
+    public List<NameValueSet<int>> weekday_hour_speed_hospital = new List<NameValueSet<int>>();
+
+    public List<NameValueSet<int>> weekday_hour_speed_school = new List<NameValueSet<int>>();
+
+    public List<NameValueSet<int>> weekday_hour_speed_travel = new List<NameValueSet<int>>();
 
     public TrafficDashBoard()
     {
@@ -157,7 +176,86 @@ public class TrafficDashBoard
                         dest_pois.Add(new NameValueSet<int>() { Name = info[i], Value = int.Parse(info[i + 1]) });
                     }
                     break;
+                case nameof(speed):
+                    for (int i = 1; i < info.Length - 1; i += 2)
+                    {
+                        speed.Add(new NameValueSet<int>() { Name = info[i], Value = int.Parse(info[i + 1]) });
+                    }
+                    break;
+                case nameof(distance_km):
+                    for (int i = 1; i < info.Length - 1; i += 2)
+                    {
+                        distance_km.Add(new NameValueSet<int>() { Name = info[i], Value = int.Parse(info[i + 1]) });
+                    }
+                    break;
             }
+        }
+        sr.Close();
+
+
+        sr = new StreamReader(TrafficDataSet.Folder + "weekday_hour_speed.csv");
+        while (!sr.EndOfStream)
+        {
+            var info = sr.ReadLine().Split(",");
+            weekday_hour_speed.Add(new NameValueSet<int>() { Name = info[0], Value = (int)double.Parse(info[1]) });
+        }
+        sr.Close();
+
+        sr = new StreamReader(TrafficDataSet.Folder + "weekday_hour_speed_airport.csv");
+        while (!sr.EndOfStream)
+        {
+            var info = sr.ReadLine().Split(",");
+            weekday_hour_speed_airport.Add(new NameValueSet<int>() { Name = info[0], Value = (int)double.Parse(info[1]) });
+        }
+        sr.Close();
+
+        sr = new StreamReader(TrafficDataSet.Folder + "weekday_hour_speed_train.csv");
+        while (!sr.EndOfStream)
+        {
+            var info = sr.ReadLine().Split(",");
+            weekday_hour_speed_train.Add(new NameValueSet<int>() { Name = info[0], Value = (int)double.Parse(info[1]) });
+        }
+        sr.Close();
+
+
+        sr = new StreamReader(TrafficDataSet.Folder + "weekday_hour_speed_longbus.csv");
+        while (!sr.EndOfStream)
+        {
+            var info = sr.ReadLine().Split(",");
+            weekday_hour_speed_longbus.Add(new NameValueSet<int>() { Name = info[0], Value = (int)double.Parse(info[1]) });
+        }
+        sr.Close();
+
+        sr = new StreamReader(TrafficDataSet.Folder + "weekday_hour_speed_cbd.csv");
+        while (!sr.EndOfStream)
+        {
+            var info = sr.ReadLine().Split(",");
+            weekday_hour_speed_cbd.Add(new NameValueSet<int>() { Name = info[0], Value = (int)double.Parse(info[1]) });
+        }
+        sr.Close();
+
+
+        sr = new StreamReader(TrafficDataSet.Folder + "weekday_hour_speed_hospital.csv");
+        while (!sr.EndOfStream)
+        {
+            var info = sr.ReadLine().Split(",");
+            weekday_hour_speed_hospital.Add(new NameValueSet<int>() { Name = info[0], Value = (int)double.Parse(info[1]) });
+        }
+        sr.Close();
+
+        sr = new StreamReader(TrafficDataSet.Folder + "weekday_hour_speed_school.csv");
+        while (!sr.EndOfStream)
+        {
+            var info = sr.ReadLine().Split(",");
+            weekday_hour_speed_school.Add(new NameValueSet<int>() { Name = info[0], Value = (int)double.Parse(info[1]) });
+        }
+        sr.Close();
+
+        sr = new StreamReader(TrafficDataSet.Folder + "weekday_hour_speed_travel.csv");
+        while (!sr.EndOfStream)
+        {
+            var info = sr.ReadLine().Split(",");
+            weekday_hour_speed_travel.Add(new NameValueSet<int>() { Name = info[0], Value = (int)double.Parse(info[1]) });
         }
         sr.Close();
 

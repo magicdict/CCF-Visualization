@@ -19,7 +19,6 @@ public class TrafficTimeAnalysis
 
     public List<NameValueSet<int>> weekday_hour_orderCnt_travel = new List<NameValueSet<int>>();
 
-
     public TrafficTimeAnalysis()
     {
         var sr = new StreamReader(TrafficDataSet.Folder + "weekday_hour_orderCnt.csv");
@@ -87,5 +86,6 @@ public class TrafficTimeAnalysis
             weekday_hour_orderCnt_travel.Add(new NameValueSet<int>() { Name = info[0], Value = int.Parse(info[1]) });
         }
         sr.Close();
+
     }
 }

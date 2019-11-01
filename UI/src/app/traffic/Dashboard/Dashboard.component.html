@@ -1,10 +1,10 @@
 <section class="content-header">
     <h1>
-        概况
+        基本信息
     </h1>
     <ol class="breadcrumb">
         <li><a href="/traffic/dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">概况</li>
+        <li class="active">基本信息</li>
     </ol>
 </section>
 <section class="content">
@@ -80,41 +80,7 @@
             </chart>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-3">
-            <chart [options]="_WaitTime" [title]="'等候时间（实时订单）'" [boxstyle]="this._commonFunction.boxstyle_Col3"
-                [chartstyle]="this._commonFunction.chartstyle_Col3">
-            </chart>
-        </div>
-        <div class="col-md-6">
-            <chart [options]="_WaitTimeWeekly" [title]="'等候时间（实时订单）百分比（周单位）'"
-                [boxstyle]="this._commonFunction.boxstyle_Col6" [chartstyle]="this._commonFunction.chartstyle_Col6">
-            </chart>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-3">
-            <chart [options]="_Distance" [title]="'路程公里数'" [boxstyle]="this._commonFunction.boxstyle_Col3"
-                [chartstyle]="this._commonFunction.chartstyle_Col3"> </chart>
-        </div>
-        <div class="col-md-6">
-            <chart [options]="_weeklyDistance" [title]="'订单距离（周单位）'" [boxstyle]="this._commonFunction.boxstyle_Col6"
-                [chartstyle]="this._commonFunction.chartstyle_Col6">
-            </chart>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-3">
-            <chart [options]="_NormalTime" [title]="'路程时间'" [boxstyle]="this._commonFunction.boxstyle_Col3"
-                [chartstyle]="this._commonFunction.chartstyle_Col3">
-            </chart>
-        </div>
-        <div class="col-md-6">
-            <chart [options]="_weeklySpeed" [title]="'速度(公里/小时)'" [boxstyle]="this._commonFunction.boxstyle_Col6"
-                [chartstyle]="this._commonFunction.chartstyle_Col6">
-            </chart>
-        </div>
-    </div>
+
     <div class="row">
         <div class="col-md-3">
             <chart [options]="_countys" [title]="'区县'" [boxstyle]="this._commonFunction.boxstyle_Col3"

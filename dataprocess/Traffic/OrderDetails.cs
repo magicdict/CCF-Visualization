@@ -120,6 +120,19 @@ public class OrderDetails
     /// <value></value>
     public int day { get; set; }
 
+    /// <summary>
+    /// 时速
+    /// </summary>
+    /// <value></value>
+    public int Speed
+    {
+        get
+        {
+            var s = (int)(start_dest_distance_km * 60 / normal_time);
+            return (s > 100 || s <= 0) ? 25 : s;
+        }
+    }
+
     public string WeekNo
     {
         get

@@ -50,7 +50,17 @@ export interface IDashBoard {
     starting_poi: NameValueSet[],
     starting_pois: NameValueSet[],
     dest_pois: NameValueSet[],
-    WaitTime: NameValueSet[]
+    WaitTime: NameValueSet[],
+    speed: NameValueSet[],
+    distance_km: NameValueSet[],
+    weekday_hour_speed: NameValueSet[],    
+    weekday_hour_speed_airport: NameValueSet[],
+    weekday_hour_speed_train: NameValueSet[],
+    weekday_hour_speed_longbus: NameValueSet[],
+    weekday_hour_speed_cbd: NameValueSet[],
+    weekday_hour_speed_hospital: NameValueSet[],
+    weekday_hour_speed_school: NameValueSet[],
+    weekday_hour_speed_travel: NameValueSet[],   
 }
 
 export interface IDiaryinfo {

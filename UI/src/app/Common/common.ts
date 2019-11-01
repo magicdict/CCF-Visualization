@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { echartsInstance } from 'echarts'
 import { HttpClient } from '@angular/common/http';
+import { NameValueSet } from '../traffic/Model';
 
 @Injectable()
 export class CommonFunction {
@@ -9,7 +10,7 @@ export class CommonFunction {
         private http: HttpClient
     ) { }
 
-    public static boxstyle_mini = { 'width': '250px', 'height': '150px' };    
+    public static boxstyle_mini = { 'width': '250px', 'height': '150px' };
     public static chartstyle_mini = { 'width': '240px', 'height': '140px' };
 
     public static boxstyle_Col3 = { 'width': '380px', 'height': '400px' };
@@ -41,7 +42,7 @@ export class CommonFunction {
     public static chartstyle_Col12_Row2 = { 'width': '1550px', 'height': '770px' };
 
     public static boxstyle_Col12_Row3 = { 'width': '1600px', 'height': '1230px' };
-    public static chartstyle_Col12_Row3 = { 'width': '1580px', 'height': '1160px' };    
+    public static chartstyle_Col12_Row3 = { 'width': '1580px', 'height': '1160px' };
 
     public static GetWeatherImageByText(text: string): string {
         if (CommonFunction.IsNullOrEmpty(text)) { return "assets/image/weathy/weathy_01.png" }
@@ -93,7 +94,7 @@ export class CommonFunction {
         if (weather == "大暴雨") return '{greatrain|}'
         if (weather == "暴雨") return '{greatrain|}'
         if (weather == "大到暴雨") return '{greatrain|}'
-        
+
 
         return weather;
     }
@@ -235,9 +236,50 @@ export class CommonFunction {
         return this.roundvalue(avg_num * 0.2 + last_num * 0.2 + diff_pred * 0.6);
     }
 
+    public static Fill3DTime(ds: NameValueSet[], chart: any, zname: string = "订单量") {
+        //X:具体时间，Y：日期，Z：流量
+        var weekday = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"];
+        var time = [];
+        ds.forEach(
+            element => {
+                var t = element.Name.split("|")[1];
+                if (time.indexOf(t) == -1) time.push(t);
+            }
+        );
+        time = time.sort();
+        chart.zAxis3D.name = zname;
+        chart.xAxis3D.data = time;
+        chart.yAxis3D.data = weekday;
+        //三维数组
+        var data: any[] = [];
+        ds.forEach(element => {
+            data.push([element.Name.split("|")[1], this.ConvertIntToWeekday(element.Name.split("|")[0]), element.Value]);
+        });
 
-    private webapiurl = "http://39.105.206.6:8080/";
-    //private webapiurl = "http://localhost:5000/";
+        chart.series[0].data = data;
+        let x = ds.map(x => x.Value);
+        chart.visualMap.max = Math.max(...x);
+        chart.grid3D.boxWidth = 200;
+        chart.grid3D.boxDepth = 80;
+        chart.grid3D["height"] = 750;
+    }
+
+
+    public static ConvertIntToWeekday(weekday: any) {
+        switch (weekday) {
+            case "0": return "周日";
+            case "1": return "周一";
+            case "2": return "周二";
+            case "3": return "周三";
+            case "4": return "周四";
+            case "5": return "周五";
+            case "6": return "周六";
+        }
+    }
+
+
+    //private webapiurl = "http://39.105.206.6:8080/";
+    private webapiurl = "http://localhost:5000/";
 
     public httpRequestGet<T>(serviceUrl: string): Promise<T> {
         return this.http.get(
@@ -265,7 +307,7 @@ export class CommonFunction {
     public httpRequestGetFromAssetAsXml(serviceUrl: string): Promise<any> {
         return this.http.get(
             "/assets/" + serviceUrl,
-            {responseType: 'text'}
+            { responseType: 'text' }
         )
             .toPromise()
             .then(response => {

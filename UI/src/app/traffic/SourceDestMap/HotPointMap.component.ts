@@ -23,14 +23,15 @@ export class HotPointMapComponent implements OnInit {
       });
   }
   symbolSize(val: any) {
-    return Math.log(val[2]);
+    return Math.min(65, Math.sqrt(val[2])/5);
+    return Math.min(65, val[2] / 500);
   };
   tooltip(val: any) {
     return "作为出发地:" + val.data.value[3] + "<br />" +
       "作为目的地:" + val.data.value[4] + "<br />" +
-      "运行时间:" + val.data.value[5] + "<br />" +
-      "运行距离:" + val.data.value[6] + "<br />" +
-      "等待时间:" + val.data.value[7];
+      "运行时间:" + val.data.value[5] + "分钟" + "<br />" +
+      "运行距离:" + val.data.value[6] + "公里" + "<br />" +
+      "等待时间:" + val.data.value[7] + "分钟";
   }
   convertToMapValue(x: IPointAttr) {
     var m = {

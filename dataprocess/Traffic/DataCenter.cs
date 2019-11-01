@@ -337,6 +337,29 @@ public static class DataCenterForTraffic
         }
         basic_sw_csv.WriteLine();
 
+        //增补内容
+        //1.时速的统计
+        var speed = orders.GroupBy(x => x.Speed).Select(x => (name: x.Key, count: x.Count())).ToList();
+        speed.Sort((x, y) => { return x.name.CompareTo(y.name); });
+        basic_sw_csv.Write("speed,");
+        foreach (var item in speed)
+        {
+            if (item.name > 100 || item.name <= 0) continue;
+            sw.WriteLine(item.name + ":" + item.count);
+            basic_sw_csv.Write(item.name + "," + item.count + ",");
+        }
+        basic_sw_csv.WriteLine();
+        //2.距离
+        var distance_km = orders.GroupBy(x => Math.Round(x.start_dest_distance_km, 0)).Select(x => (name: x.Key, count: x.Count())).ToList();
+        distance_km.Sort((x, y) => { return x.name.CompareTo(y.name); });
+        basic_sw_csv.Write("distance_km,");
+        foreach (var item in distance_km)
+        {
+            if (item.name > 100 || item.name <= 0) continue;
+            sw.WriteLine(item.name + ":" + item.count);
+            basic_sw_csv.Write(item.name + "," + item.count + ",");
+        }
+        basic_sw_csv.WriteLine();
 
         basic_sw_csv.Close();
         sw.Close();
@@ -608,6 +631,26 @@ public static class DataCenterForTraffic
         var weekday_hour_orderCnt = orders.Where(condition).GroupBy(x => x.departure_time.DayOfWeek.GetHashCode() + "|" +
                                                 x.departure_time.Hour.ToString("D2") + ":" + ((x.departure_time.Minute / 15) * 15).ToString("D2"))
                                                 .Select(x => (name: x.Key, count: x.Count())).ToList();
+        weekday_hour_orderCnt.Sort((x, y) => { return x.name.CompareTo(y.name); });
+        var sw_csv = new StreamWriter(AfterProcessFolder + filename);
+        foreach (var item in weekday_hour_orderCnt)
+        {
+            sw_csv.WriteLine(item.name + "," + item.count);
+        }
+        sw_csv.Close();
+    }
+
+
+    /// <summary>
+    /// 不同条件的时间周次图
+    /// </summary>
+    /// <param name="condition"></param>
+    /// <param name="filename"></param>
+    public static void CreateWeedDayTimeSpeed(Func<OrderDetails, bool> condition, string filename)
+    {
+        var weekday_hour_orderCnt = orders.Where(condition).GroupBy(x => x.departure_time.DayOfWeek.GetHashCode() + "|" +
+                                                x.departure_time.Hour.ToString("D2") + ":" + ((x.departure_time.Minute / 15) * 15).ToString("D2"))
+                                                .Select(x => (name: x.Key, count: x.Average(x => x.Speed))).ToList();
         weekday_hour_orderCnt.Sort((x, y) => { return x.name.CompareTo(y.name); });
         var sw_csv = new StreamWriter(AfterProcessFolder + filename);
         foreach (var item in weekday_hour_orderCnt)
