@@ -56,7 +56,7 @@ export class TimeAnalysisSPeedComponent implements OnInit {
             break;
         }
         //对3D时间进行填充  
-        CommonFunction.Fill3DTime(this._weekday_hour_orderCnt, this._traffic_3d, "速度");
+        CommonFunction.Fill3DTime(this._weekday_hour_orderCnt, this._traffic_3d, "速度", 50);
       });
   }
 }

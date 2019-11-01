@@ -600,7 +600,7 @@ public static class DataCenterForTraffic
         {
             var startcnt = filterpoint.Count(x => x.starting.key == key);
             var destcnt = filterpoint.Count(x => x.dest.key == key);
-            var waittime = filterpoint.Where(x => x.starting.key == key).Average(x => x.WaitTime);
+            var waittime = filterpoint.Where(x => x.starting.key == key && x.WaitTime != -1).Average(x => x.WaitTime);  //13%空数据
             var normal_time = filterpoint.Where(x => x.starting.key == key).Average(x => x.normal_time);
             var distance = filterpoint.Where(x => x.starting.key == key).Average(x => x.start_dest_distance_km);
             var p = new GeoAttrProperty()

@@ -236,7 +236,7 @@ export class CommonFunction {
         return this.roundvalue(avg_num * 0.2 + last_num * 0.2 + diff_pred * 0.6);
     }
 
-    public static Fill3DTime(ds: NameValueSet[], chart: any, zname: string = "订单量") {
+    public static Fill3DTime(ds: NameValueSet[], chart: any, zname: string, max: number = -1) {
         //X:具体时间，Y：日期，Z：流量
         var weekday = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"];
         var time = [];
@@ -258,7 +258,7 @@ export class CommonFunction {
 
         chart.series[0].data = data;
         let x = ds.map(x => x.Value);
-        chart.visualMap.max = Math.max(...x);
+        chart.visualMap.max = max === -1 ? Math.max(...x) : max;
         chart.grid3D.boxWidth = 200;
         chart.grid3D.boxDepth = 80;
         chart.grid3D["height"] = 750;
@@ -278,8 +278,8 @@ export class CommonFunction {
     }
 
 
-    //private webapiurl = "http://39.105.206.6:8080/";
-    private webapiurl = "http://localhost:5000/";
+    private webapiurl = "http://39.105.206.6:8080/";
+    //private webapiurl = "http://localhost:5000/";
 
     public httpRequestGet<T>(serviceUrl: string): Promise<T> {
         return this.http.get(

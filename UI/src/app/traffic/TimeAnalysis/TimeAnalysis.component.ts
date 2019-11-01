@@ -57,10 +57,10 @@ export class TimeAnalysisComponent implements OnInit {
         }
 
         //对3D时间进行填充  
-        CommonFunction.Fill3DTime(this._weekday_hour_orderCnt,this._traffic_3d);
+        CommonFunction.Fill3DTime(this._weekday_hour_orderCnt, this._traffic_3d, "订单量");
       });
   }
 
-  
+
 
 }
