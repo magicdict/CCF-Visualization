@@ -12,6 +12,7 @@ public static class DataCenterForTraffic
 {
 
     public static string DataFolder = @"F:\CCF-Visualization\RawData\海口市-交通流量时空演变特征可视分析";
+    public static string ExtendFile = @"F:\CCF-Visualization\RawData\PageRank.csv";
     public static string EDAFile = @"F:\CCF-Visualization\dataprocess\AfterProcess\海口市-交通流量时空演变特征可视分析\EDA.log";
     public static string AfterProcessFolder = @"F:\CCF-Visualization\dataprocess\AfterProcess\海口市-交通流量时空演变特征可视分析\";
     public static string AngularJsonAssetsFolder = @"F:\CCF-Visualization\UI\src\assets\traffic\json\";
@@ -467,6 +468,50 @@ public static class DataCenterForTraffic
         GC.Collect();
     }
 
+    /// <summary>
+    /// 坐标点的GroupBy
+    /// </summary>
+    /// <param name="isStart"></param>
+    /// <param name="filename"></param>
+    /// <param name="downlimit"></param>
+    private static void CreateGeoCSV(List<OrderDetails> evaluateorders, bool isStart, string filename)
+    {
+        //以1_000_000 为单位进行Groupby，然后汇总
+        var TotalCnt = evaluateorders.Count();
+        Console.WriteLine("TotalCnt:" + TotalCnt);
+        var TimeCnt = TotalCnt / 1_000_000;
+        TimeCnt += 1;
+        var MapReduceDictionary = new ConcurrentDictionary<Geo, int>();
+        for (int i = 0; i < TimeCnt; i++)
+        {
+            Console.WriteLine("Loop " + i + " Start");
+            var points = evaluateorders.Skip(i * 1_000_000).Take(1_000_000).GroupBy(x => isStart ? x.starting : x.dest)
+                                                   .Select(x => (coord: x.Key, value: x.Count())).ToList();
+            Parallel.ForEach(points, (item, loop) =>
+            {
+                if (MapReduceDictionary.ContainsKey(item.coord))
+                {
+                    MapReduceDictionary[item.coord] += item.value;
+                }
+                else
+                {
+                    MapReduceDictionary.TryAdd(item.coord, item.value);
+                }
+            });
+        }
+        var result = MapReduceDictionary.Select(x => (coord: x.Key, Value: x.Value)).ToList();
+        //Console.WriteLine("Start Sort");
+        //result.Sort((x, y) => { return y.Value - x.Value; });
+        var csv = new StreamWriter(AfterProcessFolder + filename);
+        foreach (var item in result)
+        {
+            var point = item.coord;
+            csv.WriteLine(point.lng + "," + point.lat + "," + item.Value);
+        }
+        csv.Close();
+        GC.Collect();
+    }
+
     private static void Create24HoursGeoJson()
     {
 
@@ -710,6 +755,90 @@ public static class DataCenterForTraffic
                              );
         }
         sw_csv.Close();
+    }
+
+    /// <summary>
+    /// KMeans用数据的做成
+    /// </summary>
+    public static void CreateKMeansData()
+    {
+        CreateGeoCSV(orders, true, "StartKMean.csv");
+        CreateGeoCSV(orders, false, "DestKMeans.csv");
+    }
+    /// <summary>
+    /// 行政区域和坐标字典
+    /// </summary>
+    public static void CreateDistrictDict()
+    {
+        /// <summary>
+        /// 行政区字典
+        /// </summary>
+        /// <param name="x.starting.key"></param>
+        /// <returns></returns>
+        var dict = orders.GroupBy(x => x.starting.key).Select(x => (x.Key, x.First().district)).ToList();
+        OrderDetails.DistrictDict = dict.ToDictionary(x => x.Key, x => x.district);
+    }
+
+
+    public static void LoadExtendInfo()
+    {
+        var ordersexpend = new List<OrderDetailsExtend>();
+        var sr = new StreamReader(ExtendFile);
+        sr.ReadLine();  //Skip Title
+        while (!sr.EndOfStream)
+        {
+            ordersexpend.Add(new OrderDetailsExtend(sr.ReadLine()));
+        }
+        sr.Close();
+        Console.WriteLine("Total Record Count:" + ordersexpend.Count);
+
+        //edge_betweenness的聚合
+        var edge_betweenness = ordersexpend.GroupBy(x => x.Start.key + ":" + x.Dest.key).
+                               Select(x =>
+                               {
+                                   return new
+                                   {
+                                       Start = new Geo(x.Key.Split(":")[0]),
+                                       Dest = new Geo(x.Key.Split(":")[1]),
+                                       Edge_Betweenness = x.First().edge_betweenness
+                                   };
+                               }).ToList();
+        var sw = new StreamWriter(AngularJsonAssetsFolder + "edge_betweenness.json");
+        sw.Write(JsonConvert.SerializeObject(edge_betweenness, Formatting.Indented));
+        sw.Close();
+
+        var Start = ordersexpend.GroupBy(x => x.Start.key).
+                               Select(x =>
+                               {
+                                   return new
+                                   {
+                                       coord = new float[] { float.Parse(x.Key.Split("_")[0]), float.Parse(x.Key.Split("_")[1]) },
+                                       ENC = x.First().Start_ENC,
+                                       PageRank = x.First().Start_PageRank,
+                                       Betweenness = x.First().Start_betweenness,
+                                   };
+                               }).ToList();
+
+        sw = new StreamWriter(AngularJsonAssetsFolder + "start_betweenness.json");
+        sw.Write(JsonConvert.SerializeObject(Start, Formatting.Indented));
+        sw.Close();
+
+        var Dest = ordersexpend.GroupBy(x => x.Dest.key).
+                               Select(x =>
+                               {
+                                   return new
+                                   {
+                                       coord = new float[] { float.Parse(x.Key.Split("_")[0]), float.Parse(x.Key.Split("_")[1]) },
+                                       ENC = x.First().Dest_ENC,
+                                       PageRank = x.First().Dest_PageRank,
+                                       Betweenness = x.First().Dest_betweenness,
+                                   };
+                               }).ToList();
+
+        sw = new StreamWriter(AngularJsonAssetsFolder + "dest_betweenness.json");
+        sw.Write(JsonConvert.SerializeObject(Dest, Formatting.Indented));
+        sw.Close();
+
     }
 
 }

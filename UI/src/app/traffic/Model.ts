@@ -53,14 +53,14 @@ export interface IDashBoard {
     WaitTime: NameValueSet[],
     speed: NameValueSet[],
     distance_km: NameValueSet[],
-    weekday_hour_speed: NameValueSet[],    
+    weekday_hour_speed: NameValueSet[],
     weekday_hour_speed_airport: NameValueSet[],
     weekday_hour_speed_train: NameValueSet[],
     weekday_hour_speed_longbus: NameValueSet[],
     weekday_hour_speed_cbd: NameValueSet[],
     weekday_hour_speed_hospital: NameValueSet[],
     weekday_hour_speed_school: NameValueSet[],
-    weekday_hour_speed_travel: NameValueSet[],   
+    weekday_hour_speed_travel: NameValueSet[],
 }
 
 export interface IDiaryinfo {
@@ -68,14 +68,14 @@ export interface IDiaryinfo {
     Value: {
         weather: IWeather;
         ordercnt: number;
-        airport:number;
-        train:number;
-        longbus:number;
-        cbd:number;
-        school:number;
-        hospital:number;
-        travel:number;
-        
+        airport: number;
+        train: number;
+        longbus: number;
+        cbd: number;
+        school: number;
+        hospital: number;
+        travel: number;
+
         distance: number;
         fee: number;
         holiday: number;
@@ -98,7 +98,7 @@ export interface ITimeAnaysis {
     weekday_hour_orderCnt_cbd: NameValueSet[],
     weekday_hour_orderCnt_hospital: NameValueSet[],
     weekday_hour_orderCnt_school: NameValueSet[],
-    weekday_hour_orderCnt_travel: NameValueSet[],    
+    weekday_hour_orderCnt_travel: NameValueSet[],
 }
 
 export interface MapValue {
@@ -123,4 +123,11 @@ export interface IPointAttr {
     WatiTime: number;
     NormalTime: number;
     Distance: number;
+}
+
+export interface IRelationship {
+    coord: number[];
+    ENC:number;
+    PageRank:number;
+    Betweenness:number;
 }

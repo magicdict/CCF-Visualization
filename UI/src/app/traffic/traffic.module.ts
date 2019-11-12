@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { TrafficRoutingModule } from './traffic-routing.module';
 import { TimeAnaysisResolver, SourceMapResolver, DestMapResolver, DashBoardResolver, 
-  CalendarResolver, SimpleDestMapResolver, SimpleSourceMapResolver, TraceResolver, SourceMapWeeKnoResolver, DestMapWeeKnoResolver, HotPointMapResolver } from './resolver.service';
+  CalendarResolver, SimpleDestMapResolver, SimpleSourceMapResolver, TraceResolver, SourceMapWeeKnoResolver, DestMapWeeKnoResolver, HotPointMapResolver, HeatMapResolver } from './resolver.service';
 import { CommonFunction } from '../Common/common';
 import { HttpClientModule } from '@angular/common/http';
 import { MyCommonModule } from '../Common/MyCommon.module';
@@ -21,6 +21,8 @@ import { TabViewModule } from 'primeng/tabview';
 import { HotPointMapComponent } from './SourceDestMap/HotPointMap.component';
 import { TimeDistanceComponent } from './Dashboard/TimeDistance.component';
 import { TimeAnalysisSPeedComponent } from './TimeAnalysis/TimeAnalysisSpeed.component';
+import { KMeansMapComponent } from './SourceDestMap/KMeansMap.component';
+import { SimpleHeatMapComponent } from './SourceDestMap/SimpleHeatMap.component';
 
 
 
@@ -33,10 +35,12 @@ import { TimeAnalysisSPeedComponent } from './TimeAnalysis/TimeAnalysisSpeed.com
     TimeLineMapWeekNoComponent,
     HotPointMapComponent,
     SimpleMapComponent,
+    KMeansMapComponent,
     TraceMapComponent,
     TimeAnalysisComponent,
     CalendarComponent,
-    TimeAnalysisSPeedComponent
+    TimeAnalysisSPeedComponent,
+    SimpleHeatMapComponent
   ],
   imports: [
     TrafficRoutingModule,
@@ -57,7 +61,8 @@ import { TimeAnalysisSPeedComponent } from './TimeAnalysis/TimeAnalysisSpeed.com
     SourceMapWeeKnoResolver,
     DestMapWeeKnoResolver,
     CalendarResolver,
-    TraceResolver
+    TraceResolver,
+    HeatMapResolver
   ],
   bootstrap: [TrafficMainComponent]
 })

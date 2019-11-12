@@ -732,3 +732,31 @@ export const IGephiStardard = {
     }
   ]
 };
+
+
+export const IHeatMapStardard = {
+  animation: false,
+  bmap: {
+    center: [110.3373, 20.0303],
+    zoom: 15,
+    roam: true,
+  },
+  visualMap: {
+      show: false,
+      top: 'top',
+      min: 0,
+      max: 5,
+      seriesIndex: 0,
+      calculable: true,
+      inRange: {
+          color: ['blue', 'blue', 'green', 'yellow', 'red']
+      }
+  },
+  series: [{
+      type: 'heatmap',
+      coordinateSystem: 'bmap',
+      data: [],
+      pointSize: 5,
+      blurSize: 6
+  }]
+}

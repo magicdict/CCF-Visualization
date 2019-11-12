@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { CommonFunction } from '../Common/common';
-import { ITimeAnaysis, MapValue, IDashBoard, IDiaryinfo, IPointAttr } from './Model';
+import { ITimeAnaysis, MapValue, IDashBoard, IDiaryinfo, IPointAttr, IRelationship } from './Model';
 
 
 @Injectable()
@@ -113,5 +113,18 @@ export class CalendarResolver implements Resolve<IDiaryinfo[]> {
     }
     resolve(_: ActivatedRouteSnapshot, _state: RouterStateSnapshot): IDiaryinfo[] | Observable<IDiaryinfo[]> | Promise<IDiaryinfo[]> {
         return this.commonFunction.httpRequestGet<IDiaryinfo[]>("Traffic/GetDiaryinfos");
+    }
+}
+
+export class HeatMapResolver implements Resolve<IRelationship[]> {
+    constructor(public commonFunction: CommonFunction) {
+
+    }
+    resolve(_: ActivatedRouteSnapshot, _state: RouterStateSnapshot): IRelationship[] | Observable<IRelationship[]> | Promise<IRelationship[]> {
+        if (_state.url === "/traffic/startpagerank"){
+            return this.commonFunction.httpRequestGetFromAsset<IRelationship[]>("traffic/json/start_betweenness.json");
+        }else{
+            return this.commonFunction.httpRequestGetFromAsset<IRelationship[]>("traffic/json/dest_betweenness.json");
+        }
     }
 }

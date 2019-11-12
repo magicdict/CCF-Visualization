@@ -232,30 +232,30 @@
           <ul class="treeview-menu">
             <li [class.active]="_path ==='/traffic/speedtimeanalysis'"><a href="traffic/speedtimeanalysis"><i
                   class="fa fa-link"></i> <span>全部</span></a></li>
-            <li [class.active]="_path ==='/traffic/speedtimeanalysis_airport'"><a href="traffic/speedtimeanalysis_airport"><i
-                  class="fa fa-link"></i>
+            <li [class.active]="_path ==='/traffic/speedtimeanalysis_airport'"><a
+                href="traffic/speedtimeanalysis_airport"><i class="fa fa-link"></i>
                 <span>飞机场</span></a></li>
-            <li [class.active]="_path ==='/traffic/speedtimeanalysis_longbus'"><a href="traffic/speedtimeanalysis_longbus"><i
-                  class="fa fa-link"></i>
+            <li [class.active]="_path ==='/traffic/speedtimeanalysis_longbus'"><a
+                href="traffic/speedtimeanalysis_longbus"><i class="fa fa-link"></i>
                 <span>汽车站</span></a></li>
-            <li [class.active]="_path ==='/traffic/speedtimeanalysis_train'"><a href="traffic/speedtimeanalysis_train"><i
-                  class="fa fa-link"></i>
+            <li [class.active]="_path ==='/traffic/speedtimeanalysis_train'"><a
+                href="traffic/speedtimeanalysis_train"><i class="fa fa-link"></i>
                 <span>火车站</span></a></li>
             <li [class.active]="_path ==='/traffic/speedtimeanalysis_cbd'"><a href="traffic/speedtimeanalysis_cbd"><i
                   class="fa fa-link"></i>
                 <span>商圈</span></a></li>
-            <li [class.active]="_path ==='/traffic/speedtimeanalysis_hospital'"><a href="traffic/speedtimeanalysis_hospital"><i
-                  class="fa fa-link"></i>
+            <li [class.active]="_path ==='/traffic/speedtimeanalysis_hospital'"><a
+                href="traffic/speedtimeanalysis_hospital"><i class="fa fa-link"></i>
                 <span>医院</span></a></li>
-            <li [class.active]="_path ==='/traffic/speedtimeanalysis_school'"><a href="traffic/speedtimeanalysis_school"><i
-                  class="fa fa-link"></i>
+            <li [class.active]="_path ==='/traffic/speedtimeanalysis_school'"><a
+                href="traffic/speedtimeanalysis_school"><i class="fa fa-link"></i>
                 <span>学校</span></a></li>
-            <li [class.active]="_path ==='/traffic/speedtimeanalysis_travel'"><a href="traffic/speedtimeanalysis_travel"><i
-                  class="fa fa-link"></i>
+            <li [class.active]="_path ==='/traffic/speedtimeanalysis_travel'"><a
+                href="traffic/speedtimeanalysis_travel"><i class="fa fa-link"></i>
                 <span>景点</span></a></li>
           </ul>
         </li>
-        
+
 
         <li [class]="this._path.startsWith('/traffic/calendar')? 'active treeview menu-open':'treeview'">
           <a href="#">
@@ -360,6 +360,32 @@
             <li [class.active]="_path ==='/traffic/weeklydestmap'"><a href="traffic/weeklydestmap"><i
                   class="fa fa-link"></i>
                 <span>目的地分析[周次]</span></a></li>
+          </ul>
+        </li>
+
+        <li class="treeview"
+          [class]="(this._path.endsWith('kmeans') || this._path.endsWith('pagerank') || this._path.endsWith('betweenness')) ? 'active treeview menu-open':'treeview'">
+          <a href="#">
+            <i class="fa fa-edit"></i> <span>机器学习</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li [class.active]="_path ==='/traffic/startkmeans'"><a href="traffic/startkmeans"><i
+                  class="fa fa-link"></i> <span>出发地K-Means</span></a></li>
+            <li [class.active]="_path ==='/traffic/destkmeans'"><a href="traffic/destkmeans"><i class="fa fa-link"></i>
+                <span>目的地K-Means</span></a></li>
+            <li [class.active]="_path ==='/traffic/startpagerank'"><a href="traffic/startpagerank"><i
+                  class="fa fa-link"></i> <span>出发地PageRank</span></a></li>
+            <li [class.active]="_path ==='/traffic/destpagerank'"><a href="traffic/destpagerank"><i
+                  class="fa fa-link"></i>
+                <span>目的地PageRank</span></a></li>
+            <li [class.active]="_path ==='/traffic/startbetweenness'"><a href="traffic/startbetweenness"><i
+                  class="fa fa-link"></i> <span>出发地Betweenness</span></a></li>
+            <li [class.active]="_path ==='/traffic/destbetweenness'"><a href="traffic/destbetweenness"><i
+                  class="fa fa-link"></i>
+                <span>目的地Betweenness</span></a></li>
           </ul>
         </li>
         <li [class.active]="_path ==='/traffic/hotpoint'"><a href="traffic/hotpoint"><i class="fa fa-link"></i>

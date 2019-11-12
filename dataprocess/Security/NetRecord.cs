@@ -2,7 +2,59 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using static DataCenterForSecurity;
+
+public class BaseInfo
+{
+    public string source_ip { get; set; }
+    public string destination_ip { get; set; }
+    public DateTime record_time { get; set; }
+    public IPAddress source_ip_info
+    {
+        get
+        {
+            return new IPAddress(source_ip);
+        }
+    }
+    public IPAddress destination_ip_info
+    {
+        get
+        {
+            return new IPAddress(destination_ip);
+        }
+    }
+    public string protocol { get; set; }
+    public string destination_port { get; set; }
+}
+
+public class DBInfo : BaseInfo
+{
+
+    public string sql_info { get; set; }
+
+    public string command
+    {
+        get
+        {
+            var sqlverb = sql_info.Trim().Split(" ");
+            return sqlverb[0].ToUpper();
+        }
+    }
+}
+
+
+
+public class LoginInfo : BaseInfo
+{
+
+    public string source_port { get; set; }
+
+    public string password { get; set; }
+
+    public string info { get; set; }
+
+    public string user { get; set; }
+}
+
 
 public class NetRecord
 {

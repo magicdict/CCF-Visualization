@@ -5,7 +5,7 @@ import { TimeAnalysisComponent } from './TimeAnalysis/TimeAnalysis.component';
 import { TimeLineMapComponent } from './SourceDestMap/TimeLineMap.component';
 import {
   SourceMapResolver, DestMapResolver, TimeAnaysisResolver, DashBoardResolver,
-  CalendarResolver, SimpleSourceMapResolver, SimpleDestMapResolver, TraceResolver, SourceMapWeeKnoResolver, DestMapWeeKnoResolver, HotPointMapResolver
+  CalendarResolver, SimpleSourceMapResolver, SimpleDestMapResolver, TraceResolver, SourceMapWeeKnoResolver, DestMapWeeKnoResolver, HotPointMapResolver, HeatMapResolver
 } from './resolver.service';
 import { DashboardComponent } from './Dashboard/Dashboard.component';
 import { CalendarComponent } from './Calendar/Calendar.component';
@@ -15,6 +15,8 @@ import { TimeLineMapWeekNoComponent } from './SourceDestMap/TimeLineMapWeekNo.co
 import { HotPointMapComponent } from './SourceDestMap/HotPointMap.component';
 import { TimeDistanceComponent } from './Dashboard/TimeDistance.component';
 import { TimeAnalysisSPeedComponent } from './TimeAnalysis/TimeAnalysisSpeed.component';
+import { KMeansMapComponent } from './SourceDestMap/KMeansMap.component';
+import { SimpleHeatMapComponent } from './SourceDestMap/SimpleHeatMap.component';
 
 
 const routes: Routes = [
@@ -52,14 +54,27 @@ const routes: Routes = [
       { path: 'timeanalysis_school', component: TimeAnalysisComponent, resolve: { data: TimeAnaysisResolver } },
       { path: 'timeanalysis_travel', component: TimeAnalysisComponent, resolve: { data: TimeAnaysisResolver } },
 
-      { path: 'hotpoint', component: HotPointMapComponent, resolve: { data: HotPointMapResolver } },
       { path: 'simplesourcemap', component: SimpleMapComponent, resolve: { data: SimpleSourceMapResolver } },
       { path: 'simpledestmap', component: SimpleMapComponent, resolve: { data: SimpleDestMapResolver } },
       { path: 'sourcemap', component: TimeLineMapComponent, resolve: { data: SourceMapResolver } },
       { path: 'destmap', component: TimeLineMapComponent, resolve: { data: DestMapResolver } },
       { path: 'weeklysourcemap', component: TimeLineMapWeekNoComponent, resolve: { data: SourceMapWeeKnoResolver } },
       { path: 'weeklydestmap', component: TimeLineMapWeekNoComponent, resolve: { data: DestMapWeeKnoResolver } },
+
+      { path: 'startkmeans', component: KMeansMapComponent },
+      { path: 'destkmeans', component: KMeansMapComponent },
+
+
+      { path: 'hotpoint', component: HotPointMapComponent, resolve: { data: HotPointMapResolver } },
       { path: 'trace', component: TraceMapComponent, resolve: { data: TraceResolver } },
+
+      { path: 'startpagerank', component: SimpleHeatMapComponent, resolve: { data: HeatMapResolver } },
+      { path: 'destpagerank', component: SimpleHeatMapComponent, resolve: { data: HeatMapResolver } },
+      { path: 'startbetweenness', component: SimpleHeatMapComponent, resolve: { data: HeatMapResolver } },
+      { path: 'destbetweenness', component: SimpleHeatMapComponent, resolve: { data: HeatMapResolver } },
+
+      
+
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   }

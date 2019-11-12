@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
+using static OrderDetails;
+
 public class OrderDetails
 {
     /// <summary>
@@ -225,6 +228,12 @@ public class OrderDetails
             lat = Math.Round(_lat + baiduOffsetlat, 4);
         }
 
+        public Geo(string key)
+        {
+            lng = Math.Round(double.Parse(key.Split("_")[0]));
+            lat = Math.Round(double.Parse(key.Split("_")[1]));
+        }
+
         public string POI
         {
             get
@@ -346,4 +355,57 @@ public class OrderDetails
         day = int.Parse(Cols[23]);
 
     }
+    /// <summary>
+    /// 行政区域字典
+    /// </summary>
+    /// <typeparam name="string"></typeparam>
+    /// <typeparam name="string"></typeparam>
+    /// <returns></returns>
+    public static Dictionary<string, string> DistrictDict = new Dictionary<string, string>();
+    /// <summary>
+    /// 目的地行政区域
+    /// </summary>
+    /// <value></value>
+    public string DestDistrict
+    {
+        get
+        {
+            if (DistrictDict.ContainsKey(dest.key)) return DistrictDict[dest.key];
+            return string.Empty;
+        }
+    }
+}
+
+
+public class OrderDetailsExtend
+{
+    public Geo Start { set; get; }
+    public Geo Dest { set; get; }
+
+    public int Start_ENC { set; get; }
+    public int Dest_ENC { set; get; }
+
+    public float Start_PageRank { set; get; }
+    public float Dest_PageRank { set; get; }
+
+    public float Start_betweenness { set; get; }
+
+    public float Dest_betweenness { set; get; }
+
+    public float edge_betweenness { set; get; }
+
+    public OrderDetailsExtend(string RawData)
+    {
+        var Cols = RawData.Split(",");
+        Start = new Geo(float.Parse(Cols[24].Substring(1)), float.Parse(Cols[25].Substring(0, Cols[25].Length - 1)));
+        Dest = new Geo(float.Parse(Cols[26].Substring(1)), float.Parse(Cols[27].Substring(0, Cols[27].Length - 1)));
+        Start_ENC = int.Parse(Cols[28]);
+        Dest_ENC = int.Parse(Cols[29]);
+        Start_PageRank = float.Parse(Cols[30]);
+        Dest_PageRank = float.Parse(Cols[31]);
+        Start_betweenness = float.Parse(Cols[32]);
+        Dest_betweenness = float.Parse(Cols[33]);
+        edge_betweenness = float.Parse(Cols[34]);
+    }
+
 }

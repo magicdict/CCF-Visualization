@@ -14,50 +14,37 @@
                     DataCenterForTraffic.EDAFile = DataCenterForTraffic.EDAFile.Replace("F:", @"D:\share\CPU Test");
                     DataCenterForTraffic.AfterProcessFolder = DataCenterForTraffic.AfterProcessFolder.Replace("F:", @"D:\share\CPU Test");
                     DataCenterForTraffic.AngularJsonAssetsFolder = DataCenterForTraffic.AngularJsonAssetsFolder.Replace("F:", @"D:\share\CPU Test");
+                    DataCenterForTraffic.ExtendFile = DataCenterForTraffic.ExtendFile.Replace("F:", @"D:\share\CPU Test");
                 }
-                DataCenterForTraffic.Load(-1);
-                DataCenterForTraffic.CreateWeedDayTimeSpeed((x) => { return x.starting.POI == "机场"; }, "weekday_hour_speed_机场.csv");
-                /* 
-                DataCenterForTraffic.CreateWeedDayTimeSpeed((x) => { return true; }, "weekday_hour_speed.csv");
-                DataCenterForTraffic.CreateWeedDayTimeSpeed((x) => { return x.starting.POI == "火车站"; }, "weekday_hour_speed_火车站.csv");
-                DataCenterForTraffic.CreateWeedDayTimeSpeed((x) => { return x.starting.POI == "汽车站"; }, "weekday_hour_speed_汽车站.csv");
-                DataCenterForTraffic.CreateWeedDayTimeSpeed((x) => { return x.starting.POI == "医院"; }, "weekday_hour_speed_医院.csv");
-                DataCenterForTraffic.CreateWeedDayTimeSpeed((x) => { return x.starting.POI == "商圈"; }, "weekday_hour_speed_商圈.csv");
-                DataCenterForTraffic.CreateWeedDayTimeSpeed((x) => { return x.starting.POI == "学校"; }, "weekday_hour_speed_学校.csv");
-                DataCenterForTraffic.CreateWeedDayTimeSpeed((x) => { return x.starting.POI == "景点"; }, "weekday_hour_speed_景点.csv"); 
-                //DataCenterForTraffic.CreateDiaryInfo();
-                DataCenterForTraffic.CreateWeedDayTime((x) => { return x.starting.POI == "机场"; }, "weekday_hour_orderCnt_机场.csv");
-                DataCenterForTraffic.CreateWeedDayTime((x) => { return x.starting.POI == "火车站"; }, "weekday_hour_orderCnt_火车站.csv");
-                DataCenterForTraffic.CreateWeedDayTime((x) => { return x.starting.POI == "汽车站"; }, "weekday_hour_orderCnt_汽车站.csv");
-                DataCenterForTraffic.CreateWeedDayTime((x) => { return x.starting.POI == "医院"; }, "weekday_hour_orderCnt_医院.csv");
-                DataCenterForTraffic.CreateWeedDayTime((x) => { return x.starting.POI == "商圈"; }, "weekday_hour_orderCnt_商圈.csv");
-                DataCenterForTraffic.CreateWeedDayTime((x) => { return x.starting.POI == "学校"; }, "weekday_hour_orderCnt_学校.csv");
-                DataCenterForTraffic.CreateWeedDayTime((x) => { return x.starting.POI == "景点"; }, "weekday_hour_orderCnt_景点.csv"); */
-                //DataCenterForTraffic.GetLongWait();
-                //DataCenterForTraffic.GetHotPointAttr();
-                //DataCenterForTraffic.Load(2_000_000);
-                //相同起点和终点的分析(耗时)
-                //DataCenterForTraffic.IsCreateTrace = true;
-                //DataCenterForTraffic.IsCreate24HoursGeoJson = true;
-                //DataCenterForTraffic.IsCreateWeekNoGeoJson = true;
-                //DataCenterForTraffic.IsCreateGeoJson = true;
-                //DataCenterForTraffic.EDA();
+                //DataCenterForTraffic.Load(-1);
+                //DataCenterForTraffic.CreateDistrictDict();
+                DataCenterForTraffic.LoadExtendInfo();
             }
             else
             {
-                DataCenterForSecurity.Load(-1);
-                //DataCenterForSecurity.Load(1_000_000);
-                //DataCenterForSecurity.Load(100_000);
-                //DataCenterForSecurity.GetProtocolProfile("ftp_control");
-                //DataCenterForSecurity.GetProtocolProfile("ssl");
-                //DataCenterForSecurity.GetProtocolProfile("http");
-                //DataCenterForSecurity.GetProtocolProfile("http_proxy");
-                //DataCenterForSecurity.Protocol_Port();
+                if (!System.IO.Directory.Exists(@"F:\CCF-Visualization\RawData\"))
+                {
+                    //172.16.2.121运行时候设定的目录
+                    DataCenterForSecuritySemi.RawDataFolder = DataCenterForSecuritySemi.RawDataFolder.Replace("F:", @"D:\share\CPU Test");
+                    DataCenterForSecuritySemi.EDAFile = DataCenterForSecuritySemi.EDAFile.Replace("F:", @"D:\share\CPU Test");
+                    DataCenterForSecuritySemi.AfterProcessFolder = DataCenterForSecuritySemi.AfterProcessFolder.Replace("F:", @"D:\share\CPU Test");
+                    DataCenterForSecuritySemi.AngularJsonAssetsFolder = DataCenterForSecuritySemi.AngularJsonAssetsFolder.Replace("F:", @"D:\share\CPU Test");
 
-                //DataCenterForSecurity.CreateSourceIpTreeJson();
-                //DataCenterForSecurity.CreateDistIpTreeJson();
-                //DataCenterForSecurity.CommunicationMode();
-                //DataCenterForSecurity.EDA();
+                    DataCenterForSecurity.EDAFile = DataCenterForSecurity.EDAFile.Replace("F:", @"D:\share\CPU Test");
+                    DataCenterForSecurity.AfterProcessFolder = DataCenterForSecurity.AfterProcessFolder.Replace("F:", @"D:\share\CPU Test");
+                    DataCenterForSecurity.AngularJsonAssetsFolder = DataCenterForSecurity.AngularJsonAssetsFolder.Replace("F:", @"D:\share\CPU Test");
+                }
+                DataCenterForSecurity.RawDataFolder = DataCenterForSecuritySemi.RawDataFolder + "\\tcpflow";
+                DataCenterForSecurity.Load(2500_0000);
+                DataCenterForSecurity.GetProtocolProfile("ftp_control");
+                DataCenterForSecurity.GetProtocolProfile("ssl");
+                DataCenterForSecurity.GetProtocolProfile("http");
+                DataCenterForSecurity.GetProtocolProfile("http_proxy");
+                DataCenterForSecurity.Protocol_Port();
+                DataCenterForSecurity.CreateSourceIpTreeJson();
+                DataCenterForSecurity.CreateDistIpTreeJson();
+                DataCenterForSecurity.CommunicationMode();
+                DataCenterForSecurity.EDA();
             }
         }
     }

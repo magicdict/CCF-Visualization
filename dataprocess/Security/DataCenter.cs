@@ -9,13 +9,13 @@ using System.Collections.Concurrent;
 public static class DataCenterForSecurity
 {
 
-    public const string RawDataFolder = @"F:\CCF-Visualization\RawData\企业网络资产及安全事件分析与可视化";
+    public static string RawDataFolder = @"F:\CCF-Visualization\RawData\企业网络资产及安全事件分析与可视化";
 
-    public const string AfterProcessFolder = @"F:\CCF-Visualization\dataprocess\AfterProcess\企业网络资产及安全事件分析与可视化\";
+    public static string AfterProcessFolder = @"F:\CCF-Visualization\dataprocess\AfterProcess\企业网络资产及安全事件分析与可视化\";
 
-    public const string EDAFile = @"F:\CCF-Visualization\dataprocess\AfterProcess\企业网络资产及安全事件分析与可视化\EDA.log";
+    public static string EDAFile = @"F:\CCF-Visualization\dataprocess\AfterProcess\企业网络资产及安全事件分析与可视化\EDA.log";
 
-    public const string AngularJsonAssetsFolder = @"F:\CCF-Visualization\UI\src\assets\security\json\";
+    public static string AngularJsonAssetsFolder = @"F:\CCF-Visualization\UI\src\assets\security\json\";
 
     public static List<NetRecord> records = new List<NetRecord>();
 
@@ -29,6 +29,7 @@ public static class DataCenterForSecurity
         foreach (var filename in Directory.GetFiles(RawDataFolder))
         {
             if (filename.EndsWith(".md")) continue; //跳过说明文件
+            Console.WriteLine("filename:" + filename);
             var sr = new StreamReader(filename);
             while (!sr.EndOfStream)
             {
@@ -420,7 +421,7 @@ public static class DataCenterForSecurity
         var distinctsource = source_dist.Select(x => x.name.Split("->")[0]).Distinct().Count();
         var distinctdist = source_dist.Select(x => x.name.Split("->")[1]).Distinct().Count();
         Console.WriteLine("distinctsource：" + distinctsource);
-        Console.WriteLine("distinctdist" + distinctdist);
+        Console.WriteLine("distinctdist:" + distinctdist);
 
 
 
