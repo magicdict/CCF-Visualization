@@ -326,8 +326,10 @@
         </li>
 
 
-        <li class="treeview">
-          <a href="#">
+        <li class="treeview"
+        [class]="(this._path === '/traffic/simplesourcemap' || this._path === '/traffic/sourcemap' || this._path === '/traffic/weeklysourcemap') ? 'active treeview menu-open':'treeview'">
+
+        <a href="#">
             <i class="fa fa-edit"></i> <span>出发地</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
@@ -345,7 +347,8 @@
         </li>
 
 
-        <li class="treeview">
+        <li class="treeview"
+        [class]="(this._path === '/traffic/simpledestmap' || this._path === '/traffic/destmap' || this._path === '/traffic/weeklydestmap') ? 'active treeview menu-open':'treeview'">
           <a href="#">
             <i class="fa fa-edit"></i> <span>目的地</span>
             <span class="pull-right-container">

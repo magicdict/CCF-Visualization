@@ -76,7 +76,7 @@ export class TimeDistanceComponent implements OnInit {
         this._weeklyDistance.title.text = "";
         this._weeklyDistance.xAxis.data = this._dashboard.weeklyinfos.map(x => x.Name);
         let weeklydistance = CommonFunction.clone(LineItem);
-        weeklydistance.name = "公里数";
+        weeklydistance.name = "公里";
         weeklydistance.data = this._dashboard.weeklyinfos.map(x => CommonFunction.roundvalue(x.Value.distance / x.Value.ordercnt));
         this._weeklyDistance.series.push(weeklydistance);
         this._Distance.legend.data = this._dashboard.Distance.map(x => x.Name);
@@ -86,7 +86,7 @@ export class TimeDistanceComponent implements OnInit {
         this._Dsitence_KM.title.text = "";
         this._Dsitence_KM.xAxis.data = this._dashboard.distance_km.map(x => x.Name);
         let Dsitence_KM = CommonFunction.clone(LineItem);
-        Dsitence_KM.name = "公里";
+        Dsitence_KM.name = "订单量";
         Dsitence_KM.data = this._dashboard.distance_km.map(x=>x.Value);
         this._Dsitence_KM.series.push(Dsitence_KM);
 
@@ -102,12 +102,9 @@ export class TimeDistanceComponent implements OnInit {
         this._Speed.title.text = "";
         this._Speed.xAxis.data = this._dashboard.speed.map(x => x.Name);
         let Speed = CommonFunction.clone(LineItem);
-        Speed.name = "速度";
+        Speed.name = "订单量";
         Speed.data = this._dashboard.speed.map(x=>x.Value);
         this._Speed.series.push(Speed);
-
-
-    
       });
   }
 }

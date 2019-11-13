@@ -44,7 +44,7 @@ export class CalendarComponent implements OnInit {
         this._dashboard = xxx.data;
         this._calendar5.calendar[0].range = ['2017-05'];
         this._calendar5.visualMap.seriesIndex = [1];
-        this._calendar5.visualMap.inRange = null;
+        //this._calendar5.visualMap.inRange = null;
         let data = xxx.data.map(x => [x.Name, 1, x.Value.holiday, x.Value.isWorkday, x.Value.weather]);
         let item = CommonFunction.clone(ICalendarItem_scatter);
         item.label.normal.formatter = this.symbol;
@@ -135,6 +135,7 @@ export class CalendarComponent implements OnInit {
         this._calendar10 = CommonFunction.clone(this._calendar5);
         this._calendar10.calendar[0].range = ['2017-10'];
         this._calendar10.series[0].label.normal.formatter = this.symbol;
+
 
       });
   }

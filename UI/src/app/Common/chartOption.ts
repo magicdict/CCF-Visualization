@@ -362,7 +362,7 @@ export const ICalendarStardard = {
     formatter: null
   },
   visualMap: {
-    show: false,
+    show: true,
     min: 0,
     max: 300,
     calculable: true,
@@ -370,15 +370,16 @@ export const ICalendarStardard = {
     orient: 'horizontal',
     left: 'center',
     bottom: 20,
-    inRange: {
+/*     inRange: {
       color: ['#e0ffff', '#006edd'],
       opacity: 0.3
     },
     controller: {
       inRange: {
+        color: ['#e0ffff', '#006edd'],
         opacity: 0.5
       }
-    }
+    } */
   },
 
   calendar: [{
