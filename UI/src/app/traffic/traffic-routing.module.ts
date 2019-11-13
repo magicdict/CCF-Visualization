@@ -72,6 +72,8 @@ const routes: Routes = [
       { path: 'destpagerank', component: SimpleHeatMapComponent, resolve: { data: HeatMapResolver } },
       { path: 'startbetweenness', component: SimpleHeatMapComponent, resolve: { data: HeatMapResolver } },
       { path: 'destbetweenness', component: SimpleHeatMapComponent, resolve: { data: HeatMapResolver } },
+      { path: 'startenc', component: SimpleHeatMapComponent, resolve: { data: HeatMapResolver } },
+      { path: 'destenc', component: SimpleHeatMapComponent, resolve: { data: HeatMapResolver } },
 
       
 

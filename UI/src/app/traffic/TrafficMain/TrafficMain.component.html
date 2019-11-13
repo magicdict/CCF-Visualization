@@ -364,7 +364,7 @@
         </li>
 
         <li class="treeview"
-          [class]="(this._path.endsWith('kmeans') || this._path.endsWith('pagerank') || this._path.endsWith('betweenness')) ? 'active treeview menu-open':'treeview'">
+          [class]="(this._path.endsWith('enc') || this._path.endsWith('pagerank') || this._path.endsWith('betweenness')) ? 'active treeview menu-open':'treeview'">
           <a href="#">
             <i class="fa fa-edit"></i> <span>机器学习</span>
             <span class="pull-right-container">
@@ -372,10 +372,11 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li [class.active]="_path ==='/traffic/startkmeans'"><a href="traffic/startkmeans"><i
+            <!--             <li [class.active]="_path ==='/traffic/startkmeans'"><a href="traffic/startkmeans"><i
                   class="fa fa-link"></i> <span>出发地K-Means</span></a></li>
             <li [class.active]="_path ==='/traffic/destkmeans'"><a href="traffic/destkmeans"><i class="fa fa-link"></i>
                 <span>目的地K-Means</span></a></li>
+ -->
             <li [class.active]="_path ==='/traffic/startpagerank'"><a href="traffic/startpagerank"><i
                   class="fa fa-link"></i> <span>出发地PageRank</span></a></li>
             <li [class.active]="_path ==='/traffic/destpagerank'"><a href="traffic/destpagerank"><i
@@ -386,6 +387,11 @@
             <li [class.active]="_path ==='/traffic/destbetweenness'"><a href="traffic/destbetweenness"><i
                   class="fa fa-link"></i>
                 <span>目的地Betweenness</span></a></li>
+            <li [class.active]="_path ==='/traffic/startenc'"><a href="traffic/startenc"><i
+                  class="fa fa-link"></i> <span>出发地ENC</span></a></li>
+            <li [class.active]="_path ==='/traffic/destenc'"><a href="traffic/destenc"><i
+                  class="fa fa-link"></i>
+                <span>目的地ENC</span></a></li>
           </ul>
         </li>
         <li [class.active]="_path ==='/traffic/hotpoint'"><a href="traffic/hotpoint"><i class="fa fa-link"></i>

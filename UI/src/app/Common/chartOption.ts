@@ -758,5 +758,35 @@ export const IHeatMapStardard = {
       data: [],
       pointSize: 5,
       blurSize: 6
-  }]
+  },
+  {
+    name: 'Top 10',
+    type: 'effectScatter',
+    coordinateSystem: 'bmap',
+    data: [],
+    symbolSize: function (val) {
+      return val[1] / 10;
+    },
+    showEffectOn: 'render',
+    rippleEffect: {
+      brushType: 'stroke'
+    },
+    hoverAnimation: true,
+    label: {
+      normal: {
+        formatter: '{b}',
+        position: 'right',
+        show: true
+      }
+    },
+    itemStyle: {
+      normal: {
+        color: 'purple',
+        shadowBlur: 10,
+        shadowColor: '#333'
+      }
+    },
+    zlevel: 1
+  }
+]
 }
