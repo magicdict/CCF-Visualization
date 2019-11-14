@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using Newtonsoft.Json;
+using System.Text;
 
 public static class DataCenterForTraffic
 {
@@ -19,6 +20,36 @@ public static class DataCenterForTraffic
     public static List<OrderDetails> orders = new List<OrderDetails>();
     public static List<DiaryProperty> diarys = new List<DiaryProperty>();
 
+
+    public static void LoadDestconuty()
+    {
+        var sw = new StreamReader(AfterProcessFolder + "DestPointsCounty.txt");
+        while (!sw.EndOfStream)
+        {
+            var r = sw.ReadLine();
+            OrderDetails.PointCountyDict.Add(r.Split(",")[0], r.Split(",")[1]);
+        }
+        sw.Close();
+    }
+    public static void Conuty()
+    {
+
+        var DestConuty = orders.GroupBy(x=>x.dest_county).Select(x => (x.Key, x.Count())).ToList();
+        var sw = new StreamWriter(AfterProcessFolder + "DestCounty.txt");
+        foreach (var item in DestConuty)
+        {
+            sw.WriteLine(item.Key + "," + item.Item2);
+        }
+        sw.Close();
+
+        var SameConuty = orders.GroupBy(x => x.county + "_" + x.dest_county).Select(x => (x.Key, x.Count())).ToList();
+        sw = new StreamWriter(AfterProcessFolder + "StartDestCounty.txt");
+        foreach (var item in SameConuty)
+        {
+            sw.WriteLine(item.Key + "," + item.Item2);
+        }
+        sw.Close();
+    }
     /// <summary>
     /// 加载数据
     /// </summary>
@@ -77,11 +108,11 @@ public static class DataCenterForTraffic
             var countyname = "";
             switch (item.name)
             {
-                case "460106":
-                    countyname = "龙华区";
-                    break;
                 case "460105":
                     countyname = "秀英区";
+                    break;
+                case "460106":
+                    countyname = "龙华区";
                     break;
                 case "460107":
                     countyname = "琼山区";
@@ -768,17 +799,49 @@ public static class DataCenterForTraffic
     /// <summary>
     /// 行政区域和坐标字典
     /// </summary>
-    public static void CreateDistrictDict()
+    public static void CreateCountyDict()
     {
-        /// <summary>
-        /// 行政区字典
-        /// </summary>
-        /// <param name="x.starting.key"></param>
-        /// <returns></returns>
-        var dict = orders.GroupBy(x => x.starting.key).Select(x => (x.Key, x.First().district)).ToList();
-        OrderDetails.DistrictDict = dict.ToDictionary(x => x.Key, x => x.district);
-    }
+        var dict_key = orders.GroupBy(x => x.starting.key).Select(x => (x.Key, x.First().county)).ToDictionary((x) => x.Key, (x) => x.county);
+        var dict = new ConcurrentDictionary<string, string>();
+        foreach (var item in dict_key)
+        {
+            dict.TryAdd(item.Key, item.Value);
+        }
 
+        var StartPoints = orders.GroupBy(x => x.starting.key).Select(x => new Geo(x.Key)).ToList();
+        var DestPoints = orders.GroupBy(x => x.dest.key).Select(x => new Geo(x.Key)).ToList();
+        orders.Clear();
+        GC.Collect();
+        int cnt = 0;
+        Console.WriteLine("DestPoints Count:" + DestPoints.Count);
+        var sb = new StringBuilder();
+        Parallel.ForEach(
+            DestPoints, (point, _) =>
+            {
+                var county = string.Empty;
+                if (dict.ContainsKey(point.key))
+                {
+                    county = dict[point.key];
+                }
+                else
+                {
+                    //寻找最近的出发点，这个出发点的行政区号则为这个目的点的行政区号
+                    var sp = new List<Geo>();
+                    sp.AddRange(StartPoints);
+                    sp.Sort((x, y) => { return x.DistenceTo(point).CompareTo(y.DistenceTo(point)); }); //距离的升序
+                    county = dict[StartPoints.First().key];
+                    dict.TryAdd(point.key, county);
+                }
+                cnt++;
+                sb.AppendLine(point.key + "," + county);
+                Console.WriteLine("Complete Count:" + cnt);
+            }
+        );
+
+        var sw = new StreamWriter(AfterProcessFolder + "DestPointsCounty.txt");
+        sw.Write(sb);
+        sw.Close();
+    }
 
     public static void LoadExtendInfo()
     {

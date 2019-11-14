@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonFunction } from 'src/app/Common/common';
 import { ActivatedRoute } from '@angular/router';
-import { IHeatMapStardard } from 'src/app/Common/chartOption';
+import { IHeatBaiduMapStardard } from 'src/app/Common/chartOption';
 import { IRelationship } from '../Model';
 
 
@@ -11,7 +11,7 @@ import { IRelationship } from '../Model';
 export class SimpleHeatMapComponent implements OnInit {
     constructor(private route: ActivatedRoute) { }
     _commonFunction = CommonFunction;
-    _map = CommonFunction.clone(IHeatMapStardard);
+    _map = CommonFunction.clone(IHeatBaiduMapStardard);
     _title = "";
     ngOnInit(): void {
         this.route.data

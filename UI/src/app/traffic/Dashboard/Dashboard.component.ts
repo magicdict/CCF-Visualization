@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IDashBoard } from '../Model';
-import { ILineStardard, LineItem, IPieStardard } from 'src/app/Common/chartOption';
+import { ILineStardard, LineItem, IPieStardard, IHeatMapStardard } from 'src/app/Common/chartOption';
 import { CommonFunction } from 'src/app/Common/common';
 
 
@@ -23,6 +23,7 @@ export class DashboardComponent implements OnInit {
   //饼图
   _product_ids = CommonFunction.clone(IPieStardard);
   _countys = CommonFunction.clone(IPieStardard);
+  _countys_dest = CommonFunction.clone(IPieStardard);
   _order_type = CommonFunction.clone(IPieStardard);
   _traffic_types = CommonFunction.clone(IPieStardard);
   _product_1levels = CommonFunction.clone(IPieStardard);
@@ -30,6 +31,9 @@ export class DashboardComponent implements OnInit {
   _dest_pois = CommonFunction.clone(IPieStardard);
   _starting_transport = CommonFunction.clone(IPieStardard);
   _dest_transport = CommonFunction.clone(IPieStardard);
+
+  //热力图
+  _countymap = CommonFunction.clone(IHeatMapStardard);
 
 
   ngOnInit(): void {
@@ -41,20 +45,20 @@ export class DashboardComponent implements OnInit {
         let weeklyOrdercnt = CommonFunction.clone(LineItem);
         weeklyOrdercnt.name = "周订单数";
         weeklyOrdercnt.data = this._dashboard.weeklyinfos.map(x => x.Value.ordercnt);
-        
+
         weeklyOrdercnt['markPoint'] = {
           data: [
             { type: 'max', name: '最大值' },
             { type: 'min', name: '最小值' }
           ]
         },
-        weeklyOrdercnt['markLine'] = {
-          data: [
-            { type: 'average', name: '平均值' }
-          ]
-        },
+          weeklyOrdercnt['markLine'] = {
+            data: [
+              { type: 'average', name: '平均值' }
+            ]
+          },
 
-        this._weeklyOrdercnt.series.push(weeklyOrdercnt);
+          this._weeklyOrdercnt.series.push(weeklyOrdercnt);
 
         this._travellerCnt.title.text = "";
         this._travellerCnt.xAxis.data = this._dashboard.TravellerCnt.map(x => x.Name);
@@ -142,6 +146,15 @@ export class DashboardComponent implements OnInit {
         this._countys.legend.data = this._dashboard.countys.map(x => x.Name);
         this._countys.series[0].data = this._dashboard.countys.map(x => { return { name: x.Name, value: x.Value } });
 
+        this._countys_dest.legend.data = ['琼山区', '龙华区', '美兰区', '秀英区', "其他"]
+        this._countys_dest.series[0].data = [
+          { 'name': '秀英区', value: 1658276 },
+          { 'name': '龙华区', value: 5925312 },
+          { 'name': '琼山区', value: 2454564 },
+          { 'name': '美兰区', value: 4121191 },
+          { 'name': '其他', value: 14160162 - 1658276 - 5925312 - 2454564 - 4121191 },
+        ]
+
         this._starting_pois.legend.data = this._weeklyPOI.legend.data;
         this._starting_pois.series[0].data = this._dashboard.starting_pois
           .filter(x => this._weeklyPOI.legend.data.indexOf(x.Name) != -1).map(x => { return { name: x.Name, value: x.Value } });
@@ -157,6 +170,35 @@ export class DashboardComponent implements OnInit {
         this._dest_transport.legend.data = this._weeklyTransport.legend.data;
         this._dest_transport.series[0].data = this._dashboard.dest_pois
           .filter(x => this._weeklyTransport.legend.data.indexOf(x.Name) != -1).map(x => { return { name: x.Name, value: x.Value } });
+
+
+
+
+        this._countymap.xAxis.data = ['秀英区', '龙华区', '琼山区', '美兰区']
+        this._countymap.yAxis.data = ['秀英区', '龙华区', '琼山区', '美兰区']
+        this._countymap.visualMap.max = 3000000;
+        this._countymap.series[0].data = [
+          [0, 0, 571600],
+          [0, 1, 722876],
+          [0, 2, 168143],
+          [0, 3, 247985],
+
+          [1, 0, 689595],
+          [1, 1, 2790413],
+          [1, 2, 889644],
+          [1, 3, 1434082],
+
+          [2, 0, 158180],
+          [2, 1, 947243],
+          [2, 2, 725446],
+          [2, 3, 701502],
+
+          [3, 0, 238851],
+          [3, 1, 1464656],
+          [3, 2, 670679],
+          [3, 3, 1737422],
+
+        ]
       });
   }
 }

@@ -30,6 +30,18 @@ public class OrderDetails
     /// </summary>
     /// <value></value>
     public string county { get; set; }
+
+    public static Dictionary<string, string> PointCountyDict = new Dictionary<string, string>();
+
+    public string dest_county
+    {
+        get
+        {
+            if (PointCountyDict.ContainsKey(dest.key)) return PointCountyDict[dest.key];
+            Console.WriteLine("dest_county error");
+            return county;
+        }
+    }
     /// <summary>
     ///  订单时效	0实时，1预约   
     /// </summary>
@@ -230,8 +242,16 @@ public class OrderDetails
 
         public Geo(string key)
         {
-            lng = Math.Round(double.Parse(key.Split("_")[0]));
-            lat = Math.Round(double.Parse(key.Split("_")[1]));
+            lng = (double.Parse(key.Split("_")[0]));
+            lat = (double.Parse(key.Split("_")[1]));
+        }
+
+
+        public double DistenceTo(Geo OtherPoint)
+        {
+            //只是进行比较，为了加速，这里不开平方了
+            double x = 100000;  //精度问题，提升原来的数字
+            return Math.Pow(lng * x - OtherPoint.lng * x, 2) + Math.Pow(lat * x - OtherPoint.lat * x, 2);
         }
 
         public string POI
@@ -354,25 +374,6 @@ public class OrderDetails
         month = int.Parse(Cols[22]);
         day = int.Parse(Cols[23]);
 
-    }
-    /// <summary>
-    /// 行政区域字典
-    /// </summary>
-    /// <typeparam name="string"></typeparam>
-    /// <typeparam name="string"></typeparam>
-    /// <returns></returns>
-    public static Dictionary<string, string> DistrictDict = new Dictionary<string, string>();
-    /// <summary>
-    /// 目的地行政区域
-    /// </summary>
-    /// <value></value>
-    public string DestDistrict
-    {
-        get
-        {
-            if (DistrictDict.ContainsKey(dest.key)) return DistrictDict[dest.key];
-            return string.Empty;
-        }
     }
 }
 

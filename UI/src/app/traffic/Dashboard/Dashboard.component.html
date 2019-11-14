@@ -80,15 +80,27 @@
             </chart>
         </div>
     </div>
-
     <div class="row">
         <div class="col-md-3">
-            <chart [options]="_countys" [title]="'区县'" [boxstyle]="this._commonFunction.boxstyle_Col3"
+            <chart [options]="_countys" [title]="'起点区县'" [boxstyle]="this._commonFunction.boxstyle_Col3"
                 [chartstyle]="this._commonFunction.chartstyle_Col3"> </chart>
         </div>
         <div class="col-md-3">
+            <chart [options]="_countys_dest" [title]="'终点区县'" [boxstyle]="this._commonFunction.boxstyle_Col3"
+                [chartstyle]="this._commonFunction.chartstyle_Col3"> </chart>
+        </div>
+        <div class="col-md-6">
+            <chart [options]="_countymap" [title]="'订单跨区域'" [boxstyle]="this._commonFunction.boxstyle_Col6"
+                [chartstyle]="this._commonFunction.chartstyle_Col6">
+            </chart>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
             <chart [options]="_order_type" [title]="'订单时效'" [boxstyle]="this._commonFunction.boxstyle_Col3"
                 [chartstyle]="this._commonFunction.chartstyle_Col3"> </chart>
+        </div>
+        <div class="col-md-3">
         </div>
         <div class="col-md-6">
             <chart [options]="_weeklyPOI" [title]="'POI相关（3点采样）订单百分比（周单位）'"

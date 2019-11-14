@@ -16,9 +16,12 @@
                     DataCenterForTraffic.AngularJsonAssetsFolder = DataCenterForTraffic.AngularJsonAssetsFolder.Replace("F:", @"D:\share\CPU Test");
                     DataCenterForTraffic.ExtendFile = DataCenterForTraffic.ExtendFile.Replace("F:", @"D:\share\CPU Test");
                 }
-                //DataCenterForTraffic.Load(-1);
+                DataCenterForTraffic.LoadDestconuty();
+                DataCenterForTraffic.Load(-1);
+                DataCenterForTraffic.Conuty();
+                //DataCenterForTraffic.CreateCountyDict();
                 //DataCenterForTraffic.CreateDistrictDict();
-                DataCenterForTraffic.LoadExtendInfo();
+                //DataCenterForTraffic.LoadExtendInfo();
             }
             else
             {
