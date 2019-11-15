@@ -34,7 +34,7 @@ public static class DataCenterForTraffic
     public static void Conuty()
     {
 
-        var DestConuty = orders.GroupBy(x=>x.dest_county).Select(x => (x.Key, x.Count())).ToList();
+        var DestConuty = orders.GroupBy(x => x.dest_county).Select(x => (x.Key, x.Count())).ToList();
         var sw = new StreamWriter(AfterProcessFolder + "DestCounty.txt");
         foreach (var item in DestConuty)
         {
@@ -904,9 +904,197 @@ public static class DataCenterForTraffic
 
     }
 
+    public static Dictionary<string, Weather> weathers = new Dictionary<string, Weather>();
+
+    public static List<NameValueSet<AggeInfo>> diaryinfos = new List<NameValueSet<AggeInfo>>();
+    public static void CreateLinearRegressionDate()
+    {
+        var Folder = @"F:\CCF-Visualization\dataprocess\AfterProcess\海口市-交通流量时空演变特征可视分析\";
+        var sr = new StreamReader(Folder + "海口历史天气数据.csv");
+        while (!sr.EndOfStream)
+        {
+            var info = sr.ReadLine().Split("\t");
+            weathers.Add(
+                info[0].Replace("年", string.Empty).Replace("月", string.Empty).Replace("日", string.Empty),
+                new Weather() { Description = info[1], Tempera = info[2], Wind = info[3] }
+            );
+        }
+        sr.Close();
+
+        sr = new StreamReader(Folder + "diary_info.csv");
+        while (!sr.EndOfStream)
+        {
+            var info = sr.ReadLine().Split(",");
+            diaryinfos.Add(new NameValueSet<AggeInfo>()
+            {
+                Name = DateTime.ParseExact(info[0], "yyyyMMdd", null).ToString("yyyy/MM/dd"), // d 的时候，操作系统的语言不通，结果也不同。这里强制定义格式
+                Value = new AggeInfo()
+                {
+                    holiday = GetHoliday(info[0]),
+                    isWorkday = IsWorkDay(info[0]),
+                    weather = weathers[info[0]],
+                    Weekno = GetWeekNo(info[0]),
+                    ordercnt = int.Parse(info[1]),
+
+                    airport = int.Parse(info[8]),
+                    train = int.Parse(info[9]),
+                    longbus = int.Parse(info[10]),
+                    school = int.Parse(info[11]),
+                    hospital = int.Parse(info[12]),
+                    travel = int.Parse(info[25]),
+                    cbd = int.Parse(info[26])
+                }
+            });
+        }
+        sr.Close();
+
+        var sw = new StreamWriter(AfterProcessFolder + "LinearRegression.csv");
+        sw.WriteLine("isWorkday,isHoliday,HighTempera,LowTempera,dayidx,Count,airport,train,longbus,school,hospital,travel,cbd");
+        var dayidx = 0;
+        foreach (var item in diaryinfos)
+        {
+            dayidx++;
+            var isWorkday = item.Value.isWorkday ? "1" : "0";           //工作日或者假日
+            var isHoliday = item.Value.holiday.Equals("") ? "0" : "1";  //这个特指节日
+            var HighTempera = item.Value.weather.HighTempera;
+            var LowTempera = item.Value.weather.LowTempera;
+            var Count = item.Value.ordercnt;
+            sw.WriteLine(isWorkday + "," + isHoliday + "," + HighTempera + "," + LowTempera + "," + dayidx + "," + Count + "," + 
+                    item.Value.airport + "," + item.Value.train + "," + item.Value.longbus + "," + item.Value.school + "," + 
+                    item.Value.hospital + "," + item.Value.travel + "," + item.Value.cbd);
+        }
+        sw.Close();
+
+        sw = new StreamWriter(AfterProcessFolder + "Arima.csv");
+        sw.WriteLine("Date,Count");
+        foreach (var item in diaryinfos)
+        {
+            sw.WriteLine(item.Name + "," + item.Value.ordercnt);
+        }
+        sw.Close();
+
+    }
+
+    static string GetHoliday(string date)
+    {
+        switch (date)
+        {
+            case "20170501": return "劳动节";
+            case "20170520": return "我爱你";
+            case "20170530": return "端午节";
+            case "20170828": return "七夕节";
+            case "20171001": return "国庆节";
+            case "20171004": return "中秋节";
+        }
+        return "";
+    }
+
+    static bool IsWorkDay(string date)
+    {
+        switch (date)
+        {
+            case "20170501": return false;  //劳动节
+            case "20170527": return true;
+            case "20170530": return false;  //端午节
+            case "20170930": return true;
+            case "20171001": return false;  //国庆节
+            case "20171002": return false;
+            case "20171003": return false;
+            case "20171004": return false;
+            case "20171005": return false;
+            case "20171006": return false;
+            case "20171007": return false;
+            case "20171008": return false;
+        }
+        var d = DateTime.ParseExact(date, "yyyyMMdd", null);
+        return d.DayOfWeek != DayOfWeek.Saturday && d.DayOfWeek != DayOfWeek.Sunday;
+    }
+
+
+    static string GetWeekNo(string date)
+    {
+        var d = DateTime.ParseExact(date, "yyyyMMdd", null);
+        var startard = DateTime.ParseExact("20170501", "yyyyMMdd", null);
+        var diff = d.Subtract(startard);
+        var weekidx = (int)diff.TotalDays / 7;
+        return startard.AddDays(weekidx * 7).ToString("yyyy/MM/dd");
+    }
+
 }
 
+/// <summary>
+/// 天气数据
+/// </summary>
+public class Weather
+{
+    public string Description { get; set; }
 
+    public string Tempera { get; set; }
+
+    public string Wind { get; set; }
+
+    public int HighTempera
+    {
+        get
+        {
+            return int.Parse(Tempera.Split("/")[0].Replace("℃", string.Empty).Trim());
+        }
+    }
+    public int LowTempera
+    {
+        get
+        {
+            return int.Parse(Tempera.Split("/")[1].Replace("℃", string.Empty).Trim());
+        }
+    }
+    public string AM
+    {
+        get
+        {
+            return Description.Split("/")[0].Trim();
+        }
+    }
+    public string PM
+    {
+        get
+        {
+            return Description.Split("/")[1].Trim();
+        }
+    }
+
+}
+
+/// <summary>
+/// 周信息
+/// </summary>
+public class AggeInfo
+{
+    public Weather weather { get; set; }
+
+    public string Weekno { get; set; }
+
+    public int ordercnt { get; set; }
+
+    public string holiday { get; set; }
+
+    public bool isWorkday { get; set; }
+
+    public int airport { get; set; }
+
+    public int train { get; set; }
+
+    public int longbus { get; set; }
+
+    public int school { get; set; }
+
+    public int hospital { get; set; }
+
+    public int travel { get; set; }
+
+
+    public int cbd { get; set; }
+
+}
 
 public class GeoAttrProperty
 {
