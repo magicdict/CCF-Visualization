@@ -397,24 +397,41 @@
                 <span>目的地ENC</span></a></li>
           </ul>
         </li>
-        <li [class.active]="_path ==='/traffic/hotpoint'"><a href="traffic/hotpoint"><i class="fa fa-link"></i>
-            <span>热门地点分析</span></a></li>
-        <li [class.active]="_path ==='/traffic/trace'"><a href="traffic/trace"><i class="fa fa-link"></i>
-            <span>轨迹分析</span></a></li>
 
-        <li [class.active]="_path ==='/traffic/destpointfromairport'"><a href="traffic/destpointfromairport"><i
-              class="fa fa-link"></i>
-            <span>机场出发目的地</span></a></li>
-        <li [class.active]="_path ==='/traffic/startpointtoairport'"><a href="traffic/startpointtoairport"><i
-              class="fa fa-link"></i>
-            <span>去机场出发地</span></a></li>
-        <li [class.active]="_path ==='/traffic/destpointfromtrain'"><a href="traffic/destpointfromtrain"><i
-              class="fa fa-link"></i>
-            <span>火车站出发目的地</span></a></li>
-        <li [class.active]="_path ==='/traffic/startpointtotrain'"><a href="traffic/startpointtotrain"><i
-              class="fa fa-link"></i>
-            <span>去火车站出发地</span></a></li>
+        <li class="treeview"
+          [class]="(
+          this._path === '/traffic/hotpoint' || 
+          this._path === '/traffic/trace' || 
+          this._path === '/traffic/destpointfromairport' || 
+          this._path === '/traffic/startpointtoairport'  || 
+          this._path === '/traffic/destpointfromtrain'  || 
+          this._path === '/traffic/startpointtotrain' ) ? 'active treeview menu-open':'treeview'">
+          <a href="#">
+            <i class="fa fa-edit"></i> <span>地点和轨迹</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
 
+            <li [class.active]="_path ==='/traffic/hotpoint'"><a href="traffic/hotpoint"><i class="fa fa-link"></i>
+                <span>热门地点分析</span></a></li>
+            <li [class.active]="_path ==='/traffic/trace'"><a href="traffic/trace"><i class="fa fa-link"></i>
+                <span>轨迹分析</span></a></li>
+            <li [class.active]="_path ==='/traffic/destpointfromairport'"><a href="traffic/destpointfromairport"><i
+                  class="fa fa-link"></i>
+                <span>机场出发目的地</span></a></li>
+            <li [class.active]="_path ==='/traffic/startpointtoairport'"><a href="traffic/startpointtoairport"><i
+                  class="fa fa-link"></i>
+                <span>去机场出发地</span></a></li>
+            <li [class.active]="_path ==='/traffic/destpointfromtrain'"><a href="traffic/destpointfromtrain"><i
+                  class="fa fa-link"></i>
+                <span>火车站出发目的地</span></a></li>
+            <li [class.active]="_path ==='/traffic/startpointtotrain'"><a href="traffic/startpointtotrain"><i
+                  class="fa fa-link"></i>
+                <span>去火车站出发地</span></a></li>
+          </ul>
+        </li>
       </ul>
       <!-- /.sidebar-menu -->
     </section>

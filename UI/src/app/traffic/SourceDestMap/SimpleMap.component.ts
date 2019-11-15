@@ -24,15 +24,19 @@ export class SimpleMapComponent implements OnInit {
         break;
       case "destpointfromairport":
         this._title = "机场出发目的地";
+        this._map.bmap.zoom = 13;
         break;
       case "startpointtoairport":
         this._title = "去机场出发地";
+        this._map.bmap.zoom = 13;
         break;
       case "destpointfromtrain":
         this._title = "火车站出发目的地";
+        this._map.bmap.zoom = 13;
         break;
       case "startpointtotrain":
         this._title = "去火车站出发地";
+        this._map.bmap.zoom = 13;
         break;
       default:
         break;

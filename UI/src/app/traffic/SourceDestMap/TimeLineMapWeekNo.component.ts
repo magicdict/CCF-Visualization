@@ -21,8 +21,9 @@ export class TimeLineMapWeekNoComponent implements OnInit {
     this.route.data
       .subscribe((xxx: { data: MapValue[] }) => {
         xxx.data.sort((x, y) => { return y.value[2] - x.value[2] })
-        this._map_timeline.baseOption.timeline.playInterval = 5000;
+        this._map_timeline.baseOption.timeline.playInterval = 1000;
         this._map_timeline.baseOption['bmap'] = CommonFunction.clone(IMapStardard.bmap);
+        this._map_timeline.baseOption['bmap'].zoom = 13;
         this._map_timeline.baseOption.series.push(CommonFunction.clone(IMapStardard.series[0]));
         this._map_timeline.baseOption.tooltip.formatter = this.tooltip;
         this._map_timeline.baseOption.series[0].data = [];
@@ -58,7 +59,7 @@ export class TimeLineMapWeekNoComponent implements OnInit {
   }
 
   symbolSize(val: any) {
-    return Math.sqrt(val[2] * 100) / 10;
+    return val[2] / 50;
   };
   tooltip(val: any) {
     return val.data.name + ":" + val.data.value[2];

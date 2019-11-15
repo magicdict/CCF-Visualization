@@ -21,7 +21,7 @@ export class TimeLineMapComponent implements OnInit {
     this.route.data
       .subscribe((xxx: { data: MapValue[] }) => {
         xxx.data.sort((x, y) => { return y.value[2] - x.value[2] })
-        this._map_timeline.baseOption.timeline.playInterval = 5000;
+        this._map_timeline.baseOption.timeline.playInterval = 1000;
         this._map_timeline.baseOption['bmap'] = CommonFunction.clone(IMapStardard.bmap);
         this._map_timeline.baseOption.series.push(CommonFunction.clone(IMapStardard.series[0]));
         this._map_timeline.baseOption.tooltip.formatter = this.tooltip;
