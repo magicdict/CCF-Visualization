@@ -1,4 +1,6 @@
-﻿namespace dataprocess
+﻿using System.Linq;
+
+namespace dataprocess
 {
     class Program
     {
@@ -16,12 +18,17 @@
                     DataCenterForTraffic.AngularJsonAssetsFolder = DataCenterForTraffic.AngularJsonAssetsFolder.Replace("F:", @"D:\share\CPU Test");
                     DataCenterForTraffic.ExtendFile = DataCenterForTraffic.ExtendFile.Replace("F:", @"D:\share\CPU Test");
                 }
-                DataCenterForTraffic.LoadDestconuty();
+                //DataCenterForTraffic.LoadDestconuty();
                 DataCenterForTraffic.Load(-1);
-                DataCenterForTraffic.Conuty();
+                //DataCenterForTraffic.Conuty();
                 //DataCenterForTraffic.CreateCountyDict();
                 //DataCenterForTraffic.CreateDistrictDict();
                 //DataCenterForTraffic.LoadExtendInfo();
+                //终点为机场的起点集合
+                DataCenterForTraffic.CreateGeoJson(DataCenterForTraffic.orders.Where(x=>x.dest.POI.Equals("机场")).ToList(),true,"StartPoint4AirportDest",500);
+                DataCenterForTraffic.CreateGeoJson(DataCenterForTraffic.orders.Where(x=>x.starting.POI.Equals("机场")).ToList(),false,"DestPoint4AirportStart",500);
+                DataCenterForTraffic.CreateGeoJson(DataCenterForTraffic.orders.Where(x=>x.dest.POI.Equals("火车站")).ToList(),true,"StartPoint4TrainDest",500);
+                DataCenterForTraffic.CreateGeoJson(DataCenterForTraffic.orders.Where(x=>x.starting.POI.Equals("火车站")).ToList(),false,"DestPoint4TrainStart",500);
             }
             else
             {

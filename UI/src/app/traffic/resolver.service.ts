@@ -121,10 +121,30 @@ export class HeatMapResolver implements Resolve<IRelationship[]> {
 
     }
     resolve(_: ActivatedRouteSnapshot, _state: RouterStateSnapshot): IRelationship[] | Observable<IRelationship[]> | Promise<IRelationship[]> {
-        if (_state.url === "/traffic/startpagerank"){
+        if (_state.url === "/traffic/startpagerank") {
             return this.commonFunction.httpRequestGetFromAsset<IRelationship[]>("traffic/json/start_betweenness.json");
-        }else{
+        } else {
             return this.commonFunction.httpRequestGetFromAsset<IRelationship[]>("traffic/json/dest_betweenness.json");
+        }
+    }
+}
+
+export class AirportMapResolver implements Resolve<MapValue[]> {
+    constructor(public commonFunction: CommonFunction) {
+
+    }
+    resolve(_: ActivatedRouteSnapshot, _state: RouterStateSnapshot): MapValue[] | Observable<MapValue[]> | Promise<MapValue[]> {
+        switch (_state.url) {
+            case "/traffic/destpointfromairport":
+                return this.commonFunction.httpRequestGetFromAsset<MapValue[]>("traffic/json/DestPoint4AirportStart_PointSize.json");
+            case "/traffic/startpointtoairport":
+                return this.commonFunction.httpRequestGetFromAsset<MapValue[]>("traffic/json/StartPoint4AirportDest_PointSize.json");
+            case "/traffic/destpointfromtrain":
+                return this.commonFunction.httpRequestGetFromAsset<MapValue[]>("traffic/json/DestPoint4TrainStart_PointSize.json");
+            case "/traffic/startpointtotrain":
+                return this.commonFunction.httpRequestGetFromAsset<MapValue[]>("traffic/json/StartPoint4TrainDest_PointSize.json");
+            default:
+                break;
         }
     }
 }

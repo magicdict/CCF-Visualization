@@ -14,11 +14,31 @@ export class SimpleMapComponent implements OnInit {
   _map = CommonFunction.clone(IMapStardard);
   _title = "";
   ngOnInit(): void {
-    if (this.route.snapshot.routeConfig.path === "simplesourcemap") {
-      this._title = "出发地分析";
-    } else {
-      this._title = "目的地分析";
+
+    switch (this.route.snapshot.routeConfig.path) {
+      case "simplesourcemap":
+        this._title = "出发地分析";
+        break;
+      case "simpledestmap":
+        this._title = "目的地分析";
+        break;
+      case "destpointfromairport":
+        this._title = "机场出发目的地";
+        break;
+      case "startpointtoairport":
+        this._title = "去机场出发地";
+        break;
+      case "destpointfromtrain":
+        this._title = "火车站出发目的地";
+        break;
+      case "startpointtotrain":
+        this._title = "去火车站出发地";
+        break;
+      default:
+        break;
     }
+
+
     this.route.data
       .subscribe((xxx: { data: MapValue[] }) => {
         xxx.data.sort((x, y) => { return y.value[2] - x.value[2] })

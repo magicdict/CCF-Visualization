@@ -5,7 +5,7 @@ import { TimeAnalysisComponent } from './TimeAnalysis/TimeAnalysis.component';
 import { TimeLineMapComponent } from './SourceDestMap/TimeLineMap.component';
 import {
   SourceMapResolver, DestMapResolver, TimeAnaysisResolver, DashBoardResolver,
-  CalendarResolver, SimpleSourceMapResolver, SimpleDestMapResolver, TraceResolver, SourceMapWeeKnoResolver, DestMapWeeKnoResolver, HotPointMapResolver, HeatMapResolver
+  CalendarResolver, SimpleSourceMapResolver, SimpleDestMapResolver, TraceResolver, SourceMapWeeKnoResolver, DestMapWeeKnoResolver, HotPointMapResolver, HeatMapResolver, AirportMapResolver
 } from './resolver.service';
 import { DashboardComponent } from './Dashboard/Dashboard.component';
 import { CalendarComponent } from './Calendar/Calendar.component';
@@ -75,6 +75,11 @@ const routes: Routes = [
       { path: 'startenc', component: SimpleHeatMapComponent, resolve: { data: HeatMapResolver } },
       { path: 'destenc', component: SimpleHeatMapComponent, resolve: { data: HeatMapResolver } },
 
+
+      { path: 'destpointfromairport', component: SimpleMapComponent, resolve: { data: AirportMapResolver } },
+      { path: 'startpointtoairport', component: SimpleMapComponent, resolve: { data: AirportMapResolver } },
+      { path: 'destpointfromtrain', component: SimpleMapComponent, resolve: { data: AirportMapResolver } },
+      { path: 'startpointtotrain', component: SimpleMapComponent, resolve: { data: AirportMapResolver } },
       
 
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }

@@ -327,9 +327,9 @@
 
 
         <li class="treeview"
-        [class]="(this._path === '/traffic/simplesourcemap' || this._path === '/traffic/sourcemap' || this._path === '/traffic/weeklysourcemap') ? 'active treeview menu-open':'treeview'">
+          [class]="(this._path === '/traffic/simplesourcemap' || this._path === '/traffic/sourcemap' || this._path === '/traffic/weeklysourcemap') ? 'active treeview menu-open':'treeview'">
 
-        <a href="#">
+          <a href="#">
             <i class="fa fa-edit"></i> <span>出发地</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
@@ -348,7 +348,7 @@
 
 
         <li class="treeview"
-        [class]="(this._path === '/traffic/simpledestmap' || this._path === '/traffic/destmap' || this._path === '/traffic/weeklydestmap') ? 'active treeview menu-open':'treeview'">
+          [class]="(this._path === '/traffic/simpledestmap' || this._path === '/traffic/destmap' || this._path === '/traffic/weeklydestmap') ? 'active treeview menu-open':'treeview'">
           <a href="#">
             <i class="fa fa-edit"></i> <span>目的地</span>
             <span class="pull-right-container">
@@ -390,10 +390,9 @@
             <li [class.active]="_path ==='/traffic/destbetweenness'"><a href="traffic/destbetweenness"><i
                   class="fa fa-link"></i>
                 <span>目的地Betweenness</span></a></li>
-            <li [class.active]="_path ==='/traffic/startenc'"><a href="traffic/startenc"><i
-                  class="fa fa-link"></i> <span>出发地ENC</span></a></li>
-            <li [class.active]="_path ==='/traffic/destenc'"><a href="traffic/destenc"><i
-                  class="fa fa-link"></i>
+            <li [class.active]="_path ==='/traffic/startenc'"><a href="traffic/startenc"><i class="fa fa-link"></i>
+                <span>出发地ENC</span></a></li>
+            <li [class.active]="_path ==='/traffic/destenc'"><a href="traffic/destenc"><i class="fa fa-link"></i>
                 <span>目的地ENC</span></a></li>
           </ul>
         </li>
@@ -401,6 +400,20 @@
             <span>热门地点分析</span></a></li>
         <li [class.active]="_path ==='/traffic/trace'"><a href="traffic/trace"><i class="fa fa-link"></i>
             <span>轨迹分析</span></a></li>
+
+        <li [class.active]="_path ==='/traffic/destpointfromairport'"><a href="traffic/destpointfromairport"><i
+              class="fa fa-link"></i>
+            <span>机场出发目的地</span></a></li>
+        <li [class.active]="_path ==='/traffic/startpointtoairport'"><a href="traffic/startpointtoairport"><i
+              class="fa fa-link"></i>
+            <span>去机场出发地</span></a></li>
+        <li [class.active]="_path ==='/traffic/destpointfromtrain'"><a href="traffic/destpointfromtrain"><i
+              class="fa fa-link"></i>
+            <span>火车站出发目的地</span></a></li>
+        <li [class.active]="_path ==='/traffic/startpointtotrain'"><a href="traffic/startpointtotrain"><i
+              class="fa fa-link"></i>
+            <span>去火车站出发地</span></a></li>
+
       </ul>
       <!-- /.sidebar-menu -->
     </section>

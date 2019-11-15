@@ -451,7 +451,7 @@ public static class DataCenterForTraffic
     /// <param name="isStart"></param>
     /// <param name="filename"></param>
     /// <param name="downlimit"></param>
-    private static void CreateGeoJson(List<OrderDetails> evaluateorders, bool isStart, string filename, int downlimit = -1)
+    public static void CreateGeoJson(List<OrderDetails> evaluateorders, bool isStart, string filename, int downlimit = -1)
     {
         //以1_000_000 为单位进行Groupby，然后汇总
         var TotalCnt = evaluateorders.Count();
