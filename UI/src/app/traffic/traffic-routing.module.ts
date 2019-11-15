@@ -17,6 +17,8 @@ import { TimeDistanceComponent } from './Dashboard/TimeDistance.component';
 import { TimeAnalysisSPeedComponent } from './TimeAnalysis/TimeAnalysisSpeed.component';
 import { KMeansMapComponent } from './SourceDestMap/KMeansMap.component';
 import { SimpleHeatMapComponent } from './SourceDestMap/SimpleHeatMap.component';
+import { ArimaComponent } from './ML/Arima.component';
+import { CCComponent } from './ML/CC.component';
 
 
 const routes: Routes = [
@@ -75,6 +77,8 @@ const routes: Routes = [
       { path: 'startenc', component: SimpleHeatMapComponent, resolve: { data: HeatMapResolver } },
       { path: 'destenc', component: SimpleHeatMapComponent, resolve: { data: HeatMapResolver } },
 
+      { path: 'arima', component: ArimaComponent },
+      { path: 'cc', component: CCComponent },
 
       { path: 'destpointfromairport', component: SimpleMapComponent, resolve: { data: AirportMapResolver } },
       { path: 'startpointtoairport', component: SimpleMapComponent, resolve: { data: AirportMapResolver } },

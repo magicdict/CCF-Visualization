@@ -23,6 +23,8 @@ import { TimeDistanceComponent } from './Dashboard/TimeDistance.component';
 import { TimeAnalysisSPeedComponent } from './TimeAnalysis/TimeAnalysisSpeed.component';
 import { KMeansMapComponent } from './SourceDestMap/KMeansMap.component';
 import { SimpleHeatMapComponent } from './SourceDestMap/SimpleHeatMap.component';
+import { ArimaComponent } from './ML/Arima.component';
+import { CCComponent } from './ML/CC.component';
 
 
 
@@ -40,7 +42,9 @@ import { SimpleHeatMapComponent } from './SourceDestMap/SimpleHeatMap.component'
     TimeAnalysisComponent,
     CalendarComponent,
     TimeAnalysisSPeedComponent,
-    SimpleHeatMapComponent
+    SimpleHeatMapComponent,
+    ArimaComponent,
+    CCComponent
   ],
   imports: [
     TrafficRoutingModule,
