@@ -5,7 +5,7 @@ import { TimeAnalysisComponent } from './TimeAnalysis/TimeAnalysis.component';
 import { TimeLineMapComponent } from './SourceDestMap/TimeLineMap.component';
 import {
   SourceMapResolver, DestMapResolver, TimeAnaysisResolver, DashBoardResolver,
-  CalendarResolver, SimpleSourceMapResolver, SimpleDestMapResolver, TraceResolver, SourceMapWeeKnoResolver, DestMapWeeKnoResolver, HotPointMapResolver, HeatMapResolver, AirportMapResolver
+  CalendarResolver, SimpleSourceMapResolver, SimpleDestMapResolver, TraceResolver, SourceMapWeeKnoResolver, DestMapWeeKnoResolver, HotPointMapResolver, HeatMapResolver, AirportMapResolver, CommunityResolver
 } from './resolver.service';
 import { DashboardComponent } from './Dashboard/Dashboard.component';
 import { CalendarComponent } from './Calendar/Calendar.component';
@@ -27,6 +27,7 @@ const routes: Routes = [
     children: [
       { path: 'dashboard', component: DashboardComponent, resolve: { data: DashBoardResolver } },
       { path: 'dashboard_timedistance', component: TimeDistanceComponent, resolve: { data: DashBoardResolver } },
+      { path: 'dashboard_cc', component: CCComponent },
 
       { path: 'speedtimeanalysis', component: TimeAnalysisSPeedComponent, resolve: { data: DashBoardResolver } },
       { path: 'speedtimeanalysis_airport', component: TimeAnalysisSPeedComponent, resolve: { data: DashBoardResolver } },
@@ -78,12 +79,11 @@ const routes: Routes = [
       { path: 'destenc', component: SimpleHeatMapComponent, resolve: { data: HeatMapResolver } },
 
       { path: 'arima', component: ArimaComponent },
-      { path: 'cc', component: CCComponent },
-
       { path: 'destpointfromairport', component: SimpleMapComponent, resolve: { data: AirportMapResolver } },
       { path: 'startpointtoairport', component: SimpleMapComponent, resolve: { data: AirportMapResolver } },
       { path: 'destpointfromtrain', component: SimpleMapComponent, resolve: { data: AirportMapResolver } },
       { path: 'startpointtotrain', component: SimpleMapComponent, resolve: { data: AirportMapResolver } },
+      { path: 'community', component: SimpleMapComponent, resolve: { data: CommunityResolver } },
       
 
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonFunction } from 'src/app/Common/common';
 import { ActivatedRoute } from '@angular/router';
-import { IPointAttr, MapValue } from '../Model';
+import { IPointAttr } from '../Model';
 import { IMapStardard } from 'src/app/Common/chartOption';
 
 
@@ -24,7 +24,6 @@ export class HotPointMapComponent implements OnInit {
   }
   symbolSize(val: any) {
     return Math.min(65, Math.sqrt(val[2])/5);
-    return Math.min(65, val[2] / 500);
   };
   tooltip(val: any) {
     return "作为出发地:" + val.data.value[3] + "<br />" +

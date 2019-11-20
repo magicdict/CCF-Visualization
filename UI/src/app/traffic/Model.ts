@@ -127,7 +127,13 @@ export interface IPointAttr {
 
 export interface IRelationship {
     coord: number[];
-    ENC:number;
-    PageRank:number;
-    Betweenness:number;
+    ENC: number;
+    PageRank: number;
+    Betweenness: number;
+}
+
+export interface ICommunity {
+    lng: number;
+    lat: number;
+    community_walktrap: number;
 }

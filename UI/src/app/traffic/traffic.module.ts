@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { TrafficRoutingModule } from './traffic-routing.module';
-import { TimeAnaysisResolver, SourceMapResolver, DestMapResolver, DashBoardResolver, 
-  CalendarResolver, SimpleDestMapResolver, SimpleSourceMapResolver, TraceResolver, SourceMapWeeKnoResolver, DestMapWeeKnoResolver, HotPointMapResolver, HeatMapResolver, AirportMapResolver } from './resolver.service';
+import {
+  TimeAnaysisResolver, SourceMapResolver, DestMapResolver, DashBoardResolver,
+  CalendarResolver, SimpleDestMapResolver, SimpleSourceMapResolver, TraceResolver, SourceMapWeeKnoResolver, DestMapWeeKnoResolver, HotPointMapResolver, HeatMapResolver, AirportMapResolver, CommunityResolver
+} from './resolver.service';
 import { CommonFunction } from '../Common/common';
 import { HttpClientModule } from '@angular/common/http';
 import { MyCommonModule } from '../Common/MyCommon.module';
@@ -67,7 +69,8 @@ import { CCComponent } from './ML/CC.component';
     CalendarResolver,
     TraceResolver,
     HeatMapResolver,
-    AirportMapResolver
+    AirportMapResolver,
+    CommunityResolver
   ],
   bootstrap: [TrafficMainComponent]
 })

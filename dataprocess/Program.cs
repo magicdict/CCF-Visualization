@@ -19,7 +19,8 @@ namespace dataprocess
                     DataCenterForTraffic.ExtendFile = DataCenterForTraffic.ExtendFile.Replace("F:", @"D:\share\CPU Test");
                 }
                 //DataCenterForTraffic.Load(-1);
-                DataCenterForTraffic.CreateLinearRegressionDate();
+                //DataCenterForTraffic.CreateLinearRegressionDate();
+                DataCenterForTraffic.CreateCommunityWalktrap();
             }
             else
             {

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { CommonFunction } from '../Common/common';
-import { ITimeAnaysis, MapValue, IDashBoard, IDiaryinfo, IPointAttr, IRelationship } from './Model';
+import { ITimeAnaysis, MapValue, IDashBoard, IDiaryinfo, IPointAttr, IRelationship, ICommunity } from './Model';
 
 
 @Injectable()
@@ -148,3 +148,13 @@ export class AirportMapResolver implements Resolve<MapValue[]> {
         }
     }
 }
+
+export class CommunityResolver implements Resolve<ICommunity[]> {
+    constructor(public commonFunction: CommonFunction) {
+
+    }
+    resolve(_: ActivatedRouteSnapshot, _state: RouterStateSnapshot): ICommunity[] | Observable<ICommunity[]> | Promise<ICommunity[]> {
+        return this.commonFunction.httpRequestGetFromAsset<ICommunity[]>("traffic/json/Communit.json");
+    }
+}
+

@@ -219,6 +219,9 @@
             <li [class.active]="_path ==='/traffic/dashboard_timedistance'"><a href="traffic/dashboard_timedistance"><i
                   class="fa fa-link"></i>
                 <span>时间路程</span></a></li>
+            <li [class.active]="_path ==='/traffic/dashboard_cc'"><a href="traffic/dashboard_cc"><i
+                  class="fa fa-link"></i>
+                <span>皮尔逊相关性</span></a></li>
           </ul>
         </li>
 
@@ -367,7 +370,11 @@
         </li>
 
         <li class="treeview"
-          [class]="( this._path.endsWith('cc') || this._path.endsWith('arima') || this._path.endsWith('enc') || this._path.endsWith('pagerank') || this._path.endsWith('betweenness')) ? 'active treeview menu-open':'treeview'">
+          [class]="(this._path.endsWith('arima') || 
+                    this._path.endsWith('enc') ||
+                    this._path.endsWith('community') || 
+                    this._path.endsWith('pagerank') || 
+                    this._path.endsWith('betweenness')) ? 'active treeview menu-open':'treeview'">
           <a href="#">
             <i class="fa fa-edit"></i> <span>机器学习</span>
             <span class="pull-right-container">
@@ -375,12 +382,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-
             <li [class.active]="_path ==='/traffic/arima'"><a href="traffic/arima"><i class="fa fa-link"></i>
                 <span>Arima时序预测</span></a></li>
-            <li [class.active]="_path ==='/traffic/cc'"><a href="traffic/cc"><i class="fa fa-link"></i>
-                <span>皮尔逊相关性</span></a></li>
-
             <li [class.active]="_path ==='/traffic/startpagerank'"><a href="traffic/startpagerank"><i
                   class="fa fa-link"></i> <span>出发地PageRank</span></a></li>
             <li [class.active]="_path ==='/traffic/destpagerank'"><a href="traffic/destpagerank"><i
@@ -395,11 +398,12 @@
                 <span>出发地ENC</span></a></li>
             <li [class.active]="_path ==='/traffic/destenc'"><a href="traffic/destenc"><i class="fa fa-link"></i>
                 <span>目的地ENC</span></a></li>
+            <li [class.active]="_path ==='/traffic/community'"><a href="traffic/community"><i class="fa fa-link"></i>
+                <span>社区</span></a></li>
           </ul>
         </li>
 
-        <li class="treeview"
-          [class]="(
+        <li class="treeview" [class]="(
           this._path === '/traffic/hotpoint' || 
           this._path === '/traffic/trace' || 
           this._path === '/traffic/destpointfromairport' || 

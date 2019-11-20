@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonFunction } from 'src/app/Common/common';
 import { ActivatedRoute } from '@angular/router';
-import { MapValue } from '../Model';
+import { MapValue, ICommunity } from '../Model';
 import { IMapStardard } from 'src/app/Common/chartOption';
 
 
@@ -38,11 +38,22 @@ export class SimpleMapComponent implements OnInit {
         this._title = "去火车站出发地";
         this._map.bmap.zoom = 13;
         break;
+      case "community":
+        this._title = "社区";
+        this._map.bmap.zoom = 13;
+        break;
       default:
         break;
     }
 
-
+    if (this.route.snapshot.routeConfig.path === "community") {
+      this.route.data
+        .subscribe((xxx: { data: ICommunity[] }) => {
+          this._map.series[0].data = xxx.data.map(x => { return { "name": x.community_walktrap, "value": [x.lng, x.lat, x.community_walktrap] } });
+          this._map.series[0].itemStyle.normal.color = this.symbolColor;
+        });
+      return;
+    }
     this.route.data
       .subscribe((xxx: { data: MapValue[] }) => {
         xxx.data.sort((x, y) => { return y.value[2] - x.value[2] })
@@ -54,6 +65,32 @@ export class SimpleMapComponent implements OnInit {
         this._map.title.text = "";
       });
   }
+  symbolColor(val: any): string {
+    switch (val.value[2]) {
+      case 0:
+        return "pink"
+      case 1:
+        return "blue"
+      case 2:
+        return "green"
+      case 3:
+        return "yellow"
+      case 4:
+        return "aqua"
+      case 5:
+        return "red"
+      case 6:
+        return "purple"
+      case 7:
+        return "orange"
+      case 8:
+        return "black"
+      case 9:
+        return "white"
+      default:
+        break;
+    }
+  };
   symbolSize(val: any) {
     return Math.sqrt(val[2] * 100) / 30;
   };

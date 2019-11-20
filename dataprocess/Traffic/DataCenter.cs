@@ -959,8 +959,8 @@ public static class DataCenterForTraffic
             var HighTempera = item.Value.weather.HighTempera;
             var LowTempera = item.Value.weather.LowTempera;
             var Count = item.Value.ordercnt;
-            sw.WriteLine(isWorkday + "," + isHoliday + "," + HighTempera + "," + LowTempera + "," + dayidx + "," + Count + "," + 
-                    item.Value.airport + "," + item.Value.train + "," + item.Value.longbus + "," + item.Value.school + "," + 
+            sw.WriteLine(isWorkday + "," + isHoliday + "," + HighTempera + "," + LowTempera + "," + dayidx + "," + Count + "," +
+                    item.Value.airport + "," + item.Value.train + "," + item.Value.longbus + "," + item.Value.school + "," +
                     item.Value.hospital + "," + item.Value.travel + "," + item.Value.cbd);
         }
         sw.Close();
@@ -1018,6 +1018,43 @@ public static class DataCenterForTraffic
         var diff = d.Subtract(startard);
         var weekidx = (int)diff.TotalDays / 7;
         return startard.AddDays(weekidx * 7).ToString("yyyy/MM/dd");
+    }
+
+    public static void CreateCommunityWalktrap()
+    {
+        var filename = @"F:\CCF-Visualization\RawData\result\z.csv";
+        var sr = new StreamReader(filename);
+        var list = new List<community>();
+        sr.ReadLine();
+        while (!sr.EndOfStream)
+        {
+            list.Add(new community(sr.ReadLine()));
+        }
+
+        sr.Close();
+        var sw = new StreamWriter(AngularJsonAssetsFolder + "Communit.json");
+        sw.Write(JsonConvert.SerializeObject(list, Formatting.Indented));
+        sw.Close();
+    }
+
+}
+
+public class community
+{
+    //public string key { set; get; }
+    public double lng { set; get; }
+    public double lat { set; get; }
+    //public double betweenness { set; get; }
+    //public double pagerank { set; get; }
+    public int community_walktrap { set; get; }
+
+    public community(string RawData)
+    {
+        var info = RawData.Replace("\"", string.Empty).Split(",");
+        //key = info[0].Split("_")[0];
+        lng = double.Parse(info[0].Split("_")[1]) + 0.0063;
+        lat = double.Parse(info[1]) + 0.0058;
+        community_walktrap = int.Parse(info[4]);
     }
 
 }

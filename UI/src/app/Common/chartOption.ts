@@ -321,7 +321,9 @@ export const IMapStardard = {
       },
       itemStyle: {
         normal: {
-          color: 'purple'
+          color: function (_) {
+            return 'purple';
+          },
         }
       }
     },
@@ -370,16 +372,16 @@ export const ICalendarStardard = {
     orient: 'horizontal',
     left: 'center',
     bottom: 20,
-/*     inRange: {
-      color: ['#e0ffff', '#006edd'],
-      opacity: 0.3
-    },
-    controller: {
-      inRange: {
-        color: ['#e0ffff', '#006edd'],
-        opacity: 0.5
-      }
-    } */
+    /*     inRange: {
+          color: ['#e0ffff', '#006edd'],
+          opacity: 0.3
+        },
+        controller: {
+          inRange: {
+            color: ['#e0ffff', '#006edd'],
+            opacity: 0.5
+          }
+        } */
   },
 
   calendar: [{
@@ -483,19 +485,19 @@ export const Rich_Weathy = {
     fontWeight: 'bold',
     fontSize: 15,
     color: '#0431B4',
-    align:"center"
+    align: "center"
   },
   redbold: {
     fontWeight: 'bold',
     fontSize: 15,
     color: '#FF0040',
-    align:"center"
+    align: "center"
   },
   blackbold: {
     fontWeight: 'bold',
     fontSize: 13,
     color: '#1C1C1C',
-    align:"center"
+    align: "center"
   },
   sunny: {
     backgroundColor: {
@@ -743,22 +745,22 @@ export const IHeatBaiduMapStardard = {
     roam: true,
   },
   visualMap: {
-      show: false,
-      top: 'top',
-      min: 0,
-      max: 5,
-      seriesIndex: 0,
-      calculable: true,
-      inRange: {
-          color: ['blue', 'blue', 'green', 'yellow', 'red']
-      }
+    show: false,
+    top: 'top',
+    min: 0,
+    max: 5,
+    seriesIndex: 0,
+    calculable: true,
+    inRange: {
+      color: ['blue', 'blue', 'green', 'yellow', 'red']
+    }
   },
   series: [{
-      type: 'heatmap',
-      coordinateSystem: 'bmap',
-      data: [],
-      pointSize: 5,
-      blurSize: 6
+    type: 'heatmap',
+    coordinateSystem: 'bmap',
+    data: [],
+    pointSize: 5,
+    blurSize: 6
   },
   {
     name: 'Top 10',
@@ -789,7 +791,7 @@ export const IHeatBaiduMapStardard = {
     },
     zlevel: 1
   }
-]
+  ]
 }
 
 export const IHeatMapStardard = {
@@ -800,49 +802,49 @@ export const IHeatMapStardard = {
     }
   },
   tooltip: {
-      position: 'top'
+    position: 'top'
   },
   animation: false,
   grid: {
-      height: '50%',
-      y: '10%'
+    height: '50%',
+    y: '10%'
   },
   xAxis: {
-      type: 'category',
-      data: [],
-      splitArea: {
-          show: true
-      }
+    type: 'category',
+    data: [],
+    splitArea: {
+      show: true
+    }
   },
   yAxis: {
-      type: 'category',
-      data: [],
-      splitArea: {
-          show: true
-      }
+    type: 'category',
+    data: [],
+    splitArea: {
+      show: true
+    }
   },
   visualMap: {
-      min: 0,
-      max: 10,
-      calculable: true,
-      orient: 'horizontal',
-      left: 'center',
-      bottom: '15%'
+    min: 0,
+    max: 10,
+    calculable: true,
+    orient: 'horizontal',
+    left: 'center',
+    bottom: '15%'
   },
   series: [{
-      name: '跨区数据',
-      type: 'heatmap',
-      data: [],
-      label: {
-          normal: {
-              show: true
-          }
-      },
-      itemStyle: {
-          emphasis: {
-              shadowBlur: 10,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
-          }
+    name: '跨区数据',
+    type: 'heatmap',
+    data: [],
+    label: {
+      normal: {
+        show: true
       }
+    },
+    itemStyle: {
+      emphasis: {
+        shadowBlur: 10,
+        shadowColor: 'rgba(0, 0, 0, 0.5)'
+      }
+    }
   }]
 };
