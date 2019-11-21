@@ -371,7 +371,6 @@
 
         <li class="treeview"
           [class]="(this._path.endsWith('arima') || 
-                    this._path.endsWith('enc') ||
                     this._path.endsWith('community') || 
                     this._path.endsWith('pagerank') || 
                     this._path.endsWith('betweenness')) ? 'active treeview menu-open':'treeview'">
@@ -384,20 +383,10 @@
           <ul class="treeview-menu">
             <li [class.active]="_path ==='/traffic/arima'"><a href="traffic/arima"><i class="fa fa-link"></i>
                 <span>Arima时序预测</span></a></li>
-            <li [class.active]="_path ==='/traffic/startpagerank'"><a href="traffic/startpagerank"><i
-                  class="fa fa-link"></i> <span>出发地PageRank</span></a></li>
-            <li [class.active]="_path ==='/traffic/destpagerank'"><a href="traffic/destpagerank"><i
-                  class="fa fa-link"></i>
-                <span>目的地PageRank</span></a></li>
-            <li [class.active]="_path ==='/traffic/startbetweenness'"><a href="traffic/startbetweenness"><i
-                  class="fa fa-link"></i> <span>出发地Betweenness</span></a></li>
-            <li [class.active]="_path ==='/traffic/destbetweenness'"><a href="traffic/destbetweenness"><i
-                  class="fa fa-link"></i>
-                <span>目的地Betweenness</span></a></li>
-            <li [class.active]="_path ==='/traffic/startenc'"><a href="traffic/startenc"><i class="fa fa-link"></i>
-                <span>出发地ENC</span></a></li>
-            <li [class.active]="_path ==='/traffic/destenc'"><a href="traffic/destenc"><i class="fa fa-link"></i>
-                <span>目的地ENC</span></a></li>
+            <li [class.active]="_path ==='/traffic/pagerank'"><a href="traffic/pagerank"><i
+                  class="fa fa-link"></i> <span>PageRank</span></a></li>
+            <li [class.active]="_path ==='/traffic/betweenness'"><a href="traffic/betweenness"><i
+                  class="fa fa-link"></i> <span>Betweenness</span></a></li>
             <li [class.active]="_path ==='/traffic/community'"><a href="traffic/community"><i class="fa fa-link"></i>
                 <span>社区</span></a></li>
           </ul>

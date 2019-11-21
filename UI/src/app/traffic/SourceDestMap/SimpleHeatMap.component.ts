@@ -19,7 +19,7 @@ export class SimpleHeatMapComponent implements OnInit {
 
                 console.log(this.route.snapshot.routeConfig.path)
                 if (this.route.snapshot.routeConfig.path.endsWith("pagerank")) {
-                    this._map.bmap.zoom = 10
+                    this._map.bmap.zoom = 13
                     this._map.visualMap.max = Math.max(...xxx.data.map(x => x.PageRank * 10000));
                     this._map.series[0].data = xxx.data.map(x => { return [x.coord[0], x.coord[1], x.PageRank * 100000] })
                     //排序
@@ -28,7 +28,7 @@ export class SimpleHeatMapComponent implements OnInit {
                     this._map.series[1].symbolSize = this.symbolSizeForPR;
                 }
                 if (this.route.snapshot.routeConfig.path.endsWith("betweenness")) {
-                    this._map.bmap.zoom = 10
+                    this._map.bmap.zoom = 13
                     this._map.visualMap.max = Math.max(...xxx.data.map(x => x.Betweenness / 1000));
                     this._map.series[0].data = xxx.data.map(x => { return [x.coord[0], x.coord[1], x.Betweenness] })
                     //排序
@@ -37,7 +37,7 @@ export class SimpleHeatMapComponent implements OnInit {
                     this._map.series[1].symbolSize = this.symbolSizeForBW;
                 }
                 if (this.route.snapshot.routeConfig.path.endsWith("enc")) {
-                    this._map.bmap.zoom = 10
+                    this._map.bmap.zoom = 11
                     this._map.visualMap.max = Math.max(...xxx.data.map(x => x.ENC / 1000));
                     this._map.series[0].data = xxx.data.map(x => { return [x.coord[0], x.coord[1], x.ENC] })
                     //排序
@@ -52,7 +52,7 @@ export class SimpleHeatMapComponent implements OnInit {
         return val[2] * 1000;
     };
     symbolSizeForBW(val: any) {
-        return val[2] / 2000;
+        return Math.min(val[2] / 2500,50);
     };
     symbolSizeForENC(val: any) {
         return val[2] / 50;

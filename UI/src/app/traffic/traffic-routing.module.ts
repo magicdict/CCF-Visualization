@@ -71,19 +71,15 @@ const routes: Routes = [
       { path: 'hotpoint', component: HotPointMapComponent, resolve: { data: HotPointMapResolver } },
       { path: 'trace', component: TraceMapComponent, resolve: { data: TraceResolver } },
 
-      { path: 'startpagerank', component: SimpleHeatMapComponent, resolve: { data: HeatMapResolver } },
-      { path: 'destpagerank', component: SimpleHeatMapComponent, resolve: { data: HeatMapResolver } },
-      { path: 'startbetweenness', component: SimpleHeatMapComponent, resolve: { data: HeatMapResolver } },
-      { path: 'destbetweenness', component: SimpleHeatMapComponent, resolve: { data: HeatMapResolver } },
-      { path: 'startenc', component: SimpleHeatMapComponent, resolve: { data: HeatMapResolver } },
-      { path: 'destenc', component: SimpleHeatMapComponent, resolve: { data: HeatMapResolver } },
-
       { path: 'arima', component: ArimaComponent },
+      { path: 'pagerank', component: SimpleHeatMapComponent, resolve: { data: HeatMapResolver } },
+      { path: 'betweenness', component: SimpleHeatMapComponent, resolve: { data: HeatMapResolver } },
+      { path: 'community', component: SimpleMapComponent, resolve: { data: CommunityResolver } },
+
       { path: 'destpointfromairport', component: SimpleMapComponent, resolve: { data: AirportMapResolver } },
       { path: 'startpointtoairport', component: SimpleMapComponent, resolve: { data: AirportMapResolver } },
       { path: 'destpointfromtrain', component: SimpleMapComponent, resolve: { data: AirportMapResolver } },
       { path: 'startpointtotrain', component: SimpleMapComponent, resolve: { data: AirportMapResolver } },
-      { path: 'community', component: SimpleMapComponent, resolve: { data: CommunityResolver } },
       
 
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }

@@ -121,11 +121,7 @@ export class HeatMapResolver implements Resolve<IRelationship[]> {
 
     }
     resolve(_: ActivatedRouteSnapshot, _state: RouterStateSnapshot): IRelationship[] | Observable<IRelationship[]> | Promise<IRelationship[]> {
-        if (_state.url === "/traffic/startpagerank") {
-            return this.commonFunction.httpRequestGetFromAsset<IRelationship[]>("traffic/json/start_betweenness.json");
-        } else {
-            return this.commonFunction.httpRequestGetFromAsset<IRelationship[]>("traffic/json/dest_betweenness.json");
-        }
+        return this.commonFunction.httpRequestGetFromAsset<IRelationship[]>("traffic/json/neo4j.json");
     }
 }
 

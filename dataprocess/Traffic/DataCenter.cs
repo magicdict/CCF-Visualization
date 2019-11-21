@@ -1024,36 +1024,37 @@ public static class DataCenterForTraffic
     {
         var filename = @"F:\CCF-Visualization\RawData\result\z.csv";
         var sr = new StreamReader(filename);
-        var list = new List<community>();
+        var list = new List<neo4j>();
         sr.ReadLine();
         while (!sr.EndOfStream)
         {
-            list.Add(new community(sr.ReadLine()));
+            list.Add(new neo4j(sr.ReadLine()));
         }
 
         sr.Close();
-        var sw = new StreamWriter(AngularJsonAssetsFolder + "Communit.json");
+        var sw = new StreamWriter(AngularJsonAssetsFolder + "neo4j.json");
         sw.Write(JsonConvert.SerializeObject(list, Formatting.Indented));
         sw.Close();
     }
 
 }
 
-public class community
+public class neo4j
 {
     //public string key { set; get; }
-    public double lng { set; get; }
-    public double lat { set; get; }
-    //public double betweenness { set; get; }
-    //public double pagerank { set; get; }
+    public double[] coord { set; get; }
+    public double Betweenness { set; get; }
+    public double PageRank { set; get; }
     public int community_walktrap { set; get; }
 
-    public community(string RawData)
+    public neo4j(string RawData)
     {
         var info = RawData.Replace("\"", string.Empty).Split(",");
-        //key = info[0].Split("_")[0];
-        lng = double.Parse(info[0].Split("_")[1]) + 0.0063;
-        lat = double.Parse(info[1]) + 0.0058;
+        var lng = double.Parse(info[0].Split("_")[1]) + 0.0063;
+        var lat = double.Parse(info[1]) + 0.0058;
+        coord = new double[] { lng, lat };
+        Betweenness = double.Parse(info[2]);
+        PageRank = double.Parse(info[3]);
         community_walktrap = int.Parse(info[4]);
     }
 
