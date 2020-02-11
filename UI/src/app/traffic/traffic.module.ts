@@ -23,7 +23,6 @@ import { TabViewModule } from 'primeng/tabview';
 import { HotPointMapComponent } from './SourceDestMap/HotPointMap.component';
 import { TimeDistanceComponent } from './Dashboard/TimeDistance.component';
 import { TimeAnalysisSPeedComponent } from './TimeAnalysis/TimeAnalysisSpeed.component';
-import { KMeansMapComponent } from './SourceDestMap/KMeansMap.component';
 import { SimpleHeatMapComponent } from './SourceDestMap/SimpleHeatMap.component';
 import { ArimaComponent } from './ML/Arima.component';
 import { CCComponent } from './ML/CC.component';
@@ -39,7 +38,6 @@ import { CCComponent } from './ML/CC.component';
     TimeLineMapWeekNoComponent,
     HotPointMapComponent,
     SimpleMapComponent,
-    KMeansMapComponent,
     TraceMapComponent,
     TimeAnalysisComponent,
     CalendarComponent,

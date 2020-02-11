@@ -116,6 +116,7 @@ export class CalendarResolver implements Resolve<IDiaryinfo[]> {
     }
 }
 
+@Injectable()
 export class HeatMapResolver implements Resolve<IRelationship[]> {
     constructor(public commonFunction: CommonFunction) {
 
@@ -125,6 +126,7 @@ export class HeatMapResolver implements Resolve<IRelationship[]> {
     }
 }
 
+@Injectable()
 export class AirportMapResolver implements Resolve<MapValue[]> {
     constructor(public commonFunction: CommonFunction) {
 
@@ -145,6 +147,7 @@ export class AirportMapResolver implements Resolve<MapValue[]> {
     }
 }
 
+@Injectable()
 export class CommunityResolver implements Resolve<ICommunity[]> {
     constructor(public commonFunction: CommonFunction) {
 

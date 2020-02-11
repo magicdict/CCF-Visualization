@@ -15,7 +15,6 @@ import { TimeLineMapWeekNoComponent } from './SourceDestMap/TimeLineMapWeekNo.co
 import { HotPointMapComponent } from './SourceDestMap/HotPointMap.component';
 import { TimeDistanceComponent } from './Dashboard/TimeDistance.component';
 import { TimeAnalysisSPeedComponent } from './TimeAnalysis/TimeAnalysisSpeed.component';
-import { KMeansMapComponent } from './SourceDestMap/KMeansMap.component';
 import { SimpleHeatMapComponent } from './SourceDestMap/SimpleHeatMap.component';
 import { ArimaComponent } from './ML/Arima.component';
 import { CCComponent } from './ML/CC.component';
@@ -63,10 +62,6 @@ const routes: Routes = [
       { path: 'destmap', component: TimeLineMapComponent, resolve: { data: DestMapResolver } },
       { path: 'weeklysourcemap', component: TimeLineMapWeekNoComponent, resolve: { data: SourceMapWeeKnoResolver } },
       { path: 'weeklydestmap', component: TimeLineMapWeekNoComponent, resolve: { data: DestMapWeeKnoResolver } },
-
-      { path: 'startkmeans', component: KMeansMapComponent },
-      { path: 'destkmeans', component: KMeansMapComponent },
-
 
       { path: 'hotpoint', component: HotPointMapComponent, resolve: { data: HotPointMapResolver } },
       { path: 'trace', component: TraceMapComponent, resolve: { data: TraceResolver } },

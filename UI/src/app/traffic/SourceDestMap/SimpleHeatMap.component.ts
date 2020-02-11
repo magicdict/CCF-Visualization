@@ -36,15 +36,6 @@ export class SimpleHeatMapComponent implements OnInit {
                     this._map.series[1].data = sorted.map(x => { return { "name": "BW", value: [x.coord[0], x.coord[1], x.Betweenness] } });
                     this._map.series[1].symbolSize = this.symbolSizeForBW;
                 }
-                if (this.route.snapshot.routeConfig.path.endsWith("enc")) {
-                    this._map.bmap.zoom = 11
-                    this._map.visualMap.max = Math.max(...xxx.data.map(x => x.ENC / 1000));
-                    this._map.series[0].data = xxx.data.map(x => { return [x.coord[0], x.coord[1], x.ENC] })
-                    //排序
-                    let sorted = xxx.data.sort((x, y) => { return y.ENC - x.ENC }).slice(0, 10);
-                    this._map.series[1].data = sorted.map(x => { return { "name": "ENC", value: [x.coord[0], x.coord[1], x.ENC] } });
-                    this._map.series[1].symbolSize = this.symbolSizeForENC;
-                }
             });
     }
 
@@ -53,9 +44,6 @@ export class SimpleHeatMapComponent implements OnInit {
     };
     symbolSizeForBW(val: any) {
         return Math.min(val[2] / 2500,50);
-    };
-    symbolSizeForENC(val: any) {
-        return val[2] / 50;
     };
 }
 

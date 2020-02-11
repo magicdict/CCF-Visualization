@@ -51,6 +51,8 @@ export class SimpleMapComponent implements OnInit {
         .subscribe((xxx: { data: ICommunity[] }) => {
           this._map.series[0].data = xxx.data.map(x => { return { "name": x.community_walktrap, "value": [x.lng, x.lat, x.community_walktrap] } });
           this._map.series[0].itemStyle.normal.color = this.symbolColor;
+          this._map.series[0].name = "社区";
+          this._map.tooltip.formatter = ((val: { data: { value: string[]; }; }) => "社区ID:" + val.data.value[2]);
         });
       return;
     }
@@ -59,7 +61,7 @@ export class SimpleMapComponent implements OnInit {
         xxx.data.sort((x, y) => { return y.value[2] - x.value[2] })
         this._map.series[0].data = xxx.data.slice(0, 2000);
         this._map.series[0].symbolSize = this.symbolSize;
-        this._map.tooltip.formatter = this.tooltip;
+        this._map.tooltip.formatter = this.tooltipformatter;
         this._map.series[1].data = xxx.data.slice(0, 6);
         this._map.series[1].symbolSize = this.symbolSize;
         this._map.title.text = "";
@@ -94,7 +96,7 @@ export class SimpleMapComponent implements OnInit {
   symbolSize(val: any) {
     return Math.sqrt(val[2] * 100) / 30;
   };
-  tooltip(val: any) {
+  tooltipformatter(val: any) {
     return val.data.name + ":" + val.data.value[2];
   }
 }

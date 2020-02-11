@@ -53,7 +53,6 @@
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -132,6 +131,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "UI"
+    }
+  },
+  "defaultProject": "UI",
+  "cli": {
+    "analytics": "ade23921-9579-4775-b36f-85f803b31eac"
+  }
 }
